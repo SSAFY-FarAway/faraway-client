@@ -1,15 +1,18 @@
 <template>
-  <div class="home">
-    <h1>HomeView</h1>
-  </div>
+  <router-view />
 </template>
 
 <script>
+import { RouterView } from "vue-router";
+
 export default {
-  name: 'HomeView',
-  components: {
-  }
-}
+  name: "HomeView",
+  components: { RouterView },
+};
 </script>
 
-<style></style>
+<style>
+.home {
+  height: 130vh;
+}
+</style>

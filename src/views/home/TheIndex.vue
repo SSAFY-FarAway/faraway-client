@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+  <div>Home Index</div>
 </template>
 
 <script>
 export default {
-  name: "PlanView",
+  name: "TheIndex",
   components: {},
   data() {
     return {

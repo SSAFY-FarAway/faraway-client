@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+  <div>Post List</div>
 </template>
 
 <script>
 export default {
-  name: "PlanView",
+  name: "PostList",
   components: {},
   data() {
     return {

@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+  <div>Attraction List</div>
 </template>
 
 <script>
 export default {
-  name: "PlanView",
+  name: "AttrationList",
   components: {},
   data() {
     return {
