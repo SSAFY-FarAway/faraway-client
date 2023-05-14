@@ -24,7 +24,9 @@ export default {
 
 #app-router {
   min-height: 100vh;
-  padding-top: 80px;
+  margin: 0px;
+  padding: 0px;
+  padding-top: 60px;
 }
 
 @media (max-width: 992px) {
