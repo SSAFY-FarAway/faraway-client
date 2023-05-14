@@ -1,5 +1,29 @@
+/* General */
+:root {
+  --font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  --gradient: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0)
+  );
+  --body-font-family: Roboto Slab, -apple-system, BlinkMacSystemFont, Segoe UI,
+    Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji,
+    Segoe UI Symbol, Noto Color Emoji;
+  --body-font-size: 1rem;
+
+  --main-color: #ffc800;
+  --sub-color: #212529;
+}
+
 body {
-  overflow-y: hidden; /* Hide vertical scrollbar */
+  /*overflow-y: hidden;*/
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size);
+  font-weight: var(--body-font-weight);
 }
 
 /* Header */
@@ -11,11 +35,11 @@ body {
 }
 
 #header .header-container {
-  background: #212529;
+  background: var(--sub-color);
 }
 
 #header.header-scrolled {
-  background: #212529;
+  background: var(--sub-color);
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   top: 0;
 }
@@ -23,7 +47,7 @@ body {
 #header .logo {
   overflow: hidden;
   padding: 16px 30px 12px 30px;
-  background: #212529;
+  background: var(--sub-color);
 }
 
 #header .logo h1 {
@@ -36,7 +60,7 @@ body {
 
 #header .logo h1 a,
 #header .logo h1 a:hover {
-  color: #ffc800;
+  color: var(--main-color);
   text-decoration: none;
 }
 
@@ -50,12 +74,12 @@ body {
   #header {
     box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
     top: 0;
-    background: #212529;
+    background: var(--sub-color);
   }
 
   #header.header-scrolled,
   #header .header-container {
-    background: #212529;
+    background: var(--sub-color);
   }
 
   #header .logo {
@@ -90,7 +114,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 10px 0 10px 30px;
-  color: #ffc800;
+  color: var(--main-color);
   transition: 0.3s;
   font-size: 13px;
   font-weight: 500;
@@ -116,7 +140,7 @@ body {
 
 .navbar .getstarted,
 .navbar .getstarted:focus {
-  background: #212529;
+  background: var(--sub-color);
   padding: 10px 25px;
   margin-left: 30px;
   margin-right: 15px;
@@ -154,17 +178,17 @@ body {
 }
 
 .nav-link-item {
-  color: #212529 !important;
+  color: var(--sub-color) !important;
 }
 
 .nav-link-item:hover {
-  color: #ffc800 !important;
+  color: var(--main-color) !important;
 }
 
 .navbar .dropdown ul a:hover,
 .navbar .dropdown ul .active:hover,
 .navbar .dropdown ul li:hover > a {
-  color: #ffc800;
+  color: var(--main-color);
 }
 
 .navbar .dropdown:hover > ul {
@@ -259,7 +283,7 @@ body {
 .navbar-mobile a:hover,
 .navbar-mobile .active,
 .navbar-mobile li:hover > a {
-  color: #212529;
+  color: var(--sub-color);
 }
 
 .navbar-mobile .getstarted,
@@ -294,7 +318,7 @@ body {
 .navbar-mobile .dropdown ul a:hover,
 .navbar-mobile .dropdown ul .active:hover,
 .navbar-mobile .dropdown ul li:hover > a {
-  color: #212529;
+  color: var(--sub-color);
 }
 
 .navbar-mobile .dropdown > .dropdown-active {
