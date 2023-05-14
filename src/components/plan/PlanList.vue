@@ -1,18 +1,18 @@
 <template>
-    <div></div>
+  <div>Plan List</div>
 </template>
 
 <script>
 export default {
-    name: 'PlanList',
-    components: {},
-    data() {
-        return {
-            message: '',
-        };
-    },
-    created() {},
-    methods: {},
+  name: "PlanList",
+  components: {},
+  data() {
+    return {
+      message: "",
+    };
+  },
+  created() {},
+  methods: {},
 };
 </script>
 

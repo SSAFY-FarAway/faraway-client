@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <nav-bar/>
-    <router-view id='app-router'/>
+    <the-navbar />
+    <router-view id="app-router" />
   </div>
 </template>
 
 <script>
-import NavBar from "@/components/common/NavBar"
+import TheNavbar from "@/components/common/TheNavbar";
 
-export default ({
+export default {
   name: "App",
   components: {
-    NavBar,
-  }
-})
+    TheNavbar,
+  },
+};
 </script>
 
 <style>

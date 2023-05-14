@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+  <div>Hotplace List</div>
 </template>
 
 <script>
 export default {
-  name: "PlanView",
+  name: "MemberList",
   components: {},
   data() {
     return {

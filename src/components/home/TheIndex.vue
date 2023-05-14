@@ -1,18 +1,18 @@
 <template>
-    <div></div>
+  <div>Home Index</div>
 </template>
 
 <script>
 export default {
-    name: 'TheIndex',
-    components: {},
-    data() {
-        return {
-            message: '',
-        };
-    },
-    created() {},
-    methods: {},
+  name: "TheIndex",
+  components: {},
+  data() {
+    return {
+      message: "",
+    };
+  },
+  created() {},
+  methods: {},
 };
 </script>
 

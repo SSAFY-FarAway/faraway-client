@@ -1,21 +1,20 @@
 <template>
-    <div>
-        MemberView
-        <router-view/>
-    </div>
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'MemberView',
-    components: {},
-    data() {
-        return {
-            message: '',
-        };
-    },
-    created() {},
-    methods: {},
+  name: "MemberView",
+  components: {},
+  data() {
+    return {
+      message: "",
+    };
+  },
+  created() {},
+  methods: {},
 };
 </script>
 

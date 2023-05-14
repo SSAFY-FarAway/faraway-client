@@ -1,18 +1,18 @@
 <template>
-    <div></div>
+  <div>Post List</div>
 </template>
 
 <script>
 export default {
-    name: 'PostList',
-    components: {},
-    data() {
-        return {
-            message: '',
-        };
-    },
-    created() {},
-    methods: {},
+  name: "PostList",
+  components: {},
+  data() {
+    return {
+      message: "",
+    };
+  },
+  created() {},
+  methods: {},
 };
 </script>
 
