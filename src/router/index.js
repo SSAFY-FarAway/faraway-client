@@ -7,6 +7,13 @@ import PlanView from "../views/PlanView";
 import PostView from "../views/PostView";
 import HotplaceView from "../views/HotplaceView";
 
+import TheIndex from "../components/home/TheIndex";
+import MemberList from "../components/member/MemberList";
+import AttrationList from "../components/attraction/AttrationList";
+import PlanList from "../components/plan/PlanList";
+import PostList from "../components/post/PostList";
+import HotplaceList from "../components/hotplace/HotplaceList";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -14,42 +21,85 @@ const routes = [
     path: "/",
     name: "home",
     component: HomeView,
-    children: [],
+    redirect: "/index",
+    children: [
+      {
+        path: "index",
+        name: "index",
+        component: TheIndex,
+        children: [],
+      },
+    ],
   },
   {
     path: "/member",
     name: "member",
     component: MemberView,
     redirect: "/member/list",
-    children: [],
+    children: [
+      {
+        path: "list",
+        name: "list",
+        component: MemberList,
+        children: [],
+      },
+    ],
   },
   {
     path: "/attraction",
     name: "attraction",
     component: AttractionView,
     redirect: "/attraction/list",
-    children: [],
+    children: [
+      {
+        path: "list",
+        name: "list",
+        component: AttrationList,
+        children: [],
+      },
+    ],
   },
   {
     path: "/plan",
     name: "plan",
     component: PlanView,
     redirect: "/plan/list",
-    children: [],
+    children: [
+      {
+        path: "list",
+        name: "list",
+        component: PlanList,
+        children: [],
+      },
+    ],
   },
   {
     path: "/post",
     name: "post",
     component: PostView,
     redirect: "/post/list",
-    children: [],
+    children: [
+      {
+        path: "list",
+        name: "list",
+        component: PostList,
+        children: [],
+      },
+    ],
   },
   {
     path: "/hotplace",
     name: "hotplace",
     component: HotplaceView,
     redirect: "/hotplace/list",
-    children: [],
+    children: [
+      {
+        path: "list",
+        name: "list",
+        component: HotplaceList,
+        children: [],
+      },
+    ],
   },
 ];
 
