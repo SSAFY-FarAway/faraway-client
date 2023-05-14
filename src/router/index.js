@@ -7,12 +7,12 @@ import PlanView from "../views/PlanView";
 import PostView from "../views/PostView";
 import HotplaceView from "../views/HotplaceView";
 
-import TheIndex from "../components/home/TheIndex";
-import MemberList from "../components/member/MemberList";
-import AttrationList from "../components/attraction/AttrationList";
-import PlanList from "../components/plan/PlanList";
-import PostList from "../components/post/PostList";
-import HotplaceList from "../components/hotplace/HotplaceList";
+import TheIndex from "../views/home/TheIndex";
+import MemberList from "../views/member/MemberList";
+import AttrationList from "../views/attraction/AttrationList";
+import PlanList from "../views/plan/PlanList";
+import PostList from "../views/post/PostList";
+import HotplaceList from "../views/hotplace/HotplaceList";
 
 Vue.use(VueRouter);
 
