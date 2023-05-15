@@ -17,7 +17,7 @@
               >안보이다가 틀리면 보이게할거임</small
             >
           </div>
-          <div class="form-group mb-3">
+          <div class="form-group mb-4">
             <label for="login-pwd">비밀번호</label>
             <input type="text" class="form-control" id="login-pwd" />
           </div>
@@ -76,7 +76,7 @@ div {
 }
 
 .link_rel {
-  margin-top: 60px;
+  margin-top: 40px;
   padding: 0;
   text-align: center;
 }
