@@ -14,7 +14,7 @@
       </div>
     </header>
     <!-- 메인 섹션 -->
-    <section class="page-section py-5">
+    <section class="container py-5">
       <div class="text-center" style="margin: 80px 0">
         <h2 class="section-heading text-uppercase">Customize Your Travel</h2>
         <h3 class="section-subheading text-muted">

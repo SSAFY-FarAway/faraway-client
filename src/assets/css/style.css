@@ -60,15 +60,11 @@
 }
 
 body {
-  /*overflow-y: hidden;*/
+  margin: 0;
+  padding: 0;
   font-family: var(--ody-font-family);
   font-size: var(--ody-font-size);
   font-weight: var(--ody-font-weight);
-}
-
-#footer-container {
-  max-width: 90vw !important;
-  margin: auto !important;
 }
 
 .container,
@@ -78,51 +74,11 @@ body {
 .container-lg,
 .container-md,
 .container-sm {
-  width: 100vw !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  padding: 0;
+  max-width: 1256px;
+  margin: 0 auto;
 }
 
-@media (min-width: 576px) {
-  .container-sm,
-  .container {
-    max-width: 540px !important;
-  }
-}
-@media (min-width: 768px) {
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 720px !important;
-  }
-}
-@media (min-width: 992px) {
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 960px !important;
-  }
-}
-@media (min-width: 1200px) {
-  .container-xl,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 1140px !important;
-  }
-}
-@media (min-width: 1400px) {
-  .container-xxl,
-  .container-xl,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 100vw !important;
-  }
-}
 
 /* Header */
 header.masthead {
@@ -174,29 +130,32 @@ header.masthead .masthead-heading {
   }
 }
 
-#header {
+#nav-container {
+  background: var(--sub-color);
+  padding: 0;
+  margin: 0;
   transition: all 0.5s;
   z-index: 997;
   transition: all 0.5s;
 }
 
-#header .header-container {
+#nav-container .header-container {
   background: var(--sub-color);
 }
 
-#header.header-scrolled {
+#nav-container.header-scrolled {
   background: var(--sub-color);
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   top: 0;
 }
 
-#header .logo {
+#nav-container .logo {
   overflow: hidden;
   padding: 16px 30px 12px 30px;
   background: var(--sub-color);
 }
 
-#header .logo h1 {
+#nav-container .logo h1 a {
   font-size: 26px;
   padding: 0;
   line-height: 1;
@@ -204,38 +163,40 @@ header.masthead .masthead-heading {
   font-family: "Poppins", sans-serif;
 }
 
-#header .logo h1 a,
-#header .logo h1 a:hover {
+#nav-container .logo h1 a,
+#nav-container .logo h1 a:hover {
   color: var(--main-color);
   text-decoration: none;
 }
 
-#header .logo img {
+#nav-container .logo img {
   padding: 0;
   margin: 0;
   max-height: 40px;
 }
 
 @media (max-width: 992px) {
-  #header {
+  #nav-container {
     box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
     top: 0;
     background: var(--sub-color);
   }
 
-  #header.header-scrolled,
-  #header .header-container {
+  #nav-container.header-scrolled,
+  #nav-container .header-container {
     background: var(--sub-color);
   }
 
-  #header .logo h1 {
+  #nav-container .logo h1 {
     font-size: 24px;
   }
 }
 
 /* Navbar */
 .navbar {
-  padding: 0;
+  width: 1024px;
+  margin: 0 auto;
+  padding: 0!important;
 }
 
 .navbar ul {

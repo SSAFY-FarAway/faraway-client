@@ -1,16 +1,12 @@
 <template>
-  <header id="header" class="fixed-top d-flex align-items-center">
-    <div class="container">
-      <div
-        class="header-container d-flex align-items-center justify-content-between"
-      >
-        <div class="logo">
-          <h1 class="text-light">
-            <router-link to="/"><span>FAR AWAY</span></router-link>
-          </h1>
-        </div>
-
+  <header id="nav-container" class="fixed-top d-flex align-items-center">
+    <div class="container header-container">
         <nav id="navbar" class="navbar">
+          <div class="logo">
+            <h1>
+              <router-link to="/"><span>FAR AWAY</span></router-link>
+            </h1>
+          </div>
           <ul>
             <li>
               <router-link class="nav-link scrollto" to="/attraction"
@@ -48,7 +44,7 @@
                 <li>
                   <router-link
                     class="nav-link scrollto nav-link-item"
-                    to="/member"
+                    to="/member/sign-up"
                     >SIGN UP</router-link
                   >
                 </li>
@@ -59,7 +55,6 @@
             </li>
           </ul>
         </nav>
-      </div>
     </div>
   </header>
 </template>
