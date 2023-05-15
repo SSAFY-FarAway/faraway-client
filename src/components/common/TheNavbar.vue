@@ -1,6 +1,6 @@
 <template>
-  <header id="nav-container" class="fixed-top d-flex align-items-center">
-    <div class="container header-container">
+  <header id="nav-container" class="fixed-top">
+    <div class="container">
         <nav id="navbar" class="navbar">
           <div class="logo">
             <h1>
@@ -49,9 +49,6 @@
                   >
                 </li>
               </ul>
-            </li>
-            <li>
-              <div style="width: 20px"></div>
             </li>
           </ul>
         </nav>
