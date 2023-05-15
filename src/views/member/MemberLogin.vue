@@ -10,19 +10,23 @@
       <form>
         <div class="row">
           <!-- 로그인 정보 -->
-          <div class="form-group mb-3">
+          <div class="form-group col-md-12 mb-3">
             <label for="login-id">아이디</label>
             <input type="text" class="form-control" id="login-id" />
             <small id="login-id-help" class="form-text text-muted"
               >안보이다가 틀리면 보이게할거임</small
             >
           </div>
-          <div class="form-group mb-4">
+          <div class="form-group col-md-12 mb-4">
             <label for="login-pwd">비밀번호</label>
             <input type="text" class="form-control" id="login-pwd" />
           </div>
 
-          <button id="login-btn" type="submit" class="btn btn-primary">
+          <button
+            id="login-btn"
+            type="submit"
+            class="btn btn-primary col-md-12"
+          >
             LOGIN
           </button>
         </div>
