@@ -10,6 +10,7 @@ import HotplaceView from "../views/HotplaceView";
 import TheIndex from "../views/home/TheIndex";
 import MemberList from "../views/member/MemberList";
 import MemberRegister from "../views/member/MemberRegister";
+import MemberLogin from "../views/member/MemberLogin";
 import AttrationList from "../views/attraction/AttrationList";
 import PlanList from "../views/plan/PlanList";
 import PostList from "../views/post/PostList";
@@ -38,17 +39,21 @@ const routes = [
     component: MemberView,
     redirect: "/member/list",
     children: [
+      // TODO : list 는 추후에 없애거나 관리자 모드 추가 시 변경 예정 (예시로 둔거임)
       {
         path: "list",
         name: "list",
         component: MemberList,
-        children: [],
       },
       {
         path: "register",
         name: "register",
         component: MemberRegister,
-        children: [],
+      },
+      {
+        path: "login",
+        name: "login",
+        component: MemberLogin,
       },
     ],
   },
