@@ -9,7 +9,7 @@ import HotplaceView from "../views/HotplaceView";
 
 import TheIndex from "../views/home/TheIndex";
 import MemberList from "../views/member/MemberList";
-import MemberSignUp from "../views/member/MemberSignUp";
+import MemberRegister from "../views/member/MemberRegister";
 import AttrationList from "../views/attraction/AttrationList";
 import PlanList from "../views/plan/PlanList";
 import PostList from "../views/post/PostList";
@@ -45,9 +45,9 @@ const routes = [
         children: [],
       },
       {
-        path: "sign-up",
-        name: "sign-up",
-        component: MemberSignUp,
+        path: "register",
+        name: "register",
+        component: MemberRegister,
         children: [],
       },
     ],

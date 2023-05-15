@@ -44,8 +44,8 @@
                 <li>
                   <router-link
                     class="nav-link scrollto nav-link-item"
-                    to="/member/sign-up"
-                    >SIGN UP</router-link
+                    to="/member/register"
+                    >Register</router-link
                   >
                 </li>
               </ul>
