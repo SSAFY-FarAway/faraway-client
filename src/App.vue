@@ -24,10 +24,18 @@ export default {
       inAuthUrl: false,
     }
   },
-  watch: {
-    '$route.path'(value) {
+  methods: {
+    urlCheck(value) {
       this.inAuthUrl = (value.includes("login") || value.includes("sign-up")) ? true : false;
     }
+  },
+  watch: {
+    '$route.path'(value) {
+      this.urlCheck(value);
+    }
+  },
+  created() {
+    this.urlCheck(this.$route.path);
   }
 };
 </script>
