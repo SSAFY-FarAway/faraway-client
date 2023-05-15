@@ -42,7 +42,7 @@ const routes = [
       // TODO : list 는 추후에 없애거나 관리자 모드 추가 시 변경 예정 (예시로 둔거임)
       {
         path: "list",
-        name: "list",
+        name: "MemberList",
         component: MemberList,
       },
       {
@@ -65,7 +65,7 @@ const routes = [
     children: [
       {
         path: "list",
-        name: "list",
+        name: "AttractionList",
         component: AttrationList,
         children: [],
       },
@@ -79,7 +79,7 @@ const routes = [
     children: [
       {
         path: "list",
-        name: "list",
+        name: "PlanList",
         component: PlanList,
         children: [],
       },
@@ -93,7 +93,7 @@ const routes = [
     children: [
       {
         path: "list",
-        name: "list",
+        name: "PostList",
         component: PostList,
         children: [],
       },
@@ -107,7 +107,7 @@ const routes = [
     children: [
       {
         path: "list",
-        name: "list",
+        name: "Hotplace",
         component: HotplaceList,
         children: [],
       },
