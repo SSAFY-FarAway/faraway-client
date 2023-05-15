@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 타이틀 영역 -->
+    <!-- 타이틀(masthead) 영역 -->
     <header class="masthead">
       <div>
         <div class="masthead-subheading">Wherever You Go</div>

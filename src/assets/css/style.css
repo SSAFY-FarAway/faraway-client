@@ -183,7 +183,7 @@ header.masthead .masthead-heading {
 
 #nav-container .logo h1 a,
 #nav-container .logo h1 a:hover {
-  color: var(--main-color);
+  color: var(#ffffff);
   text-decoration: none;
 }
 
