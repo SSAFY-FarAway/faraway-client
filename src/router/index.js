@@ -25,7 +25,7 @@ const routes = [
     name: "home",
     component: HomeView,
     redirect: "/index",
-    children: [
+    children: [ 
       {
         path: "index",
         name: "index",
@@ -59,7 +59,7 @@ const routes = [
         component: MemberLogin,
       },
       {
-        path: "mypage",
+        path: ":memberId",
         name: "MemberMypage",
         component: MemberMypage,
       },

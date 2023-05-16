@@ -21,7 +21,8 @@
                                             ></b-icon>
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="text" id="login-id" name="loginId" class="form-control"
-                                                      readonly/>
+                                                v-model="memberInfo.loginId"
+                                                readonly/>
                                                 <label class="form-label" for="login-id">ID</label>
                                             </div>
 
@@ -34,9 +35,11 @@
                                             ></b-icon>
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="text" id="last-name" name='lastName' class="form-control"
+                                                v-model="memberInfo.lastName"
                                                       readonly/>
                                                 <label class="form-label" for="last-name">Last Name</label>
                                                 <input type="text" id="first-name" name='firstName' class="form-control"
+                                                v-model="memberInfo.firstName"
                                                       readonly/>
                                                 <label class="form-label" for="first-name">First Name</label>
                                             </div>
@@ -49,9 +52,12 @@
                                               ></b-icon>
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="text" id="mileage" name='mileage' class="form-control"
+                                                v-model="memberInfo.mileage"
                                                       readonly/>
                                                 <label class="form-label" for="mileage">Mileage</label>
-                                                <input type="text" id="role" name='role' class="form-control" readonly/>
+                                                <input type="text" id="role" name='role' class="form-control"
+                                                v-model="memberInfo.mileage"
+                                                 readonly/>
                                                 <label class="form-label" for="role">Role</label>
                                             </div>
                                         </div>
@@ -62,7 +68,9 @@
                                               font-scale="1.5"
                                               ></b-icon>
                                             <div class="form-outline flex-fill mb-0">
-                                                <input type="text" id="birth" name="birth" class="form-control" readonly/>
+                                                <input type="text" id="birth" name="birth" class="form-control"
+                                                v-model="memberInfo.birth"
+                                                 readonly/>
                                                 <label class="form-label" for="birth">Your Birth (ex. 990101)</label>
                                             </div>
                                         </div>
@@ -73,7 +81,9 @@
                                               font-scale="1.5"
                                               ></b-icon>
                                             <div class="form-outline flex-fill mb-0">
-                                                <input type="email" id="email" name="email" class="form-control" readonly/>
+                                                <input type="email" id="email" name="email" class="form-control"
+                                                v-model="memberInfo.email"
+                                                 readonly/>
                                                 <label class="form-label" for="email">Your Email</label>
                                             </div>
                                         </div>
@@ -85,29 +95,36 @@
                                               ></b-icon>
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="text" id="zipcode" name="zipcode" class="form-control"
+                                                v-model="memberInfo.zipcode"
                                                       readonly/>
                                                 <label class="form-label" for="zipcode">Your Zipcode (ex. 90000)</label>
                                                 <input type="text" id="main-address" name="mainAddress"
-                                                      class="form-control" readonly/>
+                                                class="form-control" 
+                                                v-model="memberInfo.mainAddress"
+                                                readonly/>
                                                 <label class="form-label" for="main-address">Your Main
                                                     Address</label>
-                                                <input type="text" id="sub-address" name="subAddress" class="form-control"
-                                                      readonly/>
+                                                <input type="text" id="sub-address" name="subAddress" 
+                                                class="form-control"
+                                                v-model="memberInfo.subAddress"
+                                                readonly/>
                                                 <label class="form-label" for="sub-address">Your Sub
                                                     Address</label>
                                             </div>
                                         </div>
                                         <div id="normal-mode-btns" class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button
-                                                    class="btn btn-primary btn-lg shadow" id="modify-button">
+                                            <router-link
+                                                    class="btn btn-primary btn-lg shadow" id="modify-button"
+                                                    to="/member/modify">
                                                 Modify
-                                            </button>
+                                            </router-link>
                                         </div>
                                         <div id="modify-mode-btns" class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button
-                                                    class="btn btn-primary btn-lg shadow me-3" id="modify-submit-button">
+                                            <router-link
+                                                    class="btn btn-primary btn-lg shadow me-3" id="modify-submit-button"
+                                                    to="">
                                                 Submit
-                                            </button>
+                                            </router-link>
                                             <button
                                                     class="btn btn-secondary btn-lg shadow" id="modify-cancel-button">
                                                 Cancel
@@ -131,6 +148,7 @@
 
 
 <script>
+import http from "@/utils/api/http";
 import { BIcon } from "bootstrap-vue";
 
 export default {
@@ -138,11 +156,23 @@ export default {
   components: {BIcon},
   data() {
     return {
-      message: '',
+      memberInfo:{},
     };
   },
-  created() {},
-  methods: {},
+  created(){
+     http
+            .get(`/member/${this.$route.params.memberId}`)
+            .then((response) => {
+                console.log(response);
+                this.memberInfo = response.data;
+                console.log(this.memberInfo)
+            })
+  },
+  methods: {
+    
+
+
+  },
 };
 </script>
 
