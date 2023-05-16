@@ -16,6 +16,7 @@ import AttrationList from "../views/attraction/AttrationList";
 import PlanList from "../views/plan/PlanList";
 import PostList from "../views/post/PostList";
 import HotplaceList from "../views/hotplace/HotplaceList";
+import PostWrite from "@/views/post/PostWrite.vue";
 
 Vue.use(VueRouter);
 
@@ -99,9 +100,15 @@ const routes = [
         children: [],
       },
       {
-        path: "view/:post_id",
+        path: "view/:postId",
         name: "PostDetail",
         component: PostDetail,
+        children: [],
+      },
+      {
+        path: "write",
+        name: "PostWrite",
+        component: PostWrite,
         children: [],
       }
     ],

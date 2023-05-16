@@ -102,7 +102,7 @@ export default {
     },
     created() {
         http
-            .get(`/post/${this.$route.params.post_id}`)
+            .get(`/post/${this.$route.params.postId}`)
             .then((response) => {
                 console.log(response);
                 this.post = response.data;
