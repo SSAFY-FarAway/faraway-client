@@ -37,7 +37,7 @@
                                             <!-- TODO: 파일 없는 경우 처리 해야함 -->
                                             <div class="mt-3">
                                                 <ul>
-                                                    <li v-for="attachment in attachments" :key="attachment">
+                                                    <li v-for="attachment in attachments" :key="attachment.id">
                                                         {{attachment.fileName}}
                                                         <a :href="'http://localhost/attachment/download/' + attachment.id">
                                                             [다운로드]
@@ -117,6 +117,7 @@ export default {
         modifyPost() {
             if (confirm("수정 페이지로 이동하시겠습니까?")) {
                 // TODO: 수정 페이지 이동
+              location.href=`/post/modify/${this.$route.params.postId}`;
             }
         },
         deletePost() {

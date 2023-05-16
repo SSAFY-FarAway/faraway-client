@@ -17,6 +17,7 @@ import PlanList from "../views/plan/PlanList";
 import PostList from "../views/post/PostList";
 import HotplaceList from "../views/hotplace/HotplaceList";
 import PostWrite from "@/views/post/PostWrite.vue";
+import PostModify from "@/views/post/PostModify.vue";
 
 Vue.use(VueRouter);
 
@@ -109,6 +110,12 @@ const routes = [
         path: "write",
         name: "PostWrite",
         component: PostWrite,
+        children: [],
+      },
+      {
+        path:"modify/:postId",
+        name:"PostModify",
+        component: PostModify,
         children: [],
       }
     ],
