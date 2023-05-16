@@ -1,37 +1,48 @@
 <template>
   <div id="app">
-    <the-navbar />
+    <auth-navbar v-if="inAuthUrl" />
+    <the-navbar v-else/>
     <router-view id="app-router" />
     <the-footer />
   </div>
 </template>
 
 <script>
+import AuthNavbar from "@/components/common/AuthNavbar";
 import TheNavbar from "@/components/common/TheNavbar";
 import TheFooter from "@/components/common/TheFooter";
 
 export default {
   name: "App",
   components: {
+    AuthNavbar,
     TheNavbar,
     TheFooter,
   },
+  data() {
+    return {
+      inAuthUrl: false,
+    }
+  },
+  methods: {
+    urlCheck(value) {
+      this.inAuthUrl = (value.includes("login") || value.includes("register")) ? true : false;
+    }
+  },
+  watch: {
+    '$route.path'(value) {
+      this.urlCheck(value);
+    }
+  },
+  created() {
+    this.urlCheck(this.$route.path);
+  }
 };
 </script>
 
 <style>
 @import "@/assets/css/style.css";
 
-#app-router {
-  min-height: 100vh;
-  margin: 0px;
-  padding: 0px;
-  padding-top: 60px;
-}
 
-@media (max-width: 992px) {
-  #app-router {
-    padding-top: 60px;
-  }
-}
+
 </style>
