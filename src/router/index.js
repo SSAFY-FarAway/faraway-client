@@ -5,6 +5,7 @@ import AttractionView from "../views/AttractionView";
 import MemberView from "../views/MemberView";
 import PlanView from "../views/PlanView";
 import PostView from "../views/PostView";
+import PostDetail from "@/views/post/PostDetail";
 import HotplaceView from "../views/HotplaceView";
 
 import TheIndex from "../views/home/TheIndex";
@@ -97,6 +98,12 @@ const routes = [
         component: PostList,
         children: [],
       },
+      {
+        path: "view/:post_id",
+        name: "PostDetail",
+        component: PostDetail,
+        children: [],
+      }
     ],
   },
   {

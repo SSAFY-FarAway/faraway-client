@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import common from "./utils/common";
+import "./utils/filters"
 
 // BootStrap Import
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
