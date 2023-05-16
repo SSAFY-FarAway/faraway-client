@@ -31,12 +31,12 @@
                         <!-- 사용자 추천 경로 -->
                         <div class="col-6">
                             <div class="h4">My Plan</div>
-                            <plan-kakao-map mapId='recommand-map'/>
+                            <plan-kakao-map mapId='recommand-map' :attractions='plan.attractionResponses'/>
                         </div>
                         <!-- 최단 경로 -->
                         <div class="col-6">
                             <div class="h4">Shortest Plan</div>
-                            <plan-kakao-map mapId='shortest-map'/>
+                            <plan-kakao-map mapId='shortest-map' :attractions='plan.shortestPath'/>
                         </div>
                     </div>
                 </div>
