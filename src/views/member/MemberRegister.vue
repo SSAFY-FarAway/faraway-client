@@ -19,11 +19,11 @@
               type="text"
               class="form-control"
               id="login-id"
-              v-model="memberInfo.loginId"
+              v-model="registerMember.loginId"
               placeholder="아이디 입력"
             />
             <small id="login-id-help" class="form-text text-muted"
-              >안보이다가 틀리면 보이게할거임</small
+              >안보이다가 틀리면 보이게할거임(유효성 검사)</small
             >
           </div>
           <div class="form-group col-md-12 mb-3">
@@ -32,11 +32,11 @@
               type="password"
               class="form-control"
               id="login-pwd"
-              v-model="memberInfo.loginPwd"
+              v-model="registerMember.loginPwd"
               placeholder="비밀번호 입력"
             />
             <small id="login-pwd-help" class="form-text text-muted"
-              >안보이다가 틀리면 보이게할거임</small
+              >안보이다가 틀리면 보이게할거임(유효성 검사)</small
             >
           </div>
           <div class="form-group col-md-12 mb-5">
@@ -45,11 +45,11 @@
               type="password"
               class="form-control"
               id="login-pwd-confirm"
-              v-model="memberInfo.loginPwdConfirm"
+              v-model="registerMember.loginPwdConfirm"
               placeholder="비밀번호 재입력"
             />
             <small id="login-pwd-confirm-help" class="form-text text-muted"
-              >안보이다가 틀리면 보이게할거임</small
+              >안보이다가 틀리면 보이게할거임(유효성 검사)</small
             >
           </div>
           <!-- 개인 정보 -->
@@ -59,7 +59,7 @@
               type="text"
               class="form-control"
               id="first-name"
-              v-model="memberInfo.firstName"
+              v-model="registerMember.firstName"
             />
           </div>
           <div class="col-md-6 mb-3 pl-1">
@@ -68,7 +68,7 @@
               type="text"
               class="form-control"
               id="last-name"
-              v-model="memberInfo.lastName"
+              v-model="registerMember.lastName"
             />
           </div>
           <!-- https://bootstrap-vue.org/docs/components/form-datepicker#date-constraints -->
@@ -76,7 +76,7 @@
             <label for="example-datepicker">생년월일</label>
             <b-form-datepicker
               id="example-datepicker"
-              v-model="memberInfo.birth"
+              v-model="registerMember.birth"
               class="mb-2"
             />
           </div>
@@ -87,7 +87,7 @@
               type="email"
               class="form-control"
               id="email"
-              v-model="memberInfo.email"
+              v-model="registerMember.email"
             />
           </div>
           <!-- 주소 -->
@@ -98,7 +98,7 @@
               type="text"
               class="form-control"
               id="zipcode"
-              v-model="memberInfo.zipcode"
+              v-model="registerMember.zipcode"
             />
           </div>
           <div class="col-md-9 mb-3 pl-1">
@@ -107,7 +107,7 @@
               type="text"
               class="form-control"
               id="main-address"
-              v-model="memberInfo.mainAddress"
+              v-model="registerMember.mainAddress"
               placeholder="주소 선택"
             />
           </div>
@@ -117,7 +117,7 @@
               type="text"
               class="form-control"
               id="sub-address"
-              v-model="memberInfo.subAddress"
+              v-model="registerMember.subAddress"
             />
           </div>
 
@@ -142,7 +142,7 @@ export default {
   components: {},
   data() {
     return {
-      memberInfo: {
+      registerMember: {
         loginId: "",
         loginPwd: "",
         loginPwdConfirm: "",
@@ -160,16 +160,18 @@ export default {
   methods: {
     // 회원가입
     register() {
-      const memberInfo = this.memberInfo;
+      const registerMember = this.registerMember;
       const convertedBirth = this.$options.filters.convertBirth(
-        memberInfo.birth
+        registerMember.birth
       );
-      memberInfo.birth = convertedBirth;
+      registerMember.birth = convertedBirth;
 
       http
-        .post("/member/sign-up", this.memberInfo)
+        .post("/member/sign-up", this.registerMember)
         .then((res) => {
+          console.log(res)
           if (res.status === 200) {
+
             this.$alertSuccess("회원가입 완료", "로그인 화면으로 이동합니다.");
             this.$router.replace("/member/login");
           }
