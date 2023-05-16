@@ -7,24 +7,34 @@
       </div>
 
       <!-- Form 영역 -->
-      <form>
+      <form @submit.prevent>
         <div class="row">
           <!-- 로그인 정보 -->
           <div class="form-group col-md-12 mb-3">
             <label for="login-id">아이디</label>
-            <input type="text" class="form-control" id="login-id" />
+            <input
+              type="text"
+              class="form-control"
+              id="login-id"
+              v-model="loginMember.loginId"
+            />
             <small id="login-id-help" class="form-text text-muted"
-              >안보이다가 틀리면 보이게할거임</small
+              >안보이다가 틀리면 보이게할거임(유효성 검사)</small
             >
           </div>
           <div class="form-group col-md-12 mb-4">
             <label for="login-pwd">비밀번호</label>
-            <input type="text" class="form-control" id="login-pwd" />
+            <input
+            type="password"
+            class="form-control"
+            id="login-pwd"
+            v-model="loginMember.loginPwd"
+          />
           </div>
 
           <button
             id="login-btn"
-            type="submit"
+            @click="login"
             class="btn btn-primary col-md-12"
           >
             LOGIN
@@ -45,16 +55,36 @@
 </template>
 
 <script>
+import http from '@/utils/api/http';
+
 export default {
   name: "MemberSignUp",
   components: {},
   data() {
     return {
-      message: "",
+      loginMember: {
+        loginId: "",
+        loginPwd : ""
+      }
     };
   },
   created() {},
-  methods: {},
+  methods: {
+    login() {
+      const loginMember = this.loginMember;
+
+      http.post("/member/login", loginMember)
+        .then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.");
+            this.$router.replace("/")
+          }
+        }).catch(() => {
+          this.$alertDanger("로그인 실패", "추후 예외 처리 추가 예정");
+      })
+    }
+  },
 };
 </script>
 
