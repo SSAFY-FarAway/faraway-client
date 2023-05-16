@@ -116,13 +116,19 @@ export default {
         },
         modifyPost() {
             if (confirm("수정 페이지로 이동하시겠습니까?")) {
-                // TODO: 수정 페이지 이동
               location.href=`/post/modify/${this.$route.params.postId}`;
             }
         },
         deletePost() {
             if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
-                // TODO: 삭제요청
+              http
+                  .delete(`/post/${this.$route.params.postId}`)
+                  .then((response) => {
+                    if (response.status === 200) {
+                      alert("삭제가 완료되었습니다.");
+                      this.$router.replace(`/post/list`);
+                    }
+                  });
             }
         }
     },
