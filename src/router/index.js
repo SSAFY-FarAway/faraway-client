@@ -13,6 +13,7 @@ import MemberRegister from "../views/member/MemberRegister";
 import MemberLogin from "../views/member/MemberLogin";
 import AttrationList from "../views/attraction/AttrationList";
 import PlanList from "../views/plan/PlanList";
+import PlanDetail from "../views/plan/PlanDetail";
 import PostList from "../views/post/PostList";
 import HotplaceList from "../views/hotplace/HotplaceList";
 
@@ -81,6 +82,12 @@ const routes = [
         path: "list",
         name: "PlanList",
         component: PlanList,
+        children: [],
+      },
+      {
+        path: ":planId",
+        name: "PlanDetail",
+        component: PlanDetail,
         children: [],
       },
     ],
