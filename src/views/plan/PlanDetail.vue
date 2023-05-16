@@ -3,43 +3,40 @@
     <div class="container">
         <section class="page-section p-3 mt-3" id="share-plan-view">
             <div class="text-center fw-bold" role="alert">
-                <h2 class="section-heading text-uppercase">Write Travel Plan</h2>
-                <h3 class="section-subheading text-muted">
-                    원하는 여행경로를 공유해보세요.
-                </h3>
+                <h2 class="row d-flex justify-content-around my-4" >
+                    Travle Plan
+                </h2>
+                <h4 class="section-heading text-uppercase">'{{plan.loginId}}' 님이 추천하는 여행계획입니다</h4>
+                <hr/>
+                <!-- 게시글 영역 -->
+                <div class="col-md-12">
+                    
+                    <div class="mb-3">
+                        <h5 class=" d-flex justify-content-start">
+                            제목
+                        </h5>
+                        <input class="form-control" type="text" readonly :value='plan.title'>
+                    </div>
+                    <div>
+                        <h5 class=" d-flex justify-content-start">
+                            내용
+                        </h5>
+                        <textarea class="form-control" readonly id="" rows="3"  :value='plan.content'></textarea>
+                    </div>
+                </div>
+                <hr/>
+                <!-- 지도 영역 -->
                 <div class="flex" id="article-list-section">
                     <div class="row  justify-content-center align-self-center mb-2">
-                        <div class="col-4">
+                        <!-- 사용자 추천 경로 -->
+                        <div class="col-6">
                             <div class="h4">My Plan</div>
-                            <div id="map" class="mt-3 shadow" style="width: 100%; height: 600px"></div>
+                            <plan-kakao-map mapId='recommand-map'/>
                         </div>
-                        <div class="col-4">
+                        <!-- 최단 경로 -->
+                        <div class="col-6">
                             <div class="h4">Shortest Plan</div>
-                            <div id="shortest-map" class="mt-3 shadow" style="width: 100%; height: 600px"></div>
-                        </div>
-                        <div class="col-3 ms-1">
-                            <div class="h2 row d-flex justify-content-around mb-2" >
-                                Travle Plan
-                            </div>
-                            <div class="row d-flex justify-content-end mb-2" id = "writerId">
-                            </div>
-                            <div class="h5 row d-flex justify-content-start">
-                                Title
-                            </div>
-                            <div class="row mb-2">
-                                <div class="p-2 border shadow-sm" id="title">
-                                </div>
-                            </div>
-                            <div class="h5 row d-flex justify-content-start">
-                                Content
-                            </div>
-                            <div class="row mb-2">
-                                <div class="p-2 border shadow-sm" style="height: 300px;" id="content">
-                                </div>
-                            </div>
-                            <div class="ros d-flex justify-content-center" id="modify-button">
-                                <div id="loginId" style="display: none">${loginMember.loginId}</div>
-                            </div>
+                            <plan-kakao-map mapId='shortest-map'/>
                         </div>
                     </div>
                 </div>
@@ -50,27 +47,24 @@
 </template>
 <script>
 import http from '@/utils/api/http';
+import PlanKakaoMap from '@/components/plan/PlanKakaoMap';
 
 export default {
   name: "PlanList",
     components: {
+        PlanKakaoMap
     },
   data() {
     return {
-        selected: null,
-        options: [
-         { value: null, text: '검색 조건' },
-          { value: "title", text: '제목' },
-          { value: 'member', text: '작성자' },
-        ],
-        plans: [],
+        plan: {},
     };
   },
     created() {
-        http.get("/plan").then(res => {
+        const planId = this.$route.params.planId;
+        http.get(`/plan/${planId}`).then(res => {
             console.log(res)
             if (res.status === 200) {
-                this.plans = res.data.data;
+                this.plan = res.data;
             }
         }).catch(() => {
             this.$alertDanger("데이터 로드 실패 !", "추후에 예외처리 로직 추가 예정")
