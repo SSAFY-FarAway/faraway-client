@@ -5,9 +5,11 @@
 </template>
 
 <script>
+import { RouterView } from "vue-router";
+
 export default {
   name: "MemberView",
-  components: {},
+  components: {RouterView},
   data() {
     return {
       message: "",
