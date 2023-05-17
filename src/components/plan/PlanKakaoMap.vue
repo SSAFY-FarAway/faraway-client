@@ -30,11 +30,11 @@ export default {
   },
   created() {},
   watch: {
-    attractions (to, from) {
-            if (to != from) {
-              this.loadMap();
-            }
-        }
+    attractions(to, from) {
+      if (to != from) {
+        this.loadMap();
+      }
+    },
   },
   methods: {
     // kakaoMap Script 로드
@@ -49,8 +49,6 @@ export default {
     // kakaoMap Dom에 렌더링
     loadMap() {
       if (window.kakao != undefined) {
-
-
         const container = this.$refs[this.mapId]; // 지도를 담을 DOM 영역
         const options = {
           // 지도를 생성할 때 필요한 기본 옵션
@@ -62,30 +60,30 @@ export default {
         this.map = new window.kakao.maps.Map(container, options);
 
         if (this.attractions) {
-
           this.displayMarkers();
           this.displayLines();
           this.displayOverLays();
 
-          this.map.panTo(this.markers[0].position);
+          if (this.markers.length) {
+            this.map.panTo(this.markers[0].position);
+          }
         }
       }
     },
 
     // 마커 표시
     displayMarkers() {
-      
-        this.attractions.forEach((el) => {
-          // 마커 생성
-          const marker = {
-            map: this.map,
-            position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
-            title: el.title,
-          };
+      this.attractions.forEach((el) => {
+        // 마커 생성
+        const marker = {
+          map: this.map,
+          position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
+          title: el.title,
+        };
 
-          new window.kakao.maps.Marker(marker);
-          this.markers.push(marker);
-        });
+        new window.kakao.maps.Marker(marker);
+        this.markers.push(marker);
+      });
     },
 
     // 마커 간 거리 표시 (라인)
@@ -131,10 +129,10 @@ export default {
 </script>
 
 <style scoped>
-#map-container { 
-  width: 100%; 
-  height: 600px; 
-  border-left : 2px solid var(--sub-color); 
-  border-bottom : 2px solid var(--sub-color);
+#map-container {
+  width: 100%;
+  height: 600px;
+  border-left: 2px solid var(--sub-color);
+  border-bottom: 2px solid var(--sub-color);
 }
 </style>
