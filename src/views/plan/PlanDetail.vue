@@ -38,8 +38,6 @@
                         <textarea class="form-control" readonly id="" rows="3"  :value='plan.content'></textarea>
                     </div>
                 </div>
-                <hr/>
-                
             </div>
     </section>
 </div>

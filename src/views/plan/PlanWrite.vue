@@ -32,8 +32,6 @@
                     <textarea class="form-control" id="" rows="3"  :value='plan.content'></textarea>
                 </div>
             </div>
-            <hr/>
-            
         </div>
         <div class="d-flex justify-content-center">
           <b-button class="col-6 mr-1" variant="secondary" >CANCLE</b-button>

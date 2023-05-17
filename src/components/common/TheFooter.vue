@@ -1,5 +1,6 @@
 <template>
   <div class="py-4 container  text-center">
+    <hr/>
     <div class="row">
       <div class="col-lg-4 text-lg-start">Copyright &copy; FarAway 2022</div>
       <div class="col-lg-4 my-3 my-lg-0 d-flex justify-content-center">
