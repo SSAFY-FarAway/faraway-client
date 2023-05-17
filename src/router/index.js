@@ -86,15 +86,15 @@ const routes = [
         children: [],
       },
       {
-        path: ":planId",
-        name: "PlanDetail",
-        component: PlanDetail,
-        children: [],
-      },
-      {
         path: "write",
         name: "PlanWrite",
         component: PlanWrite,
+        children: [],
+      },
+      {
+        path: ":planId",
+        name: "PlanDetail",
+        component: PlanDetail,
         children: [],
       },
     ],
