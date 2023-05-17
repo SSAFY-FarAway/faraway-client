@@ -14,6 +14,7 @@ import MemberLogin from "../views/member/MemberLogin";
 import AttrationList from "../views/attraction/AttrationList";
 import PlanList from "../views/plan/PlanList";
 import PlanDetail from "../views/plan/PlanDetail";
+import PlanWrite from "../views/plan/PlanWrite";
 import PostList from "../views/post/PostList";
 import HotplaceList from "../views/hotplace/HotplaceList";
 
@@ -88,6 +89,12 @@ const routes = [
         path: ":planId",
         name: "PlanDetail",
         component: PlanDetail,
+        children: [],
+      },
+      {
+        path: "write",
+        name: "PlanWrite",
+        component: PlanWrite,
         children: [],
       },
     ],
