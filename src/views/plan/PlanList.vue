@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        <section class="" id="share-plan-list">
+        <section class="mt-5" id="share-plan-list">
             <div class="text-center fw-bold" role="alert">
                 <h2 class="section-heading text-uppercase">Travel Plan</h2>
                 <h3 class="section-subheading text-muted">원하는 여행경로를 공유해보세요.</h3>
                 <div class="p-0 pb-1 m-0 col-12 row justify-content-between">
-                    <router-link to="/plan/write" type="button" class="btn btn-primary btn">ADD PLAN</router-link>
+                    <router-link to="/plan/write" type="button" class="btn btn-primary btn">WRITE PLAN</router-link>
                     <form class="d-flex justify-content-end">
                         <div class="input-group col-10 p-0">
                             <b-form-select class='col-md-4' id='search-select-box' v-model="selected" :options="options"></b-form-select>                          
