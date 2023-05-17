@@ -149,6 +149,12 @@ dist
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
 # Local History for Visual Studio Code
 .history/
 

@@ -5,6 +5,7 @@ import AttractionView from "../views/AttractionView";
 import MemberView from "../views/MemberView";
 import PlanView from "../views/PlanView";
 import PostView from "../views/PostView";
+import PostDetail from "@/views/post/PostDetail";
 import HotplaceView from "../views/HotplaceView";
 
 import TheIndex from "../views/home/TheIndex";
@@ -17,6 +18,8 @@ import PlanDetail from "../views/plan/PlanDetail";
 import PlanWrite from "../views/plan/PlanWrite";
 import PostList from "../views/post/PostList";
 import HotplaceList from "../views/hotplace/HotplaceList";
+import PostWrite from "@/views/post/PostWrite.vue";
+import PostModify from "@/views/post/PostModify.vue";
 
 Vue.use(VueRouter);
 
@@ -111,6 +114,24 @@ const routes = [
         component: PostList,
         children: [],
       },
+      {
+        path: "view/:postId",
+        name: "PostDetail",
+        component: PostDetail,
+        children: [],
+      },
+      {
+        path: "write",
+        name: "PostWrite",
+        component: PostWrite,
+        children: [],
+      },
+      {
+        path:"modify/:postId",
+        name:"PostModify",
+        component: PostModify,
+        children: [],
+      }
     ],
   },
   {
