@@ -5,7 +5,8 @@ import AttractionView from "../views/AttractionView";
 import MemberView from "../views/MemberView";
 import PlanView from "../views/PlanView";
 import PostView from "../views/PostView";
-import HotplaceView from "../views/HotplaceView";
+import PostDetail from "@/views/post/PostDetail";
+import HotPlaceView from "../views/HotplaceView";
 
 import TheIndex from "../views/home/TheIndex";
 import MemberList from "../views/member/MemberList";
@@ -16,7 +17,12 @@ import PlanList from "../views/plan/PlanList";
 import PlanDetail from "../views/plan/PlanDetail";
 import PlanWrite from "../views/plan/PlanWrite";
 import PostList from "../views/post/PostList";
-import HotplaceList from "../views/hotplace/HotplaceList";
+import PostWrite from "@/views/post/PostWrite.vue";
+import PostModify from "@/views/post/PostModify.vue";
+import HotPlaceDetail from "@/views/hotplace/HotPlaceDetail.vue";
+import HotPlaceList from "@/views/hotplace/HotPlaceList.vue";
+import HotPlaceWrite from "@/views/hotplace/HotPlaceWrite.vue";
+import hotPlaceModify from "@/views/hotplace/HotPlaceModify.vue";
 
 Vue.use(VueRouter);
 
@@ -111,18 +117,54 @@ const routes = [
         component: PostList,
         children: [],
       },
+      {
+        path: "view/:postId",
+        name: "PostDetail",
+        component: PostDetail,
+        children: [],
+      },
+      {
+        path: "write",
+        name: "PostWrite",
+        component: PostWrite,
+        children: [],
+      },
+      {
+        path:"modify/:postId",
+        name:"PostModify",
+        component: PostModify,
+        children: [],
+      }
     ],
   },
   {
     path: "/hotplace",
-    name: "hotplace",
-    component: HotplaceView,
+    name: "hotPlace",
+    component: HotPlaceView,
     redirect: "/hotplace/list",
     children: [
       {
         path: "list",
-        name: "Hotplace",
-        component: HotplaceList,
+        name: "HotPlaceList",
+        component: HotPlaceList,
+        children: [],
+      },
+      {
+        path: "view/:id",
+        name: "HotPlaceDetail",
+        component: HotPlaceDetail,
+        children: [],
+      },
+      {
+        path: "write",
+        name: "HotPlaceWrite",
+        component: HotPlaceWrite,
+        children: [],
+      },
+      {
+        path: "modify/:id",
+        name: "HotPlaceModify",
+        component: hotPlaceModify,
         children: [],
       },
     ],
