@@ -2,6 +2,7 @@
   <div class="col-12">
     <span class="small text-secondary fw-light">작성자 : {{ comment.loginId }}</span>
     <span class="small col-3 text-secondary fw-light">작성일 : {{ comment.createdDate | timeFilter }}</span>
+    <!-- 댓글 작성자와 로그인한 유저가 같은지 확인 필요 -->
     <b-btn-group class="justify-content-end">
       <button class="btn-outline-primary" @click="modifyComment">수정</button>
       <button class="btn-outline-danger ml-2" @click="deleteComment">삭제</button>

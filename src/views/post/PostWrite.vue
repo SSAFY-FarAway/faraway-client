@@ -21,11 +21,8 @@
                                                        v-model="request.title" placeholder="제목을 입력해주세요." />
                                             </div>
                                             <div class="mb-3">
-                                                <select v-model="request.categoryId">
-                                                    <option>글 분류</option>
-                                                    <option value="1">공지사항</option>
-                                                    <option value="2">자유</option>
-                                                </select>
+                                              <b-form-select id="category-select-box" v-model="request.categoryId" :options="options">
+                                              </b-form-select>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="content" class="form-label fw-bolder">내용 :
@@ -66,10 +63,15 @@ export default {
     components: {},
     data() {
         return {
+          options: [
+            {value:null, text: "카테고리 선택"},
+            {value:1, text: "공지사항"},
+            {value:2, text: "자유게시판"},
+          ],
             request: {
                 title: "",
                 content: "",
-                categoryId: "",
+                categoryId: null,
             },
             files: [],
         };
