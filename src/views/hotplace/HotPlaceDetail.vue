@@ -23,14 +23,15 @@
                                src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"/>
                           <span id="member-id" class="p-2 fw-bold">작성자 : {{ hotPlace.loginId }}</span>
                           <p>
-                                                        <span id="created-date"
-                                                              class="text-secondary fw-light">작성일 : {{ hotPlace.createdDate | timeFilter }}</span>
+                            <span id="created-date" class="text-secondary fw-light">작성일 : {{ hotPlace.createdDate | timeFilter }}</span>
                             <span id="hit" class="text-secondary fw-light">조회수 : {{ hotPlace.hit }}</span>
+                            <span class="text-secondary fw-light">평점 : {{hotPlace.rating}}</span>
                           </p>
                           <hr>
                         </div>
                       </div>
                       <div class="col-md-12">
+                        <p class="fw-bold">{{hotPlace.mainAddress}}, {{hotPlace.subAddress}}</p>
                         <img class="p-lg-5" v-for="image in images" :key="image.id" :src="'http://localhost/image/download/' + image.id">
                         <br>
                         <span>{{ hotPlace.content }}</span>
