@@ -1,5 +1,5 @@
 <template>
-  <div :ref="mapId" class="mt-3 shadow" style="width: 100%; height: 600px" />
+  <div id="map-container" :ref="mapId" class="shadow" />
 </template>
 
 <script>
@@ -29,7 +29,13 @@ export default {
     }
   },
   created() {},
-  watch: {},
+  watch: {
+    attractions (to, from) {
+            if (to != from) {
+              this.loadMap();
+            }
+        }
+  },
   methods: {
     // kakaoMap Script 로드
     loadScript() {
@@ -42,36 +48,44 @@ export default {
 
     // kakaoMap Dom에 렌더링
     loadMap() {
-      const container = this.$refs[this.mapId]; // 지도를 담을 DOM 영역
-      const options = {
-        // 지도를 생성할 때 필요한 기본 옵션
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 6, // 지도의 레벨(확대, 축소 정도)
-      };
+      if (window.kakao != undefined) {
 
-      // 지도 생성 및 객체 리턴
-      this.map = new window.kakao.maps.Map(container, options);
 
-      this.displayMarkers();
-      this.displayLines();
-      this.displayOverLays();
-      // 중앙으로 이동
-      this.map.panTo(this.markers[0].position);
+        const container = this.$refs[this.mapId]; // 지도를 담을 DOM 영역
+        const options = {
+          // 지도를 생성할 때 필요한 기본 옵션
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+          level: 7, // 지도의 레벨(확대, 축소 정도)
+        };
+
+        // 지도 생성 및 객체 리턴
+        this.map = new window.kakao.maps.Map(container, options);
+
+        if (this.attractions) {
+
+          this.displayMarkers();
+          this.displayLines();
+          this.displayOverLays();
+
+          this.map.panTo(this.markers[0].position);
+        }
+      }
     },
 
     // 마커 표시
     displayMarkers() {
-      this.attractions.forEach((el) => {
-        // 마커 생성
-        const marker = {
-          map: this.map,
-          position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
-          title: el.title,
-        };
+      
+        this.attractions.forEach((el) => {
+          // 마커 생성
+          const marker = {
+            map: this.map,
+            position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
+            title: el.title,
+          };
 
-        new window.kakao.maps.Marker(marker);
-        this.markers.push(marker);
-      });
+          new window.kakao.maps.Marker(marker);
+          this.markers.push(marker);
+        });
     },
 
     // 마커 간 거리 표시 (라인)
@@ -116,4 +130,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#map-container { 
+  width: 100%; 
+  height: 600px; 
+  border-left : 2px solid var(--sub-color); 
+  border-bottom : 2px solid var(--sub-color);
+}
+</style>
