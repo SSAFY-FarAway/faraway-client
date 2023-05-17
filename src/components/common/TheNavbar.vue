@@ -9,7 +9,7 @@
         </div>
         <ul>
           <li>
-            <router-link class="nav-link scrollto" to="/attraction"
+            <router-link class="nav-link scrollto" to="/attraction/index"
               >Search Place</router-link
             >
           </li>
@@ -27,7 +27,7 @@
             >
           </li>
           <li class="dropdown">
-            <router-link to="/member">
+            <router-link to="/member/login">
               <span>LOGIN</span>
               <i class="bi bi-chevron-down"></i>
             </router-link>

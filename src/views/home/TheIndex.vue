@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div>
     <!-- 타이틀(masthead) 영역 -->
     <header class="masthead">

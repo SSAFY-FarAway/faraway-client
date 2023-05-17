@@ -12,7 +12,7 @@ import TheIndex from "../views/home/TheIndex";
 import MemberList from "../views/member/MemberList";
 import MemberRegister from "../views/member/MemberRegister";
 import MemberLogin from "../views/member/MemberLogin";
-import AttrationList from "../views/attraction/AttrationList";
+import AttrationIndex from "../views/attraction/AttrationIndex";
 import PlanList from "../views/plan/PlanList";
 import PlanDetail from "../views/plan/PlanDetail";
 import PlanWrite from "../views/plan/PlanWrite";
@@ -72,9 +72,9 @@ const routes = [
     redirect: "/attraction/list",
     children: [
       {
-        path: "list",
-        name: "AttractionList",
-        component: AttrationList,
+        path: "index",
+        name: "AttrationIndex",
+        component: AttrationIndex,
         children: [],
       },
     ],
