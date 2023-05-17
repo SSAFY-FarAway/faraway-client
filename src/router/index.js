@@ -11,6 +11,8 @@ import HotPlaceView from "../views/HotplaceView";
 import TheIndex from "../views/home/TheIndex";
 import MemberList from "../views/member/MemberList";
 import MemberRegister from "../views/member/MemberRegister";
+import MemberMypage from "../views/member/MemberMyPage";
+import MemberFind from "../views/member/MemberFind";
 import MemberLogin from "../views/member/MemberLogin";
 import AttrationIndex from "../views/attraction/AttrationIndex";
 import PlanList from "../views/plan/PlanList";
@@ -32,7 +34,7 @@ const routes = [
     name: "home",
     component: HomeView,
     redirect: "/index",
-    children: [
+    children: [ 
       {
         path: "index",
         name: "index",
@@ -45,7 +47,9 @@ const routes = [
     path: "/member",
     name: "member",
     component: MemberView,
-    redirect: "/member/list",
+    // redirect 의 역할을 모르게땅!
+    // redirect: "/member/list",
+    
     children: [
       // TODO : list 는 추후에 없애거나 관리자 모드 추가 시 변경 예정 (예시로 둔거임)
       {
@@ -62,6 +66,16 @@ const routes = [
         path: "login",
         name: "login",
         component: MemberLogin,
+      },
+      {
+        path: "find",
+        name: "MemberFind",
+        component: MemberFind,
+      },
+      {
+        path: ":memberId",
+        name: "MemberMypage",
+        component: MemberMypage,
       },
     ],
   },
