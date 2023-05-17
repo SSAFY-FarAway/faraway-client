@@ -53,7 +53,7 @@
                       <div class="mb-3">
                         <label for="files" class="form-label">기존 파일:</label>
                         <span id="files" class="form-control" v-for="image in images" :key="image.id">
-                          {{image.uploadFileName}}
+                          {{image.uploadFileName | fileNameFilter}}
                           <button id="btn-delete-file" class="btn-outline-danger">삭제</button>
                         </span>
                       </div>

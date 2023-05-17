@@ -24,3 +24,11 @@ Vue.filter("timeFilter", (value) => {
     // 최종 포맷 (ex - '2021-10-08')
     return year + '-' + month + '-' + day;
 });
+
+Vue.filter("fileNameFilter", (url) => {
+    if(url === '') return '';
+
+    let splitUrl = url.split("\\");
+    let len = splitUrl.length;
+    return splitUrl[len - 1];
+});
