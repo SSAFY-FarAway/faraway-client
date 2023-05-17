@@ -131,10 +131,8 @@
   </script>
   
   <style scoped>
-  #map-container { 
+  #map-container {
     width: 100%; 
-    height: 600px; 
-    border-left : 2px solid var(--sub-color); 
-    border-bottom : 2px solid var(--sub-color);
+    height: 65vh; 
   }
   </style>
