@@ -37,13 +37,13 @@ export default {
     data() {
       return {
           // select
-          sidoSelected: null,
+          sidoSelected: 0,
           sidoOptions: [
-            { value: null, text: '검색할 시/도' },
+            { value: 0, text: '검색할 시/도' },
           ],
-          gugunSelected: null,
+          gugunSelected: 0,
           gugunOptions: [
-            { value : null, text : '검색할 구/군'}
+            { value : 0, text : '검색할 구/군'}
           ],
           contentSelected: 0,
           contentOptions: [
@@ -61,21 +61,48 @@ export default {
         attractions : [],
         };
     },
-    created() {},
+  created() {
+    // 시도 옵션 추가
+    http.get("/attraction/sido").then(res => {
+      if (res.status === 200) {
+        res.data.forEach(el => {
+          const option = { value: el.sidoCode, text: el.sidoName }
+          this.sidoOptions.push(option);
+        })
+      }
+    })
+  },
+  watch: {
+    sidoSelected() {
+      this.gugunOptions = [{ value : 0, text : '검색할 구/군'}]
+      this.gugunSelected = 0;
+
+      if (this.sidoSelected) {
+        http.get(`/attraction/gugun/${this.sidoSelected}`).then(res => {
+        if (res.status === 200) {
+          res.data.forEach(el => {
+            const option = { value: el.gugunCode, text: el.gugunName }
+            this.gugunOptions.push(option);
+          })
+        }
+      })
+    }
+    }
+  },
   methods: {
     search() {
       http.get("/attraction", {
         params: {
-          "sidoCode" : "1",
-          "gugunCode" : "1",
-          "contentTypeId" : "12"
+          "sidoCode" : this.sidoSelected,
+          "gugunCode" : this.gugunSelected,
+          "contentTypeId" : this.contentSelected
         },
         headers: {
-    "Content-Type": "application/json",
+          "Content-Type": "application/json",
         }
       }).then(res => {
-        this.attractions = res.data
-        console.log(res)
+        this.attractions = res.data;
+
       });
       }
     },
