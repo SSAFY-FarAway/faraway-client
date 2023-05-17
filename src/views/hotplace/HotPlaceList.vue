@@ -2,8 +2,8 @@
   <div class="container">
     <section class="" id="share-plan-list">
       <div class="text-center fw-bold" role="alert">
-        <h2 class="section-heading text-uppercase">COMMUNITY</h2>
-        <h3 class="section-subheading text-muted">공지사항</h3>
+        <h2 class="section-heading text-uppercase">Hot Place</h2>
+        <h3 class="section-subheading text-muted">여행지의 핫플레이스를 공유해보세요.</h3>
         <div class="row align-self-center mb-2">
           <div class="col-md-2 text-start">
             <button type="button" class="btn btn-primary btn shadow-sm">글쓰기</button>
