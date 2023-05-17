@@ -11,6 +11,7 @@ import TheIndex from "../views/home/TheIndex";
 import MemberList from "../views/member/MemberList";
 import MemberRegister from "../views/member/MemberRegister";
 import MemberMypage from "../views/member/MemberMyPage";
+import MemberFind from "../views/member/MemberFind";
 import MemberLogin from "../views/member/MemberLogin";
 import AttrationList from "../views/attraction/AttrationList";
 import PlanList from "../views/plan/PlanList";
@@ -57,6 +58,11 @@ const routes = [
         path: "login",
         name: "login",
         component: MemberLogin,
+      },
+      {
+        path: "find",
+        name: "MemberFind",
+        component: MemberFind,
       },
       {
         path: ":memberId",
