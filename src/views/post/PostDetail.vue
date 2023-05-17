@@ -45,11 +45,11 @@
                                                     </li>
                                                 </ul>
                                                 <div id="btn-area" class="col justify-content-end">
-                                                    <button id="btn-list"
-                                                            @click="listPost"
+                                                    <router-link id="btn-list"
+                                                            to="/post/list"
                                                             class="btn btn-outline-primary shadow-sm mb-3">
                                                         글목록
-                                                    </button>
+                                                    </router-link>
                                                     <button id="btn-modify"
                                                             @click="modifyPost"
                                                             class="btn btn-outline-success shadow-sm mb-3 ms-1">
@@ -111,9 +111,6 @@ export default {
             })
     },
     methods: {
-        listPost() {
-          // TODO: 글 목록 이동
-        },
         modifyPost() {
             if (confirm("수정 페이지로 이동하시겠습니까?")) {
               location.href=`/post/modify/${this.$route.params.postId}`;

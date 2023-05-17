@@ -6,7 +6,7 @@
       <h3 class="section-subheading text-muted">공지사항</h3>
       <div class="row align-self-center mb-2">
         <div class="col-md-2 text-start">
-          <button type="button" class="btn btn-primary btn shadow-sm">글쓰기</button>
+          <router-link to="/post/write" class="btn btn-primary btn shadow-sm">글쓰기</router-link>
         </div>
         <div class="col-md-7 offset-3">
           <form class="d-flex" id="search-form">
