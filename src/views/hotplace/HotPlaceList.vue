@@ -12,7 +12,7 @@
             <form class="d-flex" id="search-form">
               <b-form-select id='search-select-box' v-model="selected" :options="options"></b-form-select>
               <div class="input-group shadow-sm">
-                <input type="text" class="form-control" placeholder="검색어 입력"/>
+                <input type="text" class="form-control" v-model="keyword" placeholder="검색어 입력"/>
                 <button class="btn btn-secondary" @click="search" type="button">Search</button>
               </div>
             </form>
@@ -56,6 +56,7 @@ export default {
   data() {
     return {
       selected: null,
+      keyword: "",
       options: [
         {value: null, text: "검색 조건"},
         {value: "title", text: "제목"},
@@ -76,8 +77,9 @@ export default {
   },
   methods: {
     search() {
+      let url = `/hotplace?${this.selected}=${this.keyword}`
       http
-          .get("/hotplace")
+          .get(url)
           .then((response) => {
             if (response.status === 200) {
               console.log(response);
