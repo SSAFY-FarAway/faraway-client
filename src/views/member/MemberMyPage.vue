@@ -15,7 +15,7 @@
                                     <div class="mx-1 mx-md-4" id="form-modify">
                                         <div class="d-flex flex-row mb-4">
                                             <b-icon 
-                                            class="mt-2 fas fa-lg me-3 fa-fw"
+                                            class="mt-2 mr-2 fas fa-lg me-3 fa-fw"
                                             icon="file-earmark-person-fill"
                                             font-scale="1.5"
                                             ></b-icon>
@@ -29,7 +29,7 @@
                                         </div>
                                         <div class="d-flex flex-row mb-4">
                                             <b-icon 
-                                            class="mt-2 fas fa-lg me-3 fa-fw"
+                                            class="mt-2 mr-2 fas fa-lg me-3 fa-fw"
                                             icon="person-fill"
                                             font-scale="1.5"
                                             ></b-icon>
@@ -46,7 +46,7 @@
                                         </div>
                                         <div class="d-flex flex-row mb-4">
                                             <b-icon 
-                                              class="mt-2 fas fa-lg me-3 fa-fw"
+                                              class="mt-2 mr-2 fas fa-lg me-3 fa-fw"
                                               icon="mastodon"
                                               font-scale="1.5"
                                               ></b-icon>
@@ -63,7 +63,7 @@
                                         </div>
                                         <div class="d-flex flex-row mb-4">
                                           <b-icon 
-                                              class="mt-2 fas fa-lg me-3 fa-fw"
+                                              class="mt-2 mr-2 fas fa-lg me-3 fa-fw"
                                               icon="emoji-smile-fill"
                                               font-scale="1.5"
                                               ></b-icon>
@@ -76,7 +76,7 @@
                                         </div>
                                         <div class="d-flex flex-row mb-4">
                                           <b-icon 
-                                              class="mt-2 fas fa-lg me-3 fa-fw"
+                                              class="mt-2 mr-2 fas fa-lg me-3 fa-fw"
                                               icon="envelope-fill"
                                               font-scale="1.5"
                                               ></b-icon>
@@ -89,7 +89,7 @@
                                         </div>
                                         <div class="d-flex flex-row mb-4">
                                           <b-icon 
-                                              class="mt-2 fas fa-lg me-3 fa-fw"
+                                              class="mt-2 mr-2 fas fa-lg me-3 fa-fw"
                                               icon="house-door-fill"
                                               font-scale="1.5"
                                               ></b-icon>
