@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     urlCheck(value) {
-      this.inAuthUrl = (value.includes("login") || value.includes("register")) ? true : false;
+      this.inAuthUrl = (value.includes("find") || value.includes("login") || value.includes("register")) ? true : false;
     }
   },
   watch: {

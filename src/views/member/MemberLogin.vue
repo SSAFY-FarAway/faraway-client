@@ -44,7 +44,7 @@
 
       <ul class="link_rel">
         <li>
-          <router-link to="/">아이디 또는 비밀번호를 분실하셨나요?</router-link>
+          <router-link to="/member/find">아이디 또는 비밀번호를 분실하셨나요?</router-link>
         </li>
         <li>
           <router-link to="/member/register">회원가입</router-link>
