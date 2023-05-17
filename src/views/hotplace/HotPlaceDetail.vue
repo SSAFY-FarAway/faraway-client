@@ -39,11 +39,11 @@
                       </div>
                       <div class="mt-3">
                         <div id="btn-area" class="col justify-content-end">
-                          <button id="btn-list"
-                                  @click="listHotPlace"
+                          <router-link id="btn-list"
+                                  to="/hotplace/list"
                                   class="btn btn-outline-primary shadow-sm mb-3">
                             글목록
-                          </button>
+                          </router-link>
                           <button id="btn-modify"
                                   @click="modifyHotPlace"
                                   class="btn btn-outline-success shadow-sm mb-3 ms-1">
@@ -106,12 +106,9 @@ export default {
         })
   },
   methods: {
-    listHotPlace() {
-      this.$router.replace(`hotplace/list`);
-    },
     modifyHotPlace() {
       if (confirm("수정 페이지로 이동하시겠습니까?")) {
-        this.$router.replace(`/hotplace/${this.$route.params.hotPlaceId}`);
+       location.href = `/hotplace/modify/${this.$route.params.hotPlaceId}`;
       }
     },
     deleteHotPlace() {

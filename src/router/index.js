@@ -21,6 +21,7 @@ import PostWrite from "@/views/post/PostWrite.vue";
 import PostModify from "@/views/post/PostModify.vue";
 import HotPlaceDetail from "@/views/hotplace/HotPlaceDetail.vue";
 import HotPlaceList from "@/views/hotplace/HotPlaceList.vue";
+import HotPlaceWrite from "@/views/hotplace/HotPlaceWrite.vue";
 
 Vue.use(VueRouter);
 
@@ -151,6 +152,12 @@ const routes = [
         path: "view/:hotPlaceId",
         name: "HotPlaceDetail",
         component: HotPlaceDetail,
+        children: [],
+      },
+      {
+        path: "write",
+        name: "HotPlaceWrite",
+        component: HotPlaceWrite,
         children: [],
       },
     ],
