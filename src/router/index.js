@@ -17,7 +17,7 @@ import PlanList from "../views/plan/PlanList";
 import PlanDetail from "../views/plan/PlanDetail";
 import PlanWrite from "../views/plan/PlanWrite";
 import PostList from "../views/post/PostList";
-import HotplaceList from "../views/hotplace/HotplaceList";
+import HotplaceList from "../views/hotplace/HotPlaceList.vue";
 import PostWrite from "@/views/post/PostWrite.vue";
 import PostModify from "@/views/post/PostModify.vue";
 
@@ -136,13 +136,13 @@ const routes = [
   },
   {
     path: "/hotplace",
-    name: "hotplace",
+    name: "hotPlace",
     component: HotplaceView,
     redirect: "/hotplace/list",
     children: [
       {
         path: "list",
-        name: "Hotplace",
+        name: "HotPlaceList",
         component: HotplaceList,
         children: [],
       },

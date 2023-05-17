@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "HotplaceView",
+  name: "HotPlaceView",
   components: {},
   data() {
     return {
