@@ -3,16 +3,12 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-    loginMember: null,
+import attractionStore from "@/store/modules/attractionStore";
+
+const store = new Vuex.Store({
+  modules: {
+    attractionStore: attractionStore,
   },
-  getters: {
-    getLoginMember() {
-      return this.loginMember;
-    },
-  },
-  mutations: {},
-  actions: {},
-  modules: {},
 });
+
+export default store;
