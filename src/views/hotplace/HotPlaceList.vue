@@ -13,7 +13,7 @@
               <b-form-select id='search-select-box' v-model="selected" :options="options"></b-form-select>
               <div class="input-group shadow-sm">
                 <input type="text" class="form-control" placeholder="검색어 입력"/>
-                <button class="btn btn-secondary" id="search-btn" type="button">Search</button>
+                <button class="btn btn-secondary" @click="search" type="button">Search</button>
               </div>
             </form>
           </div>
@@ -75,8 +75,18 @@ export default {
         });
   },
   methods: {
-    writeHotPlace() {
-      this.$router.replace("/hotplace/write");
+    search() {
+      http
+          .get("/hotplace")
+          .then((response) => {
+            if (response.status === 200) {
+              console.log(response);
+              this.hotPlaces = response.data.data;
+            }
+          })
+          .catch(() => {
+            this.$alertDanger("검색 실패", "예외 처리 추가 예정");
+          });
     }
   },
 };

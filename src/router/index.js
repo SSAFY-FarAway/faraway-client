@@ -150,7 +150,7 @@ const routes = [
         children: [],
       },
       {
-        path: "view/:hotPlaceId",
+        path: "view/:id",
         name: "HotPlaceDetail",
         component: HotPlaceDetail,
         children: [],
@@ -162,7 +162,7 @@ const routes = [
         children: [],
       },
       {
-        path: "modify/:hotPlaceId",
+        path: "modify/:id",
         name: "HotPlaceModify",
         component: hotPlaceModify,
         children: [],

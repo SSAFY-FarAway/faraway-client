@@ -65,7 +65,7 @@
                         <button id="btn-register"
                                 @click="modify"
                                 class="btn shadow btn-primary mb-3">
-                          글작성
+                          글수정
                         </button>
                         <button type="reset" class="btn btn-danger shadow mb-3">초기화</button>
                       </div>
@@ -109,7 +109,7 @@ export default {
       const formData = new FormData();
       [...this.files].forEach((file) => formData.append("files", file));
       formData.append("request", new Blob([JSON.stringify(this.request)], {type: "application/json"}));
-      http.put(`/hotplace/${this.$route.params.hotPlaceId}`, formData, {
+      http.put(`/hotplace/${this.$route.params.id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
@@ -117,15 +117,18 @@ export default {
           .then((response) => {
             console.log(response);
             if (response.status === 200) {
-              alert("글 수정 완료!");
+              this.$alertSuccess("수정 완료", "수정 완료");
               this.$router.replace(`/hotplace/view/${response.data}`);
             }
+          })
+          .catch(() => {
+            this.$alertDanger("수정 싶패", "추후 예외 처리 추가 예정");
           });
     }
   },
   created() {
     http
-        .get(`/hotplace/${this.$route.params.hotPlaceId}`)
+        .get(`/hotplace/${this.$route.params.id}`)
         .then((response) => {
           console.log(response);
           let data = response.data;

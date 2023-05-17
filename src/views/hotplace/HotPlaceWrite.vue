@@ -108,9 +108,12 @@ export default {
           .then((response) => {
             console.log(response);
             if (response.status === 200) {
-              alert("글 작성 완료!");
+              this.$alertSuccess("작성 성공", "글 작성이 완료되었습니다.");
               this.$router.replace(`/hotplace/view/${response.data}`);
             }
+          })
+          .catch(() => {
+            this.$alertDanger("작성 싶패", "추후 예외 처리 추가 예정");
           });
     }
   },

@@ -23,25 +23,26 @@
                                src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"/>
                           <span id="member-id" class="p-2 fw-bold">작성자 : {{ hotPlace.loginId }}</span>
                           <p>
-                            <span id="created-date" class="text-secondary fw-light">작성일 : {{ hotPlace.createdDate | timeFilter }}</span>
+                            <span id="created-date"
+                                  class="text-secondary fw-light">작성일 : {{ hotPlace.createdDate | timeFilter }}</span>
                             <span id="hit" class="text-secondary fw-light">조회수 : {{ hotPlace.hit }}</span>
-                            <span class="text-secondary fw-light">평점 : {{hotPlace.rating}}</span>
+                            <span class="text-secondary fw-light">평점 : {{ hotPlace.rating }}</span>
                           </p>
                           <hr>
                         </div>
                       </div>
                       <div class="col-md-12">
-                        <p class="fw-bold">{{hotPlace.mainAddress}}, {{hotPlace.subAddress}}</p>
-                        <img class="p-lg-5" v-for="image in images" :key="image.id" :src="'http://localhost/image/download/' + image.id">
+                        <p class="fw-bold">{{ hotPlace.mainAddress }}, {{ hotPlace.subAddress }}</p>
+                        <img class="p-lg-5" v-for="image in images" :key="image.id"
+                             :src="'http://localhost/image/download/' + image.id">
                         <br>
                         <span>{{ hotPlace.content }}</span>
-                        <hr>
                       </div>
                       <div class="mt-3">
                         <div id="btn-area" class="col justify-content-end">
                           <router-link id="btn-list"
-                                  to="/hotplace/list"
-                                  class="btn btn-outline-primary shadow-sm mb-3">
+                                       to="/hotplace/list"
+                                       class="btn btn-outline-primary shadow-sm mb-3">
                             글목록
                           </router-link>
                           <button id="btn-modify"
@@ -55,21 +56,20 @@
                             글삭제
                           </button>
                         </div>
+                      </div>
+                      <div class="col-12" v-if="comments.length !== 0">
+                        <h5>댓글 : {{ comments.length }}</h5>
                         <hr>
                       </div>
-                      <!-- TODO: 댓글 없는 경우 처리 해야함 -->
-                      <div class="col-12"><h5>댓글 : {{ comments.length}}</h5>
-                        <hr>
+                      <div class="col-12" v-else>
+                        <h5>댓글</h5>
+                        <h6>현재 등록된 댓글이 없습니다. 댓글을 작성해보세요!</h6>
                       </div>
-                      <div class="col-12" id="comments" v-for="comment in comments"
-                           :key="comment.id">
-                        <div class="col-12">
-                          <span class="small text-secondary fw-light">작성자 : {{ comment.loginId }}</span>
-                          <span class="small col-6 text-secondary fw-light">작성일 : {{ comment.createdDate | timeFilter }}</span>
-                        </div>
-                        <span class="col-12">{{ comment.content }}</span>
-                        <hr>
+                      <div class="col-12" v-for="comment in comments" :key="comment.id">
+                        <comment-item :comment="comment"/>
                       </div>
+                      <!-- 댓글 작성 폼 -->
+                      <comment-form></comment-form>
                     </div>
                   </div>
                 </div>
@@ -84,10 +84,12 @@
 
 <script>
 import http from "@/utils/api/http";
+import CommentItem from "@/components/common/CommentItem.vue";
+import CommentForm from "@/components/common/CommentForm.vue";
 
 export default {
   name: "HotPlaceDetail",
-  components: {},
+  components: {CommentForm, CommentItem},
   data() {
     return {
       hotPlace: {},
@@ -97,7 +99,7 @@ export default {
   },
   created() {
     http
-        .get(`/hotplace/${this.$route.params.hotPlaceId}`)
+        .get(`/hotplace/${this.$route.params.id}`)
         .then((response) => {
           console.log(response);
           this.hotPlace = response.data;
@@ -108,20 +110,20 @@ export default {
   methods: {
     modifyHotPlace() {
       if (confirm("수정 페이지로 이동하시겠습니까?")) {
-       location.href = `/hotplace/modify/${this.$route.params.hotPlaceId}`;
+        location.href = `/hotplace/modify/${this.$route.params.id}`;
       }
     },
     deleteHotPlace() {
-if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
-  http
-      .delete(`/hotplace/${this.$route.params.hotPlaceId}`)
-      .then((response) => {
-        if (response.status===200) {
-          alert("삭제가 완료되었습니다.");
-          this.$router.replace(`/hotplace/list`);
-        }
-      })
-}
+      if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
+        http
+            .delete(`/hotplace/${this.$route.params.id}`)
+            .then((response) => {
+              if (response.status === 200) {
+                alert("삭제가 완료되었습니다.");
+                this.$router.replace(`/hotplace/list`);
+              }
+            })
+      }
     },
   }
 }
