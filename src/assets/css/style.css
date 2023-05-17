@@ -62,7 +62,7 @@
 /* app-router */
 #app-router {
   min-height: 100vh;
-  margin-top: 64px;
+  padding: 64px 0!important;
 }
 
 /* body */
