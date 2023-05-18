@@ -2,16 +2,9 @@ const attractionStore = {
   namespaced: true,
   state: {
     attractions: [],
-    selectedAttraction: {},
+    selectedAttraction: null,
   },
-  getters: {
-    getAttractions(state) {
-      return state.attractions;
-    },
-    getSelectedAttraction(state) {
-      return state.selectedAttraction;
-    },
-  },
+  getters: {},
   mutations: {
     UPDATE_ATTRACTIONS(state, attractions) {
       state.attractions = [...attractions];

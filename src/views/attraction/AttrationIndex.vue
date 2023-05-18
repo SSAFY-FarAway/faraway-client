@@ -15,19 +15,35 @@
     <!-- 지도 영역 -->
     <div class="flex " id="article-list-section">
       <div class="row m-0 p-0">
-        <!-- 사용자 추천 경로 -->
         <div class="col-12 m-0 p-0 text-center">
             <attraction-kakao-map mapId='map' :attractions='attractionPath'/>
         </div>
       </div>
-  </div>
-  
+    </div>
+    <!-- 관광지 디테일 영역 -->
+    <div id='attraction-detail' class="container text-center mt-5" v-if='selectedAttraction'>
+         <!-- 게시글 영역 -->
+          <img :src='selectedAttraction.firstImage'/>
+          <h2 class="row d-flex justify-content-around my-4" >
+            {{ selectedAttraction.title }}
+          </h2>
+          <h5 class="section-heading text-uppercase">{{`(${selectedAttraction.zipcode})`+selectedAttraction.addr1}}</h5>
+        <hr/>
+          <div>
+              <h5 class=" d-flex justify-content-start">
+                  관광지 소개
+              </h5>
+              <textarea class="form-control" readonly id="" rows="3"  ></textarea>
+          </div>
+    </div>
+    
   </div>
 </template>
 
 <script>
 import AttractionKakaoMap from '@/components/attraction/AttractionKakaoMap';
 import AttractionSearchSidebar from '@/components/attraction/AttractionSearchSidebar'
+import { mapState } from 'vuex';
 
 export default {
   name: "AttractionIndex",
@@ -40,7 +56,10 @@ export default {
       attractionPath: null
     };
   },
-  created() {},
+  created() { },
+  computed: {
+    ...mapState('attractionStore',['selectedAttraction'])
+  },
   methods: {},
 };
 </script>

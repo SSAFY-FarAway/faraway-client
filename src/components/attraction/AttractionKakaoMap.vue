@@ -4,7 +4,7 @@
 
 <script>
 import KAKAO_API_KEY from "@/utils/api/kakao_config";
-import { mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "AttractionKakaoMap",
@@ -15,45 +15,53 @@ export default {
   data() {
     return {
       map: null,
+      selectMarker: null,
       markers: [],
       overlays: [],
-      selectedAttraction: {},
-      attractions: [],
     };
   },
   mounted() {
-    if (window.kakao && window.kakao.maps) {
-      // 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
-      this.loadMap();
-    } else {
-      // 없다면 카카오 스크립트 추가 후 맵 실행
+    if (!(window.kakao && window.kakao.maps)) {
       this.loadScript();
     }
   },
-  created() {},
+  created() {
+    this.loadScript();
+  },
   watch: {
-    attractions(to, from) {
-      if (to != from) {
-        this.loadMap();
+    selectedAttraction(after, before) {
+      console.log(after)
+      // 시점 이동
+      this.map.setCenter(
+        new window.kakao.maps.LatLng(after.latitude, after.longitude)
+      );
+
+      // 이전에 띄워져있던 인포윈도우 close
+      if (before?.clickedInfoWindow) {
+        before.clickedInfoWindow.close();
       }
+
+      // 현재 띄워진 인포윈도우 open
+      after.clickedInfoWindow.open(this.map, after.marker)
     },
-    getAttractions(after) {
-      console.log(after);
-      this.attractions = after;
-    },
-    getSelectedAttraction(attraction) {
-      this.map.panTo(
-        new window.kakao.maps.LatLng(attraction.latitude, attraction.longitude)
+
+    attractions(atts) {
+      this.displayMarkers();
+      this.map.setCenter(
+        new window.kakao.maps.LatLng(atts[0].latitude, atts[0].longitude)
       );
     },
+   
   },
   computed: {
-    ...mapGetters("attractionStore", [
-      "getAttractions",
-      "getSelectedAttraction",
+    ...mapState("attractionStore", [
+      "attractions",
+      "selectedAttraction",
     ]),
   },
   methods: {
+    ...mapActions("attractionStore", ["updateAttraction"]),
+
     // kakaoMap Script 로드
     loadScript() {
       const script = document.createElement("script");
@@ -78,7 +86,6 @@ export default {
 
         if (this.attractions) {
           this.displayMarkers();
-          // this.displayOverLays();
 
           if (this.markers.length) {
             this.map.panTo(this.markers[0].position);
@@ -89,103 +96,74 @@ export default {
 
     // 마커 표시
     displayMarkers() {
-      this.attractions.forEach((el, idx) => {
-        const innerHTML = `
-          <div class="wrap">
-              <div class="info shadow ">
-                  <div class="bg-primary">
-                      <div class="text-light font-weight-bold p-1 d-flex justify-content-between">
-                          ${el.title}
-                          <div class="far fa-times-circle fa-lg" onclick="closeOverlay(${idx})" title="닫기"></div>
-                      </div>
-                  </div>
-                  <div class="body">
-                      <div class="img">
-                          <img src="${el.firstImage}" width="73" height="70">
-                      </div>
-                      <div class="desc">
-                          <div class="ellipsis">${el.addr1}</div>
-                          <div class="jibun ellipsis">(우)${el.zipcode}</div>
-                          <div class="d-flex justify-content-end"></div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      `;
+      this.markers.forEach(mk => mk.setMap(null));
+      this.attractions.forEach((el) => {
 
-        console.log(innerHTML);
-        const infowindow = new window.kakao.maps.InfoWindow({
-          content: '<div style="padding:5px;">Hello World!</div>',
+        // 인포윈도우 생성
+        const infoWindow = new window.kakao.maps.InfoWindow({
+          content: this.makeContent(el),
         });
 
         // 마커 생성
-        const marker = {
+        const marker = new window.kakao.maps.Marker({
           map: this.map,
           position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
           title: el.title,
-        };
+        });
+        const clickedInfoWindow = new window.kakao.maps.InfoWindow({
+          content: this.makeContent(el),
+        });
 
+        // 각 관광지 객체에 인포윈도우, 마커정보 기록
+        el.clickedInfoWindow = clickedInfoWindow;
+        el.marker = marker;
+
+         // 마커에 클릭 이벤트를 등록
+        window.kakao.maps.event.addListener(marker, "click", () => {
+          clickedInfoWindow.open(this.map, marker);
+          this.updateAttraction(el)
+         });
+
+        // 마커에 마우스오버 이벤트를 등록
+        window.kakao.maps.event.addListener(marker,"mouseover",() => {infoWindow.open(this.map, marker);});
+
+        // 마커에 마우스아웃 이벤트를 등록
+        window.kakao.maps.event.addListener(marker,"mouseout", () => {infoWindow.close();});
+
+        // markers에 marker push
         this.markers.push(marker);
-        const kakaoMarker = new window.kakao.maps.Marker(marker);
-
-        // 마커에 마우스오버 이벤트를 등록합니다
-        window.kakao.maps.event.addListener(
-          kakaoMarker,
-          "mouseover",
-          function () {
-            // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-            infowindow.open(this.map, kakaoMarker);
-          }
-        );
-
-        // 마커에 마우스아웃 이벤트를 등록합니다
-        window.kakao.maps.event.addListener(
-          kakaoMarker,
-          "mouseout",
-          function () {
-            // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-            infowindow.close();
-          }
-        );
       });
+      
     },
 
-    // displayOverLays() {
-    //   for (let i = 0; i < this.attractions.length; i++) {
-    //     const innerHTML = `
-    //       <div class="wrap">
-    //           <div class="info shadow ">
-    //               <div class="bg-primary">
-    //                   <div class="text-light font-weight-bold p-1 d-flex justify-content-between">
-    //                       ${this.attractions[i].title}
-    //                       <div class="far fa-times-circle fa-lg" onclick="closeOverlay(${i})" title="닫기"></div>
-    //                   </div>
-    //               </div>
-    //               <div class="body">
-    //                   <div class="img">
-    //                       <img src="${this.attractions[i].firstImage}" width="73" height="70">
-    //                   </div>
-    //                   <div class="desc">
-    //                       <div class="ellipsis">${this.attractions[i].addr1}</div>
-    //                       <div class="jibun ellipsis">(우)${this.attractions[i].zipcode}</div>
-    //                       <div class="d-flex justify-content-end"></div>
-    //                   </div>
-    //               </div>
-    //           </div>
-    //       </div>
-    //   `;
-
-    //     const overlay = new window.kakao.maps.CustomOverlay({
-    //       map: this.map,
-    //       position: this.markers[i].position,
-    //       content: innerHTML,
-    //       yAnchor: 0.3,
-    //     });
-    //     this.overlays.push(overlay);
-    //   }
-    // },
+    // 마커 인포윈도우의 content 만들기
+    makeContent(el) {
+      return `
+        <div class="wrap">
+            <div class="info shadow ">
+                <div class="bg-primary">
+                    <div class="text-light font-weight-bold p-1 d-flex justify-content-between">
+                        ${el.title}
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="img">
+                        <img src="${el.firstImage}" width="73" height="70">
+                    </div>
+                    <div class="desc">
+                        <div class="ellipsis">${el.addr1}</div>
+                        <div class="jibun ellipsis">(우)${el.zipcode}</div>
+                        <a href="#attraction-detail" class="d-flex justify-content-end mr-3">상세정보</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    },
   },
 };
+
+
 </script>
 
 <style scoped>

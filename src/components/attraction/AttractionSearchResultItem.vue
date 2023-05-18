@@ -34,7 +34,6 @@ export default {
   methods: {
     ...mapActions("attractionStore", ["updateAttraction"]),
     selectAttraction() {
-      console.log(this.attraction);
       this.updateAttraction(this.attraction);
     },
   },
