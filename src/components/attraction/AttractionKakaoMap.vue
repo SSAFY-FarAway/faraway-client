@@ -84,12 +84,8 @@ export default {
         // 지도 생성 및 객체 리턴
         this.map = new window.kakao.maps.Map(container, options);
 
-        if (this.attractions) {
+        if (this.attractions.length) {
           this.displayMarkers();
-
-          if (this.markers.length) {
-            this.map.panTo(this.markers[0].position);
-          }
         }
       }
     },
