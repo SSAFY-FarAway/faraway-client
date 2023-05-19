@@ -21,7 +21,7 @@
       </div>
     </div>
     <!-- 관광지 디테일 영역 -->
-    <div id='attraction-detail' class="container text-center mt-5" v-if='selectedAttraction'>
+    <div id='detail' class="container text-center mt-5" v-if='selectedAttraction'>
          <!-- 게시글 영역 -->
           <img :src='selectedAttraction.firstImage'/>
           <h2 class="row d-flex justify-content-around my-4" >

@@ -153,7 +153,7 @@ export default {
                     <div class="desc">
                         <div class="ellipsis">${el.addr1}</div>
                         <div class="jibun ellipsis">(우)${el.zipcode}</div>
-                        <a href="#attraction-detail" class="d-flex justify-content-end mr-3">상세정보</a>
+                        <a href="#detail" class="d-flex justify-content-end mr-3">상세정보</a>
                     </div>
                 </div>
             </div>
