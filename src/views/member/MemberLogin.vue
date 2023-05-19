@@ -34,7 +34,7 @@
 
           <button
             id="login-btn"
-            @click="login"
+            @click="login(loginMember)"
             class="btn btn-primary col-md-12"
           >
             LOGIN
@@ -57,7 +57,8 @@
 </template>
 
 <script>
-import http from "@/utils/api/http";
+import http from '@/utils/api/http';
+import { mapActions } from 'vuex';
 
 export default {
   name: "MemberSignUp",
@@ -72,22 +73,22 @@ export default {
   },
   created() {},
   methods: {
+    ...mapActions("memberStore", ["setIsLogin","setLoginMember"]),
     login() {
-      const loginMember = this.loginMember;
+      http.post("/member/login", this.loginMember).then(res => {
+        console.log(res)
+        if (res.status === 200) {
+          this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.")
+          this.setIsLogin(true)
+          this.setLoginMember(res.data)
+          this.$router.replace("/") 
+        }
+      }).catch(() => {
+        this.$alertDanger("로그인 실패", "로그인에 실패했습니다. 추후 예외 처리 로직 추가")
+        this.setIsLogin(false)
+      })
+    }
 
-      http
-        .post("/member/login", loginMember)
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.");
-            this.$router.replace("/");
-          }
-        })
-        .catch(() => {
-          this.$alertDanger("로그인 실패", "추후 예외 처리 추가 예정");
-        });
-    },
   },
 };
 </script>
