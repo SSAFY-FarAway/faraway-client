@@ -60,7 +60,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions("attractionStore", ["updateAttraction"]),
+    ...mapActions("attractionStore", ["setAttraction"]),
 
     // kakaoMap Script 로드
     loadScript() {
@@ -117,7 +117,7 @@ export default {
          // 마커에 클릭 이벤트를 등록
         window.kakao.maps.event.addListener(marker, "click", () => {
           clickedInfoWindow.open(this.map, marker);
-          this.updateAttraction(el)
+          this.setAttraction(el)
          });
 
         // 마커에 마우스오버 이벤트를 등록
