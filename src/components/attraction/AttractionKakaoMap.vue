@@ -60,7 +60,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions("attractionStore", ["updateAttraction"]),
+    ...mapActions("attractionStore", ["setAttraction"]),
 
     // kakaoMap Script 로드
     loadScript() {
@@ -84,12 +84,8 @@ export default {
         // 지도 생성 및 객체 리턴
         this.map = new window.kakao.maps.Map(container, options);
 
-        if (this.attractions) {
+        if (this.attractions.length) {
           this.displayMarkers();
-
-          if (this.markers.length) {
-            this.map.panTo(this.markers[0].position);
-          }
         }
       }
     },
@@ -121,7 +117,7 @@ export default {
          // 마커에 클릭 이벤트를 등록
         window.kakao.maps.event.addListener(marker, "click", () => {
           clickedInfoWindow.open(this.map, marker);
-          this.updateAttraction(el)
+          this.setAttraction(el)
          });
 
         // 마커에 마우스오버 이벤트를 등록

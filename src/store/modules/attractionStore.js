@@ -6,19 +6,19 @@ const attractionStore = {
   },
   getters: {},
   mutations: {
-    UPDATE_ATTRACTIONS(state, attractions) {
+    SET_ATTRACTIONS(state, attractions) {
       state.attractions = [...attractions];
     },
-    UPDATE_SELECTED_ATTRACTION(state, attraction) {
+    SET_SELECTED_ATTRACTION(state, attraction) {
       state.selectedAttraction = attraction;
     },
   },
   actions: {
-    updateAttraction({ commit }, payload) {
-      commit("UPDATE_SELECTED_ATTRACTION", payload);
+    setAttraction({ commit }, payload) {
+      commit("SET_SELECTED_ATTRACTION", payload);
     },
-    updateAttractions({ commit }, payload) {
-      commit("UPDATE_ATTRACTIONS", payload);
+    setAttractions({ commit }, payload) {
+      commit("SET_ATTRACTIONS", payload);
     },
   },
 };
