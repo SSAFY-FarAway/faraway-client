@@ -18,23 +18,23 @@
               id="login-id"
               v-model="loginMember.loginId"
             />
-            <small id="login-id-help" class="form-text text-muted"
-              >안보이다가 틀리면 보이게할거임(유효성 검사)</small
-            >
+            <!-- <small id="login-id-help" class="form-text text-muted"
+              >6자리 이상의 아이디를 입력하세요.</small
+            > -->
           </div>
           <div class="form-group col-md-12 mb-4">
             <label for="login-pwd">비밀번호</label>
             <input
-            type="password"
-            class="form-control"
-            id="login-pwd"
-            v-model="loginMember.loginPwd"
-          />
+              type="password"
+              class="form-control"
+              id="login-pwd"
+              v-model="loginMember.loginPwd"
+            />
           </div>
 
           <button
             id="login-btn"
-            @click="login"
+            @click="login(loginMember)"
             class="btn btn-primary col-md-12"
           >
             LOGIN
@@ -44,7 +44,9 @@
 
       <ul class="link_rel">
         <li>
-          <router-link to="/member/find">아이디 또는 비밀번호를 분실하셨나요?</router-link>
+          <router-link to="/member/find"
+            >아이디 또는 비밀번호를 분실하셨나요?</router-link
+          >
         </li>
         <li>
           <router-link to="/member/register">회원가입</router-link>
@@ -56,6 +58,7 @@
 
 <script>
 import http from '@/utils/api/http';
+import { mapActions } from 'vuex';
 
 export default {
   name: "MemberSignUp",
@@ -64,26 +67,28 @@ export default {
     return {
       loginMember: {
         loginId: "",
-        loginPwd : ""
-      }
+        loginPwd: "",
+      },
     };
   },
   created() {},
   methods: {
+    ...mapActions("memberStore", ["setIsLogin","setLoginMember"]),
     login() {
-      const loginMember = this.loginMember;
-
-      http.post("/member/login", loginMember)
-        .then(res => {
-          console.log(res)
-          if (res.status === 200) {
-            this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.");
-            this.$router.replace("/")
-          }
-        }).catch(() => {
-          this.$alertDanger("로그인 실패", "추후 예외 처리 추가 예정");
+      http.post("/member/login", this.loginMember).then(res => {
+        console.log(res)
+        if (res.status === 200) {
+          this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.")
+          this.setIsLogin(true)
+          this.setLoginMember(res.data)
+          this.$router.replace("/") 
+        }
+      }).catch(() => {
+        this.$alertDanger("로그인 실패", "로그인에 실패했습니다. 추후 예외 처리 로직 추가")
+        this.setIsLogin(false)
       })
     }
+
   },
 };
 </script>

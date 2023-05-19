@@ -1,18 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-    loginMember: null,
+import attractionStore from "@/store/modules/attractionStore";
+import memberStore from "@/store/modules/memberStore";
+
+const store = new Vuex.Store({
+  modules: {
+    attractionStore: attractionStore,
+    memberStore: memberStore,
   },
-  getters: {
-    getLoginMember() {
-      return this.loginMember;
-    },
-  },
-  mutations: {},
-  actions: {},
-  modules: {},
+  plugins: [
+    createPersistedState({
+      paths: ["memberStore"],
+    }),
+  ],
 });
+
+export default store;

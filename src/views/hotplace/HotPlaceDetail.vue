@@ -32,9 +32,15 @@
                         </div>
                       </div>
                       <div class="col-md-12">
-                        <p class="fw-bold">{{ hotPlace.mainAddress }}, {{ hotPlace.subAddress }}</p>
-                        <img class="p-lg-5" v-for="image in images" :key="image.id"
-                             :src="'http://localhost/image/download/' + image.id">
+                        <p class="fw-bold">
+                          {{ hotPlace.mainAddress }}, {{ hotPlace.subAddress }}
+                        </p>
+                        <img
+                            style="max-width: 100%"
+                            v-for="image in images"
+                            :key="image.id"
+                            :src="'http://localhost/image/download/' + image.id"
+                        />
                         <br>
                         <span>{{ hotPlace.content }}</span>
                       </div>

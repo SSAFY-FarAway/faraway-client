@@ -12,8 +12,8 @@
           <form class="d-flex" id="search-form">
             <b-form-select id='search-select-box' v-model="selected" :options="options"></b-form-select>
             <div class="input-group shadow-sm">
-              <input type="text" class="form-control" placeholder="검색어 입력"/>
-              <button class="btn btn-secondary" id="search-btn" type="button">Search</button>
+              <input type="text" class="form-control" v-model="keyword" placeholder="검색어 입력"/>
+              <button class="btn btn-secondary" @click="search" type="button">Search</button>
             </div>
           </form>
         </div>
@@ -59,19 +59,41 @@ export default {
         {value: "title", text: "제목"},
         {value: "content", text: "내용"}
       ],
+      keyword: "",
       posts: [],
     };
   },
   created() {
     http
-        .get("/post")
+        .get("/post?categoryId=1")
         .then((response) => {
           if (response.status === 200) {
+            console.log(response);
             this.posts = response.data.data;
           }
+        })
+        .catch(() => {
+          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+          console.log(`/post?categoryId=1`);
         });
   },
-  methods: {},
+  methods: {
+    search() {
+      let url = `/post?${this.selected}=${this.keyword}&categoryId=1`;
+      console.log(`selected: ${this.selected}`);
+      http
+          .get(url)
+          .then((response) => {
+            if (response.status === 200) {
+              console.log(response);
+              this.posts = response.data.data;
+            }
+          })
+          .catch(() => {
+            this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+          });
+    }
+  },
 };
 </script>
 

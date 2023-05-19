@@ -295,7 +295,7 @@ header.masthead .masthead-heading {
 .navbar .dropdown:hover > ul {
   opacity: 1;
   top: 100%;
-  left: calc(-100% - 40px);
+  left: calc(-100% + 100px);
   visibility: visible;
 }
 

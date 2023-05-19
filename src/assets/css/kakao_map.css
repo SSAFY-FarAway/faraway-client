@@ -1,10 +1,10 @@
 .wrap {
   position: absolute;
   left: 0;
-  bottom: 40px;
+  bottom: -34px;
   width: 288px;
   height: 132px;
-  margin-left: -144px;
+  margin-left: -70px;
   text-align: left;
   overflow: hidden;
   font-size: 12px;
@@ -162,7 +162,6 @@
   font-weight: bold;
   overflow: hidden;
   background: #ffc61a;
-  no-repeat: right 14px center;
 }
 .customoverlay .title {
   display: block;

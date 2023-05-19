@@ -23,7 +23,7 @@
               placeholder="아이디 입력"
             />
             <small id="login-id-help" class="form-text text-muted"
-              >안보이다가 틀리면 보이게할거임(유효성 검사)</small
+              >6자리 이상의 아이디를 입력하세요.</small
             >
           </div>
           <div class="form-group col-md-12 mb-3">
@@ -36,7 +36,7 @@
               placeholder="비밀번호 입력"
             />
             <small id="login-pwd-help" class="form-text text-muted"
-              >안보이다가 틀리면 보이게할거임(유효성 검사)</small
+              >8자리 이상의 비밀번호를 입력하세요.</small
             >
           </div>
           <div class="form-group col-md-12 mb-5">
@@ -49,7 +49,7 @@
               placeholder="비밀번호 재입력"
             />
             <small id="login-pwd-confirm-help" class="form-text text-muted"
-              >안보이다가 틀리면 보이게할거임(유효성 검사)</small
+              >비밀번호를 한번 더 입력하세요.</small
             >
           </div>
           <!-- 개인 정보 -->
@@ -169,9 +169,8 @@ export default {
       http
         .post("/member/sign-up", this.registerMember)
         .then((res) => {
-          console.log(res)
+          console.log(res);
           if (res.status === 200) {
-
             this.$alertSuccess("회원가입 완료", "로그인 화면으로 이동합니다.");
             this.$router.replace("/member/login");
           }

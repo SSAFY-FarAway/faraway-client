@@ -44,6 +44,7 @@
                                                         </a>
                                                     </li>
                                                 </ul>
+                                                <!-- TODO: 글의 작성자와 로그인한 유저가 같은지 처리 필요 -->
                                                 <div id="btn-area" class="col justify-content-end">
                                                     <router-link id="btn-list"
                                                             to="/post/list"
@@ -61,21 +62,21 @@
                                                         글삭제
                                                     </button>
                                                 </div>
-                                                <hr>
+                                              <hr>
                                             </div>
-                                            <!-- TODO: 댓글 없는 경우 처리 해야함 -->
-                                            <div class="col-12"><h5>댓글 : {{ comments.length}}</h5>
-                                                <hr>
-                                            </div>
-                                            <div class="col-12" id="comments" v-for="comment in comments"
-                                                 :key="comment.id">
-                                                <div class="col-12">
-                                                    <span class="small text-secondary fw-light">작성자 : {{ comment.loginId }}</span>
-                                                    <span class="small col-6 text-secondary fw-light">작성일 : {{ comment.createdDate | timeFilter }}</span>
-                                                </div>
-                                                <span class="col-12">{{ comment.content }}</span>
-                                                <hr>
-                                            </div>
+                                          <div class="col-12" v-if="comments.length !== 0">
+                                            <h5>댓글 : {{ comments.length }}</h5>
+                                            <hr>
+                                          </div>
+                                          <div class="col-12" v-else>
+                                            <h5>댓글</h5>
+                                            <h6>현재 등록된 댓글이 없습니다. 댓글을 작성해보세요!</h6>
+                                          </div>
+                                          <div class="col-12" v-for="comment in comments" :key="comment.id">
+                                            <comment-item :comment="comment"/>
+                                          </div>
+                                          <!-- 댓글 작성 폼 -->
+                                          <comment-form></comment-form>
                                         </div>
                                     </div>
                                 </div>
@@ -89,10 +90,12 @@
 </template>
 <script>
 import http from "@/utils/api/http"
+import CommentForm from "@/components/common/CommentForm.vue";
+import CommentItem from "@/components/common/CommentItem.vue";
 
 export default {
     name: "PostDetail",
-    components: {},
+    components: {CommentItem, CommentForm},
     data() {
         return {
             post: {},
