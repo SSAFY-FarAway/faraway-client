@@ -152,10 +152,10 @@ const routes = [
     ],
   },
   {
-    path: "/hotplace",
+    path: "/hot-place",
     name: "hotPlace",
     component: HotPlaceView,
-    redirect: "/hotplace/list",
+    redirect: "/hot-place/list",
     children: [
       {
         path: "list",

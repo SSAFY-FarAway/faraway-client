@@ -100,7 +100,7 @@ export default {
       const formData = new FormData();
       [...this.files].forEach((file) => formData.append("files", file));
       formData.append("request", new Blob([JSON.stringify(this.request)], {type: "application/json"}));
-      http.post("/hotplace", formData, {
+      http.post("/hot-place", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
@@ -109,7 +109,7 @@ export default {
             console.log(response);
             if (response.status === 200) {
               this.$alertSuccess("작성 성공", "글 작성이 완료되었습니다.");
-              this.$router.replace(`/hotplace/view/${response.data}`);
+              this.$router.replace(`/hot-place/view/${response.data}`);
             }
           })
           .catch(() => {

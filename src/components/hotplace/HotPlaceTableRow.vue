@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     moveDetail() {
-      this.$router.push(`/hotplace/view/${this.hotPlace.id}`);
+      this.$router.push(`/hot-place/view/${this.hotPlace.id}`);
     }
   }
 }

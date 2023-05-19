@@ -47,7 +47,7 @@
                       <div class="mt-3">
                         <div id="btn-area" class="col justify-content-end">
                           <router-link id="btn-list"
-                                       to="/hotplace/list"
+                                       to="/hot-place/list"
                                        class="btn btn-outline-primary shadow-sm mb-3">
                             글목록
                           </router-link>
@@ -105,7 +105,7 @@ export default {
   },
   created() {
     http
-        .get(`/hotplace/${this.$route.params.id}`)
+        .get(`/hot-place/${this.$route.params.id}`)
         .then((response) => {
           console.log(response);
           this.hotPlace = response.data;
@@ -116,17 +116,17 @@ export default {
   methods: {
     modifyHotPlace() {
       if (confirm("수정 페이지로 이동하시겠습니까?")) {
-        location.href = `/hotplace/modify/${this.$route.params.id}`;
+        location.href = `/hot-place/modify/${this.$route.params.id}`;
       }
     },
     deleteHotPlace() {
       if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
         http
-            .delete(`/hotplace/${this.$route.params.id}`)
+            .delete(`/hot-place/${this.$route.params.id}`)
             .then((response) => {
               if (response.status === 200) {
                 alert("삭제가 완료되었습니다.");
-                this.$router.replace(`/hotplace/list`);
+                this.$router.replace(`/hot-place/list`);
               }
             })
       }

@@ -6,7 +6,7 @@
         <h3 class="section-subheading text-muted">여행지의 핫플레이스를 공유해보세요.</h3>
         <div class="row align-self-center mb-2">
           <div class="col-md-2 text-start">
-            <router-link class="btn btn-primary btn shadow-sm" to="/hotplace/write">글쓰기</router-link>
+            <router-link class="btn btn-primary btn shadow-sm" to="/hot-place/write">글쓰기</router-link>
           </div>
           <div class="col-md-7 offset-3">
             <form class="d-flex" id="search-form">
@@ -67,7 +67,7 @@ export default {
   },
   created() {
     http
-        .get("/hotplace")
+        .get("/hot-place")
         .then((response) => {
           if (response.status === 200) {
             console.log(response);
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     search() {
-      let url = `/hotplace?${this.selected}=${this.keyword}`
+      let url = `/hot-place?${this.selected}=${this.keyword}`
       http
           .get(url)
           .then((response) => {
