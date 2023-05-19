@@ -34,6 +34,7 @@
             <ul>
               <li>
                 <a
+                  style="cursor : pointer"
                   class="nav-link scrollto nav-link-item"
                   @click='setIsLogin(false)'
                   >LOGOUT</a
