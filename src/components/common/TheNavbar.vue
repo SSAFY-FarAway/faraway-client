@@ -26,10 +26,32 @@
               >Community</router-link
             >
           </li>
-          <li class="dropdown">
-            <router-link to="/member/login">
+          <!-- 로그인 했을 때 -->
+          <li class="dropdown" v-if='isLogin'>
+            <router-link to="/member/login" style="width:100px;">
+              <span>{{loginMember.loginId}} 님</span>
+            </router-link>
+            <ul>
+              <li>
+                <a
+                  class="nav-link scrollto nav-link-item"
+                  @click='setIsLogin(false)'
+                  >LOGOUT</a
+                >
+              </li>
+              <li>
+                <router-link
+                  class="nav-link scrollto nav-link-item"
+                  to="/member/mypage"
+                  >MY PAGE</router-link
+                >
+              </li>
+            </ul>
+          </li>
+          <!-- 로그인 안했을 때 -->
+          <li class="dropdown" v-else>
+            <router-link to="/member/login"  style="width:100px">
               <span>LOGIN</span>
-              <i class="bi bi-chevron-down"></i>
             </router-link>
             <ul>
               <li>
@@ -55,6 +77,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 export default {
   name: "TheNavbar",
   components: {},
@@ -63,8 +86,13 @@ export default {
       message: "",
     };
   },
+  computed: {
+    ...mapState("memberStore",["isLogin","loginMember"])
+  },
   created() {},
-  methods: {},
+  methods: {
+    ...mapActions("memberStore", ["setIsLogin"]),
+  },
 };
 </script>
 
