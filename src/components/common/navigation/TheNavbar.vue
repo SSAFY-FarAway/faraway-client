@@ -17,7 +17,7 @@
             <router-link class="nav-link scrollto" to="/plan">Plan</router-link>
           </li>
           <li>
-            <router-link class="nav-link scrollto" to="/hotplace"
+            <router-link class="nav-link scrollto" to="/hot-place"
               >HotPlace</router-link
             >
           </li>
@@ -27,16 +27,16 @@
             >
           </li>
           <!-- 로그인 했을 때 -->
-          <li class="dropdown" v-if='isLogin'>
-            <router-link to="/member/login" style="width:100px;">
-              <span>{{loginMember.loginId}} 님</span>
+          <li class="dropdown" v-if="isLogin">
+            <router-link to="/member/login" style="width: 100px">
+              <span>{{ loginMember.loginId }} 님</span>
             </router-link>
             <ul>
               <li>
                 <a
-                  style="cursor : pointer"
+                  style="cursor: pointer"
                   class="nav-link scrollto nav-link-item"
-                  @click='setIsLogin(false)'
+                  @click="setIsLogin(false)"
                   >LOGOUT</a
                 >
               </li>
@@ -51,7 +51,7 @@
           </li>
           <!-- 로그인 안했을 때 -->
           <li class="dropdown" v-else>
-            <router-link to="/member/login"  style="width:100px">
+            <router-link to="/member/login" style="width: 100px">
               <span>LOGIN</span>
             </router-link>
             <ul>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState } from "vuex";
 export default {
   name: "TheNavbar",
   components: {},
@@ -88,7 +88,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("memberStore",["isLogin","loginMember"])
+    ...mapState("memberStore", ["isLogin", "loginMember"]),
   },
   created() {},
   methods: {

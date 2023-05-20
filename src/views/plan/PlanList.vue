@@ -62,11 +62,11 @@ export default {
         { value: "member", text: "작성자" },
       ],
       titles: [
-        { title: "No", colValue: 1 },
-        { title: "제목", colValue: 5 },
-        { title: "작성자", colValue: 3 },
-        { title: "조회수", colValue: 1 },
-        { title: "작성일", colValue: 2 },
+        { title: "No", colSize: 1 },
+        { title: "제목", colSize: 5 },
+        { title: "작성자", colSize: 3 },
+        { title: "조회수", colSize: 1 },
+        { title: "작성일", colSize: 2 },
       ],
       plans: [],
     };

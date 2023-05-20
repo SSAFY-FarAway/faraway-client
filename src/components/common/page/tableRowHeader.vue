@@ -3,7 +3,7 @@
     <th
       v-for="title in titles"
       :key="title.title"
-      :class="'col-' + title.colValue"
+      :class="'col-' + title.colSize"
     >
       {{ title.title }}
     </th>
