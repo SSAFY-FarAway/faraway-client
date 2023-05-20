@@ -129,8 +129,8 @@ export default {
           },
         })
         .then((res) => {
-          this.attractions = res.data;
-          this.setAttractions(res.data);
+          this.attractions = res.data.data;
+          this.setAttractions(res.data.data);
         });
     },
   },
