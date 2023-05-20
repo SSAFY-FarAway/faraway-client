@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex justify-content-center">
     <b-button class="btn-primary" v-b-toggle.attraction-search-sidebar
       >찾아보기</b-button
     >
