@@ -58,7 +58,8 @@
 
 <script>
 import http from "@/utils/api/http";
-import { mapActions } from "vuex";
+import jwtDecode from "jwt-decode";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "MemberSignUp",
@@ -72,13 +73,16 @@ export default {
     };
   },
   created() {},
+  computed: {
+    ...mapState("memberStore", ["isLogin"]),
+  },
   methods: {
     ...mapActions("memberStore", ["setIsLogin", "setLoginMember"]),
-    login() {
-      http
+    async login() {
+      await http
         .post("/member/login", this.loginMember)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === 200) {
             this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.");
             this.setIsLogin(true);
@@ -97,6 +101,33 @@ export default {
             "로그인에 실패했습니다. 추후 예외 처리 로직 추가"
           );
           this.setIsLogin(false);
+        });
+
+      if (this.isLogin) {
+        this.getMemberInfo();
+      }
+    },
+    async getMemberInfo() {
+      console.log("getMemberInfo");
+      const accessToken = sessionStorage.getItem("access-token");
+      const decodedAccessToken = jwtDecode(accessToken);
+      const memberId = decodedAccessToken.memberId;
+
+      await http
+        .get(`/member/info/${memberId}`, {
+          headers: {
+            "access-token": accessToken,
+          },
+        })
+        .then((res) => {
+          this.setLoginMember(res.data.loginMember);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$alertDanger(
+            "사용자 정보 불러오기 실패 !",
+            "추후 예외처리 추가 예정"
+          );
         });
     },
   },
