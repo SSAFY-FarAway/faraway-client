@@ -22,12 +22,12 @@
             >
           </li>
           <li>
-            <router-link class="nav-link scrollto" to="/post"
+            <router-link class="nav-link scrollto" to="/post/list?categoryId=1"
               >NOTICE</router-link
             >
           </li>
           <li class="dropdown nav-link">
-            <router-link to="/member/login">
+            <router-link to="/post/list?categoryId=2">
               <span>
                 BOARD
                 <b-icon icon="caret-down-fill" font-scale="1" />
@@ -38,14 +38,14 @@
                 <router-link
                   style="cursor: pointer"
                   class="nav-link scrollto nav-link-item"
-                  to="/post/list"
+                  to="/post/list?categoryId=2"
                   >자유게시판</router-link
                 >
               </li>
               <li>
                 <router-link
                   class="nav-link scrollto nav-link-item"
-                  to="/post/list"
+                  to="/post/list?categoryId=3"
                   >Q&A 게시판</router-link
                 >
               </li>

@@ -100,6 +100,7 @@ const routes = [
         path: "list",
         name: "PlanList",
         component: PlanList,
+        props: true,
         children: [],
       },
       {

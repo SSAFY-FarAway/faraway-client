@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <!-- Header -->
-    <page-header title="COMMUNITY" subTitle="공지사항" />
+    <page-header
+      :title="this.$route.query.categoryId | setTitle"
+      :subTitle="this.$route.query.categoryId | setSubtitle"
+    />
 
     <!-- 검색 메뉴 -->
     <div class="p-0 pb-1 m-0 col-12 row justify-content-between">
@@ -69,18 +72,34 @@ export default {
     };
   },
   created() {
-    http
-      .get("/post?categoryId=1")
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response);
-          this.posts = response.data.data;
-        }
-      })
-      .catch(() => {
-        this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
-        console.log(`/post?categoryId=1`);
-      });
+    this.getPosts();
+  },
+  watch: {
+    $route() {
+      this.getPosts();
+    },
+  },
+  filters: {
+    setTitle(categoryId) {
+      switch (categoryId) {
+        case "1":
+          return "NOTICE";
+        case "2":
+          return "BOARD";
+        case "3":
+          return "BOARD";
+      }
+    },
+    setSubtitle(categoryId) {
+      switch (categoryId) {
+        case "1":
+          return "공지사항";
+        case "2":
+          return "자유게시판";
+        case "3":
+          return "Q&A게시판";
+      }
+    },
   },
   methods: {
     search() {
@@ -92,6 +111,21 @@ export default {
           if (response.status === 200) {
             console.log(response);
             this.posts = response.data.data;
+          }
+        })
+        .catch(() => {
+          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+        });
+    },
+    getPosts() {
+      const categoryId = this.$route.query.categoryId;
+
+      http
+        .get(`/post?categoryId=${categoryId}`)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res);
+            this.posts = res.data.data;
           }
         })
         .catch(() => {
