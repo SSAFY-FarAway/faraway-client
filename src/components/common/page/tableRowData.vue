@@ -1,7 +1,11 @@
 <template>
   <tr class="text-center" @click="moveDetail">
     <td v-for="title in titles" :key="title.title">
-      {{ data[title.colName] }}
+      {{
+        title.colName === "createdDate"
+          ? $options.filters.timeFilter(data[title.colName])
+          : data[title.colName]
+      }}
     </td>
   </tr>
 </template>
