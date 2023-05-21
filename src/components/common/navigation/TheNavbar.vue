@@ -54,7 +54,8 @@
           <!-- 로그인 했을 때 -->
           <li class="dropdown nav-link" v-if="isLogin">
             <router-link to="/member/login">
-              {{ loginMember?.loginId }} 님
+              {{ loginMember?.loginId }} &nbsp;
+              <b-icon icon="person-fill" font-scale="1" />
             </router-link>
             <ul>
               <li>
