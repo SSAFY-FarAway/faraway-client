@@ -2,7 +2,7 @@
   <header id="nav-container" class="fixed-top">
     <div class="container">
       <nav id="navbar" class="navbar">
-        <div class="logo">
+        <div class="logo p-0">
           <h1>
             <router-link to="/"><span>FAR AWAY</span></router-link>
           </h1>
