@@ -29,14 +29,14 @@
           <!-- 로그인 했을 때 -->
           <li class="dropdown" v-if="isLogin">
             <router-link to="/member/login" style="width: 100px">
-              <span>{{ loginMember.loginId }} 님</span>
+              <span>{{ loginMember?.loginId }} 님</span>
             </router-link>
             <ul>
               <li>
                 <a
                   style="cursor: pointer"
                   class="nav-link scrollto nav-link-item"
-                  @click="setIsLogin(false)"
+                  @click="logout"
                   >LOGOUT</a
                 >
               </li>
@@ -79,6 +79,9 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import jwtDecode from "jwt-decode";
+import http from "@/utils/api/http";
+
 export default {
   name: "TheNavbar",
   components: {},
@@ -93,6 +96,16 @@ export default {
   created() {},
   methods: {
     ...mapActions("memberStore", ["setIsLogin"]),
+    async logout() {
+      const token = jwtDecode(sessionStorage.getItem("access-token"));
+
+      await http.get(`/member/logout/${token.memberId}`).then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          this.setIsLogin(false);
+        }
+      });
+    },
   },
 };
 </script>

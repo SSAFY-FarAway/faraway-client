@@ -44,6 +44,7 @@
 </template>
 <script>
 import PlanKakaoMap from "@/components/plan/PlanKakaoMap";
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: "PlanWrite",
@@ -60,8 +61,15 @@ export default {
       attractionPath: [],
     };
   },
-  created() {},
-  methods: {},
+  computed : {
+    ...mapState("attractionStore",["pickedAttractions"])
+  },
+  created() {
+    console.log(this.pickedAttractions)
+  },
+  methods: {
+    ...mapActions("attractionStore",["addPickedAttraction","removePickedAttraction"])
+  },
 };
 </script>
 

@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import common from "./utils/common";
-import "./utils/filters"
+import "./utils/filters";
 
 // BootStrap Import
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
@@ -15,6 +15,8 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(common);
 
+import VueCookies from "vue-cookies";
+Vue.use(VueCookies);
 Vue.config.productionTip = false;
 
 new Vue({
