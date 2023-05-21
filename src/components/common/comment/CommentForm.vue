@@ -1,13 +1,20 @@
 <template>
-  <form class="col-12 justify-content-center" @submit.prevent>
-    <label for="content" class="form-label fw-bolder">댓글 작성</label>
-    <textarea id="content" class="form-control" cols="80" v-model="request.content" placeholder="내용을 입력해주세요." ></textarea>
-    <b-button class="mt-3" @click="writeComment">작성</b-button>
+  <form class="pl-3" @submit.prevent>
+    <label for="content" class="font-weight-bold">댓글 쓰기</label>
+    <div class="d-flex">
+      <b-form-textarea
+        v-model="request.content"
+        placeholder="내용을 입력해주세요"
+        rows="3"
+        max-rows="6"
+      ></b-form-textarea>
+      <b-button class="btn-primary ml-2" @click="writeComment">WRITE</b-button>
+    </div>
   </form>
 </template>
 
 <script>
-import http from "@/utils/api/http"
+import http from "@/utils/api/http";
 
 export default {
   name: "CommentForm",
@@ -15,9 +22,9 @@ export default {
   data() {
     return {
       request: {
-        "content": ""
+        content: "",
       },
-    }
+    };
   },
   methods: {
     writeComment() {
@@ -26,21 +33,19 @@ export default {
       let id = this.$route.params.id;
       console.log(this.request);
       http
-          .post(`/${domain}/${id}/comment`, this.request)
-          .then((response) => {
-            if (response.status === 200) {
-              this.$alertDanger("댓글 작성 성공", "댓글 작성이 완료되었습니다.");
-              this.$router.go(0);
-            }
-          })
-          .catch(() => {
-            this.$alertDanger("댓글 작성 실패", "추후 예외처리 추가 예정");
-          });
-    }
-  }
-}
+        .post(`/${domain}/${id}/comment`, this.request)
+        .then((response) => {
+          if (response.status === 200) {
+            this.$alertDanger("댓글 작성 성공", "댓글 작성이 완료되었습니다.");
+            this.$router.go(0);
+          }
+        })
+        .catch(() => {
+          this.$alertDanger("댓글 작성 실패", "추후 예외처리 추가 예정");
+        });
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

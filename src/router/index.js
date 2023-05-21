@@ -47,9 +47,6 @@ const routes = [
     path: "/member",
     name: "member",
     component: MemberView,
-    // redirect 의 역할을 모르게땅!
-    // redirect: "/member/list",
-
     children: [
       // TODO : list 는 추후에 없애거나 관리자 모드 추가 시 변경 예정 (예시로 둔거임)
       {
@@ -132,19 +129,19 @@ const routes = [
         children: [],
       },
       {
-        path: "view/:postId",
-        name: "PostDetail",
-        component: PostDetail,
-        children: [],
-      },
-      {
         path: "write",
         name: "PostWrite",
         component: PostWrite,
         children: [],
       },
       {
-        path: "modify/:postId",
+        path: ":postId",
+        name: "PostDetail",
+        component: PostDetail,
+        children: [],
+      },
+      {
+        path: ":postId/edit",
         name: "PostModify",
         component: PostModify,
         children: [],
@@ -164,19 +161,19 @@ const routes = [
         children: [],
       },
       {
-        path: "view/:id",
-        name: "HotPlaceDetail",
-        component: HotPlaceDetail,
-        children: [],
-      },
-      {
         path: "write",
         name: "HotPlaceWrite",
         component: HotPlaceWrite,
         children: [],
       },
       {
-        path: "modify/:id",
+        path: ":id",
+        name: "HotPlaceDetail",
+        component: HotPlaceDetail,
+        children: [],
+      },
+      {
+        path: ":id/edit",
         name: "HotPlaceModify",
         component: hotPlaceModify,
         children: [],

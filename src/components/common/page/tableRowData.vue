@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     moveDetail() {
-      this.$router.push(`/${this.domain}/view/${this.data.id}`);
+      this.$router.push(`/${this.domain}/${this.data.id}`);
     },
   },
 };

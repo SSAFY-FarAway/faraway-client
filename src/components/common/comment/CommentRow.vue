@@ -1,21 +1,27 @@
 <template>
-  <div class="col-12">
-    <span class="small text-secondary fw-light"
-      >작성자 : {{ comment.loginId }}</span
-    >
-    <span class="small col-3 text-secondary fw-light"
-      >작성일 : {{ comment.createdDate | timeFilter }}</span
-    >
-    <!-- 댓글 작성자와 로그인한 유저가 같은지 확인 필요 -->
-    <b-btn-group class="justify-content-end">
-      <button class="btn-outline-primary" @click="modifyComment">수정</button>
-      <button class="btn-outline-danger ml-2" @click="deleteComment">
-        삭제
-      </button>
-    </b-btn-group>
-    <br />
-    <span>{{ comment.content }}</span>
-    <hr />
+  <div class="pl-3">
+    <div class="p-0 align-items-center">
+      <div>
+        <span class="font-weight-bold">{{ comment.loginId }}</span>
+        <span class="pl-2 small text-secondary fw-light">{{
+          comment.createdDate | timeFilter
+        }}</span>
+
+        <b-dropdown
+          class="p-0"
+          size="md"
+          variant="link"
+          toggle-class="text-decoration-none"
+        >
+          <b-dropdown-item @click="moveModify">댓글 수정</b-dropdown-item>
+          <b-dropdown-item @click="deletePost">댓글 삭제</b-dropdown-item>
+        </b-dropdown>
+      </div>
+    </div>
+    <div>
+      <p>{{ comment.content }}</p>
+      <hr />
+    </div>
   </div>
 </template>
 
@@ -23,7 +29,7 @@
 import http from "@/utils/api/http";
 
 export default {
-  name: "CommentItem",
+  name: "CommentRow",
   components: {},
   props: {
     comment: Object,
