@@ -20,6 +20,8 @@ const memberStore = {
       } else {
         commit("SET_IS_LOGIN", false);
         commit("SET_LOGIN_MEMBER", null);
+        sessionStorage.removeItem("access-token");
+        sessionStorage.removeItem("refresh-token");
       }
     },
     setLoginMember({ commit }, payload) {

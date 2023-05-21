@@ -2,7 +2,7 @@
   <header id="nav-container" class="fixed-top">
     <div class="container">
       <nav id="navbar" class="navbar">
-        <div class="logo">
+        <div class="logo p-0">
           <h1>
             <router-link to="/"><span>FAR AWAY</span></router-link>
           </h1>
@@ -17,7 +17,7 @@
             <router-link class="nav-link scrollto" to="/plan">Plan</router-link>
           </li>
           <li>
-            <router-link class="nav-link scrollto" to="/hotplace"
+            <router-link class="nav-link scrollto" to="/hot-place"
               >HotPlace</router-link
             >
           </li>
@@ -27,16 +27,16 @@
             >
           </li>
           <!-- 로그인 했을 때 -->
-          <li class="dropdown" v-if='isLogin'>
-            <router-link to="/member/login" style="width:100px;">
-              <span>{{loginMember.loginId}} 님</span>
+          <li class="dropdown" v-if="isLogin">
+            <router-link to="/member/login" style="width: 100px">
+              <span>{{ loginMember?.loginId }} 님</span>
             </router-link>
             <ul>
               <li>
                 <a
-                  style="cursor : pointer"
+                  style="cursor: pointer"
                   class="nav-link scrollto nav-link-item"
-                  @click='setIsLogin(false)'
+                  @click="logout"
                   >LOGOUT</a
                 >
               </li>
@@ -51,7 +51,7 @@
           </li>
           <!-- 로그인 안했을 때 -->
           <li class="dropdown" v-else>
-            <router-link to="/member/login"  style="width:100px">
+            <router-link to="/member/login" style="width: 100px">
               <span>LOGIN</span>
             </router-link>
             <ul>
@@ -78,7 +78,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState } from "vuex";
+import jwtDecode from "jwt-decode";
+import http from "@/utils/api/http";
+
 export default {
   name: "TheNavbar",
   components: {},
@@ -88,11 +91,21 @@ export default {
     };
   },
   computed: {
-    ...mapState("memberStore",["isLogin","loginMember"])
+    ...mapState("memberStore", ["isLogin", "loginMember"]),
   },
   created() {},
   methods: {
     ...mapActions("memberStore", ["setIsLogin"]),
+    async logout() {
+      const token = jwtDecode(sessionStorage.getItem("access-token"));
+
+      await http.get(`/member/logout/${token.memberId}`).then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          this.setIsLogin(false);
+        }
+      });
+    },
   },
 };
 </script>

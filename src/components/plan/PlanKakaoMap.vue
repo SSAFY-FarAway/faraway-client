@@ -29,13 +29,7 @@ export default {
     }
   },
   created() {},
-  watch: {
-    attractions(to, from) {
-      if (to != from) {
-        this.loadMap();
-      }
-    },
-  },
+  watch: {},
   methods: {
     // kakaoMap Script 로드
     loadScript() {
