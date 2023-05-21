@@ -5,7 +5,7 @@
 
     <!-- 검색 메뉴 -->
     <div class="p-0 pb-1 m-0 col-12 row justify-content-between">
-      <write-btn path="/plan/write" btnName="write post" />
+      <write-btn path="/post/write" btnName="write post" />
       <form class="d-flex">
         <b-form-select class="col-md-4" v-model="selected" :options="options" />
         <input

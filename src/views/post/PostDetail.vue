@@ -44,9 +44,11 @@
         <pre>{{ post.content }}</pre>
       </div>
 
+      <!-- 파일 첨부 영역 -->
       <!-- TODO: 파일 없는 경우 처리 해야함 -->
-      <div class="mt-3">
-        <ul>
+      <div v-if="attachments">
+        <p class="font-weight-bold">첨부파일</p>
+        <ul class="pl-3">
           <li v-for="attachment in attachments" :key="attachment.id">
             {{ attachment.fileName }}
             <a :href="'http://localhost/attachment/download/' + attachment.id">
@@ -54,21 +56,20 @@
             </a>
           </li>
         </ul>
-        <!-- TODO: 글의 작성자와 로그인한 유저가 같은지 처리 필요 -->
-        <div id="btn-area" class="col justify-content-end"></div>
-        <!-- 좋아요 버튼 -->
-        <div class="d-flex justify-content-center align-items-center">
-          <!-- 좋아요 눌렀을 때 -->
-          <button v-if="this.testLike" class="btn btn-primary">
-            <b-icon icon="heart-fill" font-scale="1"></b-icon>
-          </button>
-          <!-- 좋아요 안 눌렀을 때 -->
-          <button v-else class="btn btn-outline-secondary">
-            <b-icon icon="heart-fill" font-scale="1"></b-icon>
-          </button>
-        </div>
-        <hr />
       </div>
+
+      <!-- 좋아요 버튼 -->
+      <div class="d-flex justify-content-center align-items-center mt-5">
+        <!-- 좋아요 눌렀을 때 -->
+        <button v-if="this.testLike" class="btn btn-primary">
+          <b-icon icon="heart-fill" font-scale="1"></b-icon>
+        </button>
+        <!-- 좋아요 안 눌렀을 때 -->
+        <button v-else class="btn btn-outline-secondary">
+          <b-icon icon="heart-fill" font-scale="1"></b-icon>
+        </button>
+      </div>
+      <hr />
 
       <!-- 댓글 영역 -->
       <div>
