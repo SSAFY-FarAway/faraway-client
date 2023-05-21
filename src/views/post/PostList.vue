@@ -31,7 +31,7 @@
       </tbody>
     </table>
     <!-- 페이지네이션 -->
-    <page-navigation :totalCnt="posts.totalCnt" />
+    <page-navigation :totalCnt="pageTotalCnt" />
   </div>
 </template>
 
@@ -69,6 +69,7 @@ export default {
       ],
       keyword: "",
       posts: [],
+      pageTotalCnt: 0,
     };
   },
   created() {
@@ -104,27 +105,32 @@ export default {
   methods: {
     search() {
       let url = `/post?${this.selected}=${this.keyword}&categoryId=1`;
-      console.log(`selected: ${this.selected}`);
+
       http
         .get(url)
-        .then((response) => {
-          if (response.status === 200) {
-            console.log(response);
-            this.posts = response.data.data;
+        .then((res) => {
+          if (res.status === 200) {
+            this.posts = res.data.data;
           }
         })
         .catch(() => {
           this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
         });
     },
+
     getPosts() {
       const categoryId = this.$route.query.categoryId;
+      const pageNumber = this.$route.query.pageNumber;
 
+      let url = `/post?categoryId=${categoryId}&`;
+      if (pageNumber) {
+        url += `&pageNumber=${pageNumber}`;
+      }
       http
-        .get(`/post?categoryId=${categoryId}`)
+        .get(url)
         .then((res) => {
           if (res.status === 200) {
-            console.log(res);
+            this.pageTotalCnt = res.data.pageTotalCnt;
             this.posts = res.data.data;
           }
         })
