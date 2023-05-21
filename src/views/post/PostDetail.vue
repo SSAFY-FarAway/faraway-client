@@ -82,12 +82,15 @@
         <comment-form />
       </div>
     </div>
+
     <hr />
+
+    <!-- 게시글 하단 메뉴 -->
     <div class="row p-0 m-0 justify-content-end">
       <router-link to="/post/list" class="btn btn-outline-secondary">
-        글목록
+        목록으로
       </router-link>
-      <button class="btn btn-outline-secondary ml-2">TOP</button>
+      <button class="btn btn-outline-secondary ml-2" @click="toTop">TOP</button>
     </div>
   </div>
 </template>
@@ -132,6 +135,12 @@ export default {
           }
         });
       }
+    },
+    toTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     },
   },
 };
