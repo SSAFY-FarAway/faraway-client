@@ -17,7 +17,7 @@
             <router-link class="nav-link scrollto" to="/plan">Plan</router-link>
           </li>
           <li>
-            <router-link class="nav-link scrollto" to="/hotplace"
+            <router-link class="nav-link scrollto" to="/hot-place"
               >HotPlace</router-link
             >
           </li>
