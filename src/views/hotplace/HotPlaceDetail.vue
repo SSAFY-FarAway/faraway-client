@@ -135,7 +135,7 @@ export default {
     };
   },
   created() {
-    http.get(`/hotplace/${this.$route.params.id}`).then((response) => {
+    http.get(`/hot-place/${this.$route.params.id}`).then((response) => {
       console.log(response);
       this.hotPlace = response.data;
       this.comments = this.hotPlace.commentResponses;
@@ -145,7 +145,7 @@ export default {
   methods: {
     modifyHotPlace() {
       if (confirm("수정 페이지로 이동하시겠습니까?")) {
-        location.href = `/hotplace/modify/${this.$route.params.id}`;
+        location.href = `/hot-place/modify/${this.$route.params.id}`;
       }
     },
     deleteHotPlace() {
@@ -153,7 +153,7 @@ export default {
         http.delete(`/hotplace/${this.$route.params.id}`).then((response) => {
           if (response.status === 200) {
             alert("삭제가 완료되었습니다.");
-            this.$router.replace(`/hotplace/list`);
+            this.$router.replace(`/hot-place/list`);
           }
         });
       }

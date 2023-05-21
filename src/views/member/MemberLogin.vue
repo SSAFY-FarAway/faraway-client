@@ -57,8 +57,8 @@
 </template>
 
 <script>
-import http from '@/utils/api/http';
-import { mapActions } from 'vuex';
+import http from "@/utils/api/http";
+import { mapActions } from "vuex";
 
 export default {
   name: "MemberSignUp",
@@ -73,22 +73,27 @@ export default {
   },
   created() {},
   methods: {
-    ...mapActions("memberStore", ["setIsLogin","setLoginMember"]),
+    ...mapActions("memberStore", ["setIsLogin", "setLoginMember"]),
     login() {
-      http.post("/member/login", this.loginMember).then(res => {
-        console.log(res)
-        if (res.status === 200) {
-          this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.")
-          this.setIsLogin(true)
-          this.setLoginMember(res.data)
-          this.$router.replace("/") 
-        }
-      }).catch(() => {
-        this.$alertDanger("로그인 실패", "로그인에 실패했습니다. 추후 예외 처리 로직 추가")
-        this.setIsLogin(false)
-      })
-    }
-
+      http
+        .post("/member/login", this.loginMember)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.");
+            this.setIsLogin(true);
+            this.setLoginMember(res.data);
+            this.$router.replace("/");
+          }
+        })
+        .catch(() => {
+          this.$alertDanger(
+            "로그인 실패",
+            "로그인에 실패했습니다. 추후 예외 처리 로직 추가"
+          );
+          this.setIsLogin(false);
+        });
+    },
   },
 };
 </script>

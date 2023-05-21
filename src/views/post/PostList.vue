@@ -24,7 +24,7 @@
         <table-row-header :titles="titles" />
       </thead>
       <tbody v-for="post in posts" :key="post.id">
-        <table-row-data :post="post" :titles="titles" domain="post" />
+        <table-row-data :data="post" :titles="titles" domain="post" />
       </tbody>
     </table>
     <!-- 페이지네이션 -->
