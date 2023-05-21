@@ -103,7 +103,7 @@
                         v-for="comment in comments"
                         :key="comment.id"
                       >
-                        <comment-item :comment="comment" />
+                        <comment-row :comment="comment" />
                       </div>
                       <!-- 댓글 작성 폼 -->
                       <comment-form></comment-form>
@@ -121,12 +121,12 @@
 
 <script>
 import http from "@/utils/api/http";
-import CommentItem from "@/components/common/comment/CommentItem.vue";
+import CommentRow from "@/components/common/comment/CommentRow";
 import CommentForm from "@/components/common/comment/CommentForm.vue";
 
 export default {
   name: "HotPlaceDetail",
-  components: { CommentForm, CommentItem },
+  components: { CommentForm, CommentRow },
   data() {
     return {
       hotPlace: {},
@@ -145,7 +145,7 @@ export default {
   methods: {
     modifyHotPlace() {
       if (confirm("수정 페이지로 이동하시겠습니까?")) {
-        location.href = `/hot-place/modify/${this.$route.params.id}`;
+        location.href = `/hot-place/${this.$route.params.id}/edit`;
       }
     },
     deleteHotPlace() {
