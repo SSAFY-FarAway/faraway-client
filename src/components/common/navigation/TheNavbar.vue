@@ -10,7 +10,7 @@
         <ul>
           <li>
             <router-link class="nav-link scrollto" to="/attraction/index"
-              >Search Place</router-link
+              >Search-Place</router-link
             >
           </li>
           <li>
@@ -18,18 +18,44 @@
           </li>
           <li>
             <router-link class="nav-link scrollto" to="/hot-place"
-              >HotPlace</router-link
+              >Hot-Place</router-link
             >
           </li>
           <li>
-            <router-link class="nav-link scrollto" to="/post"
-              >Community</router-link
+            <router-link class="nav-link scrollto" to="/post/list?categoryId=1"
+              >NOTICE</router-link
             >
           </li>
+          <li class="dropdown nav-link">
+            <router-link to="/post/list?categoryId=2">
+              <span>
+                BOARD
+                <b-icon icon="caret-down-fill" font-scale="1" />
+              </span>
+            </router-link>
+            <ul>
+              <li>
+                <router-link
+                  style="cursor: pointer"
+                  class="nav-link scrollto nav-link-item"
+                  to="/post/list?categoryId=2"
+                  >자유게시판</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  class="nav-link scrollto nav-link-item"
+                  to="/post/list?categoryId=3"
+                  >Q&A 게시판</router-link
+                >
+              </li>
+            </ul>
+          </li>
           <!-- 로그인 했을 때 -->
-          <li class="dropdown" v-if="isLogin">
-            <router-link to="/member/login" style="width: 100px">
-              <span>{{ loginMember?.loginId }} 님</span>
+          <li class="dropdown nav-link" v-if="isLogin">
+            <router-link to="/member/login">
+              {{ loginMember?.loginId }} &nbsp;
+              <b-icon icon="person-fill" font-scale="1" />
             </router-link>
             <ul>
               <li>
@@ -50,9 +76,9 @@
             </ul>
           </li>
           <!-- 로그인 안했을 때 -->
-          <li class="dropdown" v-else>
-            <router-link to="/member/login" style="width: 100px">
-              <span>LOGIN</span>
+          <li class="dropdown nav-link" v-else>
+            <router-link to="/member/login">
+              <span>LOGIN <b-icon icon="person-fill" font-scale="1" /></span>
             </router-link>
             <ul>
               <li>
