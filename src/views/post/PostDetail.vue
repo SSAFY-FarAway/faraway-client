@@ -74,12 +74,13 @@
       <!-- 댓글 영역 -->
       <div>
         <h5>{{ comments.length }}개의 댓글</h5>
+        <!-- 댓글 목록 -->
+        <div v-for="comment in comments" :key="comment.id">
+          <comment-row :comment="comment" />
+        </div>
+        <!-- 댓글 작성 -->
+        <comment-form />
       </div>
-      <div v-for="comment in comments" :key="comment.id">
-        <comment-row :comment="comment" />
-      </div>
-      <!-- 댓글 작성 폼 -->
-      <comment-form />
     </div>
     <hr />
     <div class="row p-0 m-0 justify-content-end">
