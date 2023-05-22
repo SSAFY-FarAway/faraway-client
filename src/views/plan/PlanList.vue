@@ -28,11 +28,10 @@
         <table-row-header :titles="titles" />
       </thead>
       <tbody>
-          <tr v-if='posts.length===0'>
+          <tr v-if='plans.length===0'>
             <td colspan="6">현재 등록된 게시글이 없습니다.</td>
           </tr>
           <plan-table-row v-for="plan in plans" :key="plan.id" :plan="plan" :titles='titles' domain='plan'/>
-          <td colspan="6">현재 등록된 게시글이 없습니다.</td>
       </tbody>
     </table>
     <!-- 페이지네이션 -->
