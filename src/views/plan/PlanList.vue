@@ -23,12 +23,16 @@
     </div>
 
     <!-- 여행경로 List - 테이블 -->
-    <table class="table table-hover shadow rounded" id="plan-table">
+    <table class="table table-hover shadow rounded" id="table">
       <thead>
         <table-row-header :titles="titles" />
       </thead>
       <tbody>
-        <plan-table-row v-for="plan in plans" :key="plan.id" :plan="plan" />
+          <tr v-if='posts.length===0'>
+            <td colspan="6">현재 등록된 게시글이 없습니다.</td>
+          </tr>
+          <plan-table-row v-for="plan in plans" :key="plan.id" :plan="plan" :titles='titles' domain='plan'/>
+          <td colspan="6">현재 등록된 게시글이 없습니다.</td>
       </tbody>
     </table>
     <!-- 페이지네이션 -->
@@ -72,12 +76,16 @@ export default {
     };
   },
   created() {
-    http
+    this.getPlans()
+  },
+  methods: {
+    getPlans() {
+      http
       .get("/plan", {
         headers: sessionStorage.getItem("access-token"),
       })
       .then((res) => {
-        console.log(res);
+        console.log(res)
         if (res.status === 200) {
           this.plans = res.data.data;
         }
@@ -88,7 +96,12 @@ export default {
           "추후에 예외처리 로직 추가 예정"
         );
       });
+    }
   },
-  methods: {},
 };
 </script>
+<style scoped>
+#table { 
+  min-height: 550px;
+}
+</style>

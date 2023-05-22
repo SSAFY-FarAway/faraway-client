@@ -22,12 +22,15 @@
       </form>
     </div>
     <!-- 게시글 List - 테이블 -->
-    <table class="table table-hover shadow rounded" id="plan-table">
+    <table class="table table-hover shadow rounded" id="table">
       <thead>
         <table-row-header :titles="titles" />
       </thead>
-      <tbody v-for="post in posts" :key="post.id">
-        <table-row-data :data="post" :titles="titles" domain="post" />
+      <tbody>
+        <tr v-if='posts.length===0'>
+          <td colspan="6">현재 등록된 게시글이 없습니다.</td>
+        </tr>
+        <table-row-data v-for="post in posts" :key="post.id" :data="post" :titles="titles" domain="post" />
       </tbody>
     </table>
     <!-- 페이지네이션 -->
@@ -143,7 +146,7 @@ export default {
 </script>
 
 <style scoped>
-#search-select-box {
-  width: 200px;
+#table { 
+  min-height: 550px;
 }
 </style>
