@@ -34,6 +34,7 @@ const beforeLogin = isAuth => (from, to, next) => {
     return next()
   } else {
     // 로그인 화면으로 이동
+    alert("로그인이 필요한 페이지 입니다. 로그인 페이지로 이동합니다.");
     next("/member/login");
   }
 }
@@ -80,12 +81,13 @@ const routes = [
         path: "find",
         name: "MemberFind",
         component: MemberFind,
-        beforeEnter: beforeLogin(true)
+        beforeEnter: beforeLogin(true),
       },
       {
         path: ":memberId",
         name: "MemberMypage",
         component: MemberMypage,
+        beforeEnter: beforeLogin(true),
       },
     ],
   },
@@ -120,13 +122,14 @@ const routes = [
         path: "write",
         name: "PlanWrite",
         component: PlanWrite,
-        beforeEnter: beforeLogin(false),
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":planId",
         name: "PlanDetail",
         component: PlanDetail,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
     ],
@@ -147,18 +150,21 @@ const routes = [
         path: "write",
         name: "PostWrite",
         component: PostWrite,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":postId",
         name: "PostDetail",
         component: PostDetail,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":postId/edit",
         name: "PostModify",
         component: PostModify,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
     ],
@@ -179,18 +185,21 @@ const routes = [
         path: "write",
         name: "HotPlaceWrite",
         component: HotPlaceWrite,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":id",
         name: "HotPlaceDetail",
         component: HotPlaceDetail,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":id/edit",
         name: "HotPlaceModify",
         component: hotPlaceModify,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
     ],
