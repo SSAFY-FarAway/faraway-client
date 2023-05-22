@@ -32,9 +32,9 @@ export default {
   },
   created() {},
   methods: {
-    ...mapActions("attractionStore", ["updateAttraction"]),
+    ...mapActions("attractionStore", ["setAttraction"]),
     selectAttraction() {
-      this.updateAttraction(this.attraction);
+      this.setAttraction(this.attraction);
     },
   },
 };

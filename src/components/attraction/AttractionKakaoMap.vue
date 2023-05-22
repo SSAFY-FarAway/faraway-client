@@ -21,12 +21,15 @@ export default {
     };
   },
   mounted() {
-    if (!(window.kakao && window.kakao.maps)) {
+    if (window.kakao && window.kakao.maps) {
+      // 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
+      this.loadMap();
+    } else {
+      // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
     }
   },
   created() {
-    this.loadScript();
   },
   watch: {
     selectedAttraction(after, before) {
@@ -60,7 +63,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions("attractionStore", ["updateAttraction"]),
+    ...mapActions("attractionStore", ["setAttraction"]),
 
     // kakaoMap Script 로드
     loadScript() {
@@ -84,12 +87,8 @@ export default {
         // 지도 생성 및 객체 리턴
         this.map = new window.kakao.maps.Map(container, options);
 
-        if (this.attractions) {
+        if (this.attractions.length) {
           this.displayMarkers();
-
-          if (this.markers.length) {
-            this.map.panTo(this.markers[0].position);
-          }
         }
       }
     },
@@ -121,7 +120,7 @@ export default {
          // 마커에 클릭 이벤트를 등록
         window.kakao.maps.event.addListener(marker, "click", () => {
           clickedInfoWindow.open(this.map, marker);
-          this.updateAttraction(el)
+          this.setAttraction(el)
          });
 
         // 마커에 마우스오버 이벤트를 등록

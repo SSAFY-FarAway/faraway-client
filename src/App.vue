@@ -8,9 +8,10 @@
 </template>
 
 <script>
-import AuthNavbar from "@/components/common/AuthNavbar";
-import TheNavbar from "@/components/common/TheNavbar";
-import TheFooter from "@/components/common/TheFooter";
+import AuthNavbar from "@/components/common/navigation/AuthNavbar";
+import TheNavbar from "@/components/common/navigation/TheNavbar";
+import TheFooter from "@/components/common/footer/TheFooter";
+import { mapState } from "vuex";
 
 export default {
   name: "App",
@@ -24,10 +25,17 @@ export default {
       inAuthUrl: false,
     };
   },
+  computed: {
+    ...mapState("memberStore", ["isLogin"]),
+  },
   methods: {
     urlCheck(value) {
       this.inAuthUrl =
         value.includes("login") || value.includes("register") ? true : false;
+    },
+    loginCheck() {
+      console.log(this.isLogin);
+      console.log("login?");
     },
   },
   watch: {
@@ -37,6 +45,7 @@ export default {
   },
   created() {
     this.urlCheck(this.$route.path);
+    this.loginCheck();
   },
 };
 </script>

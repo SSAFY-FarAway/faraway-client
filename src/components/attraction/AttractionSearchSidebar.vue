@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex justify-content-center">
     <b-button class="btn-primary" v-b-toggle.attraction-search-sidebar
       >찾아보기</b-button
     >
@@ -115,7 +115,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("attractionStore", ["updateAttractions"]),
+    ...mapActions("attractionStore", ["setAttractions"]),
     search() {
       http
         .get("/attraction", {
@@ -129,8 +129,8 @@ export default {
           },
         })
         .then((res) => {
-          this.attractions = res.data;
-          this.updateAttractions(res.data);
+          this.attractions = res.data.data;
+          this.setAttractions(res.data.data);
         });
     },
   },
