@@ -21,7 +21,9 @@
         </button>
       </form>
     </div>
+
     <!-- 게시글 List - 테이블 -->
+    <div id="table-container">
     <table class="table table-hover shadow rounded" id="table">
       <thead>
         <table-row-header :titles="titles" />
@@ -33,6 +35,7 @@
         <table-row-data v-for="post in posts" :key="post.id" :data="post" :titles="titles" domain="post" />
       </tbody>
     </table>
+  </div>
     <!-- 페이지네이션 -->
     <page-navigation :totalCnt="pageTotalCnt" />
   </div>
@@ -146,7 +149,7 @@ export default {
 </script>
 
 <style scoped>
-#table { 
+#table-container  { 
   min-height: 550px;
 }
 </style>

@@ -21,9 +21,10 @@
         </button>
       </form>
     </div>
-
+    
     <!-- 여행경로 List - 테이블 -->
-    <table class="table table-hover shadow rounded" id="table">
+    <div id="table-container">
+    <table class="table table-hover shadow rounded">
       <thead>
         <table-row-header :titles="titles" />
       </thead>
@@ -31,11 +32,12 @@
           <tr v-if='plans.length===0'>
             <td colspan="6">현재 등록된 게시글이 없습니다.</td>
           </tr>
-          <plan-table-row v-for="plan in plans" :key="plan.id" :plan="plan" :titles='titles' domain='plan'/>
+          <table-row-data v-for="plan in plans" :key="plan.id" :data="plan" :titles='titles' domain='plan' />
       </tbody>
     </table>
+  </div>
     <!-- 페이지네이션 -->
-    <page-navigation :totalCnt="plans.totalCnt" />
+    <page-navigation :totalCnt="pageTotalCnt" />
   </div>
 </template>
 
@@ -45,7 +47,7 @@ import pageHeader from "@/components/common/page/pageHeader";
 import tableRowHeader from "@/components/common/page/tableRowHeader";
 import PageNavigation from "@/components/common/page/pageNavigation";
 import writeBtn from "@/components/common/page/writeBtn";
-import PlanTableRow from "@/components/plan/PlanTableRow";
+import tableRowData from "@/components/common/page/tableRowData";
 
 export default {
   name: "PlanList",
@@ -54,7 +56,7 @@ export default {
     PageNavigation,
     tableRowHeader,
     writeBtn,
-    PlanTableRow,
+    tableRowData,
   },
   data() {
     return {
@@ -65,13 +67,14 @@ export default {
         { value: "member", text: "작성자" },
       ],
       titles: [
-        { title: "No", colSize: 1 },
-        { title: "제목", colSize: 5 },
-        { title: "작성자", colSize: 3 },
-        { title: "조회수", colSize: 1 },
-        { title: "작성일", colSize: 2 },
+        { title: "No", colSize: 1, colName: "id"},
+        { title: "제목", colSize: 5, colName: "title"  },
+        { title: "작성자", colSize: 3, colName: "loginId"  },
+        { title: "조회수", colSize: 1, colName: "hit"  },
+        { title: "작성일", colSize: 2, colName: "createdDate"  },
       ],
       plans: [],
+      pageTotalCnt: 0,
     };
   },
   created() {
@@ -80,12 +83,11 @@ export default {
   methods: {
     getPlans() {
       http
-      .get("/plan", {
-        headers: sessionStorage.getItem("access-token"),
-      })
+      .get("/plan")
       .then((res) => {
         console.log(res)
         if (res.status === 200) {
+          this.pageTotalCnt = res.data.pageTotalCnt;
           this.plans = res.data.data;
         }
       })
@@ -100,7 +102,7 @@ export default {
 };
 </script>
 <style scoped>
-#table { 
+#table-container { 
   min-height: 550px;
 }
 </style>
