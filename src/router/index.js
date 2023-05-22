@@ -107,6 +107,7 @@ const routes = [
         path: "write",
         name: "PlanWrite",
         component: PlanWrite,
+        props: true,
         children: [],
       },
       {

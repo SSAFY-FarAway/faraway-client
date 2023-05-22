@@ -13,6 +13,9 @@
     <b-card-text>
       {{ attraction.addr1 }}
     </b-card-text>
+    <button class="btn btn-primary" v-if="domain ==='plan'">
+      내 경로에 추가하기
+    </button>
   </b-card>
 </template>
 
@@ -24,13 +27,16 @@ export default {
   components: {},
   props: {
     attraction: Object,
+    domain : String,
   },
   data() {
     return {
       message: "",
     };
   },
-  created() {},
+  created() {
+    console.log(this.domain)
+  },
   methods: {
     ...mapActions("attractionStore", ["setAttraction"]),
     selectAttraction() {

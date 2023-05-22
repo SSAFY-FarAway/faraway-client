@@ -14,9 +14,14 @@
         <h2 class="row d-flex justify-content-around my-4">
           Write Travle Plan
         </h2>
+        <!-- 헤더 영역 -->
         <h4 class="section-heading text-uppercase">
-          'memberLoginId' 님이 추천하는 여행계획입니다
+          {{ loginMember.loginId }} 님이 추천하는 여행계획입니다
         </h4>
+        <!-- 관광지 추가 사이드바 버튼 -->
+        <div class="d-flex justify-content-center">
+          <attraction-search-sidebar domain='plan'/>
+        </div>
         <hr />
         <!-- 게시글 영역 -->
         <div class="col-md-12">
@@ -43,12 +48,14 @@
   </div>
 </template>
 <script>
+import AttractionSearchSidebar from '@/components/attraction/AttractionSearchSidebar'
 import PlanKakaoMap from "@/components/plan/PlanKakaoMap";
 import { mapActions, mapState } from 'vuex';
 
 export default {
   name: "PlanWrite",
   components: {
+    AttractionSearchSidebar,
     PlanKakaoMap,
   },
   data() {
@@ -62,10 +69,11 @@ export default {
     };
   },
   computed : {
-    ...mapState("attractionStore",["pickedAttractions"])
+    ...mapState("attractionStore",["pickedAttractions"]),
+    ...mapState("memberStore",["loginMember"])
   },
   created() {
-    console.log(this.pickedAttractions)
+    console.log()
   },
   methods: {
     ...mapActions("attractionStore",["addPickedAttraction","removePickedAttraction"])

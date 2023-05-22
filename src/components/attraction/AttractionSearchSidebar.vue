@@ -44,9 +44,9 @@
         v-for="attraction in attractions"
         :key="attraction.contentId"
       >
-        <attraction-search-result-item :attraction="attraction" />
+        <attraction-search-result-item :attraction="attraction" :domain='domain'/>
       </div>
-      <attraction-search-result-totop-item v-if="attractions.length" />
+      <attraction-search-result-totop-item v-if="attractions.length"/>
     </b-sidebar>
   </div>
 </template>
@@ -61,7 +61,10 @@ export default {
   name: "AttractionSearchSidebar",
   components: {
     AttractionSearchResultItem,
-    AttractionSearchResultTotopItem,
+    AttractionSearchResultTotopItem
+  },
+  props: {
+    domain:String
   },
   data() {
     return {
@@ -96,6 +99,7 @@ export default {
         });
       }
     });
+    console.log(this.domain)
   },
   watch: {
     sidoSelected() {
