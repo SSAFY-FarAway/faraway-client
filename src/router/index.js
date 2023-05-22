@@ -31,11 +31,13 @@ const beforeLogin = isAuth => (from, to, next) => {
   console.log(store);
   const isLogin = store.getters["memberStore/getIsLogin"];
   if ((isLogin && isAuth) || (!isLogin && !isAuth)) {
-    return next()
+    console.log("여 왔는가");
+    return next(to);
   } else {
+    console.log("여기로 왔는가");
     // 로그인 화면으로 이동
     alert("로그인이 필요한 페이지 입니다. 로그인 페이지로 이동합니다.");
-    next("/member/login");
+    router.replace("/member/login");
   }
 }
 

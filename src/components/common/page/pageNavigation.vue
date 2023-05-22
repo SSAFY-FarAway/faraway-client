@@ -2,16 +2,16 @@
   <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
       <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
+        <a class="page-link" @click="prevPage" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
       <!-- TODO : 토탈 카운트(totalCnt)에 따라서 개수 보여주기 -->
-      <li v-for="cnt in totalCnt" :key="cnt" class="page-item">
-        <a class="page-link" @click="movePage">{{ cnt }}</a>
+      <li v-for="page in visiblePages" :key="page" class="page-item">
+        <a class="page-link" @click="movePage(page)">{{ page }}</a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
+        <a class="page-link" @click="nextPage" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
@@ -21,31 +21,67 @@
 
 <script>
 export default {
-  name: "PlanPagination",
+  name: "pageNavigation",
   components: {},
   props: {
-    totalCnt: Number,
+    totalPages: Number,
   },
   data() {
-    return {};
+    return {
+      currentPage: 1,
+      pageSize: 10,
+    };
   },
-  created() {},
+  created() {
+    const pageNumber = this.$route.query.pageNumber;
+    this.currentPage = pageNumber ? parseInt(pageNumber[0], 10) || 1 : 1;
+  },
+  watch: {
+    "$route.query.pageNumber"(newValue) {
+      this.currentPage = parseInt(newValue) || 1;
+    },
+  },
   methods: {
-    movePage(e) {
-      const categoryId = this.$route.query.categoryId;
-      this.$router
-        .push(
-          `${this.$route.path}?categoryId=${categoryId}&pageNumber=${e.target.text}`
-        )
-        .catch(() => {});
+    movePage(page) {
+      const urlParams = new URLSearchParams(this.$route.query);
+      urlParams.set('pageNumber', page);
+      const url = `${this.$route.path}?${urlParams.toString()}`;
 
-      // 스크롤 toTop
+      this.$router.push(url).catch(() => {});
+
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
     },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.movePage(this.currentPage + 1);
+      } else {
+        this.$alertDanger("이동불가", "마지막 페이지입니다.");
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.movePage(this.currentPage-1);
+      } else {
+        this.$alertDanger("이동불가", "시작 페이지입니다.");
+      }
+    }
   },
+  computed: {
+    visiblePages() {
+      const halfPageSize = Math.floor((this.pageSize - 1) / 2);
+      let startPage = Math.max(1, this.currentPage - halfPageSize);
+      let endPage = Math.min(this.totalPages, startPage + this.pageSize - 1);
+
+      if (endPage - startPage + 1 < this.pageSize) {
+        startPage = Math.max(1, endPage - this.pageSize + 1);
+      }
+
+      return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+    },
+  }
 };
 </script>
 
