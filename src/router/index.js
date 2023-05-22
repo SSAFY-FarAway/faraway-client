@@ -35,7 +35,7 @@ const beforeLogin = (isAuth) => (from, to, next) => {
   } else {
     // 로그인 화면으로 이동
     alert("로그인이 필요한 페이지 입니다. 로그인 페이지로 이동합니다.");
-    next("/member/login");
+    router.replace("/member/login");
   }
 };
 
