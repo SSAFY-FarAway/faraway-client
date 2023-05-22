@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+axios.defaults.headers.common["access-token"] = sessionStorage.getItem("access-token");
 
 export default axios.create({
   baseURL: "http://localhost",
