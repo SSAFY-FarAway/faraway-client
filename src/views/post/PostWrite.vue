@@ -3,7 +3,7 @@
     <!-- Header -->
     <page-header title="WRITE" subTitle="게시글 작성"/>
     <hr />
-    <b-form-select class="col-3 text-center"  id="category-select-box" v-model="request.categoryId" :options="options"
+    <b-form-select class="col-2" style="min-width:190px"  id="category-select-box" v-model="request.categoryId" :options="options"
   >
   </b-form-select>
     <!-- 게시글 제목 -->
