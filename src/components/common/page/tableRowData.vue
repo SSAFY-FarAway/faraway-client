@@ -1,5 +1,5 @@
 <template>
-  <tr class="text-center" @click="moveDetail">
+  <tr id="table-row" class="text-center" @click="moveDetail">
     <td v-for="title in titles" :key="title.title">
       {{
         title.colName === "createdDate"
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "PostTableRow",
+  name: "tableRowData",
   components: {},
   props: {
     titles: Array,
@@ -27,4 +27,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#table-row td{ 
+  max-height: 50.5px;
+}
+</style>
