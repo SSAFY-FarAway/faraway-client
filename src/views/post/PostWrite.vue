@@ -3,7 +3,7 @@
     <!-- Header -->
     <page-header title="WRITE" subTitle="게시글 작성"/>
     <hr />
-    <b-form-select id="category-select-box" v-model="request.categoryId" :options="options"
+    <b-form-select class="col-3 text-center"  id="category-select-box" v-model="request.categoryId" :options="options"
   >
   </b-form-select>
     <!-- 게시글 제목 -->
@@ -60,6 +60,7 @@ export default {
         { value: null, text: "카테고리 선택" },
         { value: 1, text: "공지사항" },
         { value: 2, text: "자유게시판" },
+        { value: 3, text: "Q&A 게시판" },
       ],
       request: {
         title: "",
