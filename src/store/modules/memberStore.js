@@ -4,7 +4,11 @@ const memberStore = {
     isLogin: false,
     loginMember: null,
   },
-  gatters: {},
+  getters: {
+    getIsLogin(state){
+      return state.isLogin;
+    }
+  },
   mutations: {
     SET_IS_LOGIN(state, isLogin) {
       state.isLogin = isLogin;

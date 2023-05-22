@@ -25,6 +25,19 @@ import HotPlaceDetail from "@/views/hotplace/HotPlaceDetail.vue";
 import HotPlaceList from "@/views/hotplace/HotPlaceList.vue";
 import HotPlaceWrite from "@/views/hotplace/HotPlaceWrite.vue";
 import hotPlaceModify from "@/views/hotplace/HotPlaceModify.vue";
+import store from "@/store";
+
+const beforeLogin = (isAuth) => (from, to, next) => {
+  console.log(store);
+  const isLogin = store.getters["memberStore/getIsLogin"];
+  if ((isLogin && isAuth) || (!isLogin && !isAuth)) {
+    return next();
+  } else {
+    // 로그인 화면으로 이동
+    alert("로그인이 필요한 페이지 입니다. 로그인 페이지로 이동합니다.");
+    next("/member/login");
+  }
+};
 
 Vue.use(VueRouter);
 
@@ -68,11 +81,13 @@ const routes = [
         path: "find",
         name: "MemberFind",
         component: MemberFind,
+        beforeEnter: beforeLogin(true),
       },
       {
         path: ":memberId",
         name: "MemberMypage",
         component: MemberMypage,
+        beforeEnter: beforeLogin(true),
       },
     ],
   },
@@ -108,12 +123,14 @@ const routes = [
         name: "PlanWrite",
         component: PlanWrite,
         props: true,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":planId",
         name: "PlanDetail",
         component: PlanDetail,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
     ],
@@ -134,18 +151,21 @@ const routes = [
         path: "write",
         name: "PostWrite",
         component: PostWrite,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":postId",
         name: "PostDetail",
         component: PostDetail,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":postId/edit",
         name: "PostModify",
         component: PostModify,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
     ],
@@ -166,18 +186,21 @@ const routes = [
         path: "write",
         name: "HotPlaceWrite",
         component: HotPlaceWrite,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":id",
         name: "HotPlaceDetail",
         component: HotPlaceDetail,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
       {
         path: ":id/edit",
         name: "HotPlaceModify",
         component: hotPlaceModify,
+        beforeEnter: beforeLogin(true),
         children: [],
       },
     ],
