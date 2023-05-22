@@ -21,12 +21,15 @@ export default {
     };
   },
   mounted() {
-    if (!(window.kakao && window.kakao.maps)) {
+    if (window.kakao && window.kakao.maps) {
+      // 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
+      this.loadMap();
+    } else {
+      // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
     }
   },
   created() {
-    this.loadScript();
   },
   watch: {
     selectedAttraction(after, before) {

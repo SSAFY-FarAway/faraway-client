@@ -7,9 +7,9 @@
         </a>
       </li>
       <!-- TODO : 토탈 카운트(totalCnt)에 따라서 개수 보여주기 -->
-      <li class="page-item"><a class="page-link" @click="movePage">1</a></li>
-      <li class="page-item"><a class="page-link" @click="movePage">2</a></li>
-      <li class="page-item"><a class="page-link" @click="movePage">3</a></li>
+      <li v-for="cnt in totalCnt" :key="cnt" class="page-item">
+        <a class="page-link" @click="movePage">{{ cnt }}</a>
+      </li>
       <li class="page-item">
         <a class="page-link" href="#" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
@@ -27,16 +27,23 @@ export default {
     totalCnt: Number,
   },
   data() {
-    return {
-      message: "",
-    };
+    return {};
   },
-  created() {
-    console.log(this.totalCnt);
-  },
+  created() {},
   methods: {
     movePage(e) {
-      this.$router.push(`${this.$route.path}?page=${e.target.text}`);
+      const categoryId = this.$route.query.categoryId;
+      this.$router
+        .push(
+          `${this.$route.path}?categoryId=${categoryId}&pageNumber=${e.target.text}`
+        )
+        .catch(() => {});
+
+      // 스크롤 toTop
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     },
   },
 };

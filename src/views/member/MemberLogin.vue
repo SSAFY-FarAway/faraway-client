@@ -57,8 +57,9 @@
 </template>
 
 <script>
-import http from '@/utils/api/http';
-import { mapActions } from 'vuex';
+import http from "@/utils/api/http";
+import jwtDecode from "jwt-decode";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "MemberSignUp",
@@ -72,23 +73,63 @@ export default {
     };
   },
   created() {},
+  computed: {
+    ...mapState("memberStore", ["isLogin"]),
+  },
   methods: {
-    ...mapActions("memberStore", ["setIsLogin","setLoginMember"]),
-    login() {
-      http.post("/member/login", this.loginMember).then(res => {
-        console.log(res)
-        if (res.status === 200) {
-          this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.")
-          this.setIsLogin(true)
-          this.setLoginMember(res.data)
-          this.$router.replace("/") 
-        }
-      }).catch(() => {
-        this.$alertDanger("로그인 실패", "로그인에 실패했습니다. 추후 예외 처리 로직 추가")
-        this.setIsLogin(false)
-      })
-    }
+    ...mapActions("memberStore", ["setIsLogin", "setLoginMember"]),
+    async login() {
+      await http
+        .post("/member/login", this.loginMember)
+        .then((res) => {
+          // console.log(res);
+          if (res.status === 200) {
+            this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.");
+            this.setIsLogin(true);
+            sessionStorage.setItem("access-token", res.data["access-token"]);
+            sessionStorage.setItem("refresh-token", res.data["refresh-token"]);
 
+            // TODO : 만약 자동로그인 설정돼있으면, 쿠키에도 refresh-token 저장
+            // this.$cookies.set("refresh-token", res.data["refresh-token"]);
+
+            this.$router.replace("/");
+          }
+        })
+        .catch(() => {
+          this.$alertDanger(
+            "로그인 실패",
+            "로그인에 실패했습니다. 추후 예외 처리 로직 추가"
+          );
+          this.setIsLogin(false);
+        });
+
+      if (this.isLogin) {
+        this.getMemberInfo();
+      }
+    },
+    async getMemberInfo() {
+      console.log("getMemberInfo");
+      const accessToken = sessionStorage.getItem("access-token");
+      const decodedAccessToken = jwtDecode(accessToken);
+      const memberId = decodedAccessToken.memberId;
+
+      await http
+        .get(`/member/info/${memberId}`, {
+          headers: {
+            "access-token": accessToken,
+          },
+        })
+        .then((res) => {
+          this.setLoginMember(res.data.loginMember);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$alertDanger(
+            "사용자 정보 불러오기 실패 !",
+            "추후 예외처리 추가 예정"
+          );
+        });
+    },
   },
 };
 </script>
