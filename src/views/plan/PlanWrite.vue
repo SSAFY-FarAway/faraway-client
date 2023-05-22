@@ -19,9 +19,19 @@
           {{ loginMember.loginId }} 님이 추천하는 여행계획입니다
         </h4>
         <!-- 관광지 추가 사이드바 버튼 -->
-        <div class="d-flex justify-content-center">
-          <attraction-search-sidebar domain='plan'/>
+        <div class="d-flex justify-content-center"></div>
+        <div class="row p-0 m-0 col-12">
+          <plan-card
+            class="col-3 p-0 mb-4"
+            v-for="(plan, idx) in myPlan"
+            :key="plan.contentId"
+            :plan="plan"
+            :idx="idx + 1"
+          ></plan-card>
+          <!-- arrow-right-circle-fill -->
+          <attraction-search-sidebar domain="plan" />
         </div>
+
         <hr />
         <!-- 게시글 영역 -->
         <div class="col-md-12">
@@ -48,15 +58,17 @@
   </div>
 </template>
 <script>
-import AttractionSearchSidebar from '@/components/attraction/AttractionSearchSidebar'
+import AttractionSearchSidebar from "@/components/attraction/AttractionSearchSidebar";
 import PlanKakaoMap from "@/components/plan/PlanKakaoMap";
-import { mapActions, mapState } from 'vuex';
+import PlanCard from "@/components/plan/PlanCard.vue";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "PlanWrite",
   components: {
     AttractionSearchSidebar,
     PlanKakaoMap,
+    PlanCard,
   },
   data() {
     return {
@@ -68,15 +80,18 @@ export default {
       attractionPath: [],
     };
   },
-  computed : {
-    ...mapState("attractionStore",["pickedAttractions"]),
-    ...mapState("memberStore",["loginMember"])
+  computed: {
+    ...mapState("attractionStore", ["pickedAttractions"]),
+    ...mapState("memberStore", ["loginMember"]),
+    ...mapState("planStore", ["myPlan"]),
+    ...mapGetters("planStore", ["getContentIds"]),
   },
-  created() {
-    console.log()
-  },
+  created() {},
   methods: {
-    ...mapActions("attractionStore",["addPickedAttraction","removePickedAttraction"])
+    ...mapActions("attractionStore", [
+      "addPickedAttraction",
+      "removePickedAttraction",
+    ]),
   },
 };
 </script>

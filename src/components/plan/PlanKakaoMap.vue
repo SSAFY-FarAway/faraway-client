@@ -18,7 +18,7 @@ export default {
       selectMarker: null,
       markers: [],
       overlays: [],
-      plans : [],
+      plans: [],
     };
   },
   mounted() {
@@ -30,11 +30,9 @@ export default {
       this.loadScript();
     }
   },
-  created() {
-  },
+  created() {},
   watch: {
     selectedAttraction(after, before) {
-      console.log(after)
       // 시점 이동
       this.map.setCenter(
         new window.kakao.maps.LatLng(after.latitude, after.longitude)
@@ -46,7 +44,7 @@ export default {
       }
 
       // 현재 띄워진 인포윈도우 open
-      after.clickedInfoWindow.open(this.map, after.marker)
+      after.clickedInfoWindow.open(this.map, after.marker);
     },
 
     attractions(atts) {
@@ -55,13 +53,9 @@ export default {
         new window.kakao.maps.LatLng(atts[0].latitude, atts[0].longitude)
       );
     },
-   
   },
   computed: {
-    ...mapState("attractionStore", [
-      "attractions",
-      "selectedAttraction",
-    ]),
+    ...mapState("attractionStore", ["attractions", "selectedAttraction"]),
   },
   methods: {
     ...mapActions("attractionStore", ["setAttraction"]),
@@ -96,9 +90,8 @@ export default {
 
     // 마커 표시
     displayMarkers() {
-      this.markers.forEach(mk => mk.setMap(null));
+      this.markers.forEach((mk) => mk.setMap(null));
       this.attractions.forEach((el) => {
-
         // 인포윈도우 생성
         const infoWindow = new window.kakao.maps.InfoWindow({
           content: this.makeContent(el),
@@ -118,22 +111,25 @@ export default {
         el.clickedInfoWindow = clickedInfoWindow;
         el.marker = marker;
 
-         // 마커에 클릭 이벤트를 등록
+        // 마커에 클릭 이벤트를 등록
         window.kakao.maps.event.addListener(marker, "click", () => {
           clickedInfoWindow.open(this.map, marker);
-          this.setAttraction(el)
-         });
+          this.setAttraction(el);
+        });
 
         // 마커에 마우스오버 이벤트를 등록
-        window.kakao.maps.event.addListener(marker,"mouseover",() => {infoWindow.open(this.map, marker);});
+        window.kakao.maps.event.addListener(marker, "mouseover", () => {
+          infoWindow.open(this.map, marker);
+        });
 
         // 마커에 마우스아웃 이벤트를 등록
-        window.kakao.maps.event.addListener(marker,"mouseout", () => {infoWindow.close();});
+        window.kakao.maps.event.addListener(marker, "mouseout", () => {
+          infoWindow.close();
+        });
 
         // markers에 marker push
         this.markers.push(marker);
       });
-      
     },
 
     // 마커 인포윈도우의 content 만들기
@@ -159,13 +155,8 @@ export default {
         </div>
     `;
     },
-    log() {
-      console.log("Gdgdg")
-    }
   },
 };
-
-
 </script>
 
 <style scoped>

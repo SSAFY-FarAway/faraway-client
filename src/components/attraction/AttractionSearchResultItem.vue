@@ -13,7 +13,11 @@
     <b-card-text>
       {{ attraction.addr1 }}
     </b-card-text>
-    <button class="btn btn-primary" v-if="domain ==='plan'">
+    <button
+      class="btn btn-primary"
+      v-if="domain === 'plan'"
+      @click="addMyPath(attraction)"
+    >
       내 경로에 추가하기
     </button>
   </b-card>
@@ -27,20 +31,20 @@ export default {
   components: {},
   props: {
     attraction: Object,
-    domain : String,
+    domain: String,
   },
   data() {
-    return {
-      message: "",
-    };
+    return {};
   },
-  created() {
-    console.log(this.domain)
-  },
+  created() {},
   methods: {
     ...mapActions("attractionStore", ["setAttraction"]),
+    ...mapActions("planStore", ["addPlan"]),
     selectAttraction() {
       this.setAttraction(this.attraction);
+    },
+    addMyPath(attraction) {
+      this.addPlan(attraction);
     },
   },
 };

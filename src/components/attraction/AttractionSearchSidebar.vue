@@ -1,6 +1,24 @@
 <template>
   <div class="d-flex justify-content-center">
-    <b-button class="btn-primary" v-b-toggle.attraction-search-sidebar
+    <b-card
+      v-if="domain === 'plan'"
+      class="font-small justify-content-center"
+      v-b-toggle.attraction-search-sidebar
+      no-body
+      style="height: 265.25px; width: 220px; border-color: var(--main-color)"
+    >
+      <h4 class="m-0" @click="toTop">
+        <b-icon
+          class="my-3"
+          style="width: 100%; color: var(--main-color)"
+          icon="plus-circle"
+          animation="fade"
+          font-scale="3"
+        ></b-icon
+        >나만의 경로<br />추가하기
+      </h4>
+    </b-card>
+    <b-button v-else class="btn-primary" v-b-toggle.attraction-search-sidebar
       >찾아보기</b-button
     >
     <b-sidebar
@@ -44,9 +62,12 @@
         v-for="attraction in attractions"
         :key="attraction.contentId"
       >
-        <attraction-search-result-item :attraction="attraction" :domain='domain'/>
+        <attraction-search-result-item
+          :attraction="attraction"
+          :domain="domain"
+        />
       </div>
-      <attraction-search-result-totop-item v-if="attractions.length"/>
+      <attraction-search-result-totop-item v-if="attractions.length" />
     </b-sidebar>
   </div>
 </template>
@@ -55,16 +76,19 @@
 import http from "@/utils/api/http";
 import AttractionSearchResultItem from "./AttractionSearchResultItem";
 import AttractionSearchResultTotopItem from "./AttractionSearchResultTotopItem";
+import { BIcon } from "bootstrap-vue";
+
 import { mapActions } from "vuex";
 
 export default {
   name: "AttractionSearchSidebar",
   components: {
+    BIcon,
     AttractionSearchResultItem,
-    AttractionSearchResultTotopItem
+    AttractionSearchResultTotopItem,
   },
   props: {
-    domain:String
+    domain: String,
   },
   data() {
     return {
@@ -99,7 +123,7 @@ export default {
         });
       }
     });
-    console.log(this.domain)
+    console.log(this.domain);
   },
   watch: {
     sidoSelected() {
@@ -136,6 +160,12 @@ export default {
           this.attractions = res.data.data;
           this.setAttractions(res.data.data);
         });
+    },
+    toTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     },
   },
 };
