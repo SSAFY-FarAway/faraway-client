@@ -82,7 +82,7 @@ export default {
       await http
         .post("/member/login", this.loginMember)
         .then((res) => {
-          // console.log(res);
+          console.log(res);
           if (res.status === 200) {
             this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.");
             this.setIsLogin(true);
@@ -108,18 +108,14 @@ export default {
       }
     },
     async getMemberInfo() {
-      console.log("getMemberInfo");
       const accessToken = sessionStorage.getItem("access-token");
       const decodedAccessToken = jwtDecode(accessToken);
       const memberId = decodedAccessToken.memberId;
 
       await http
-        .get(`/member/info/${memberId}`, {
-          headers: {
-            "access-token": accessToken,
-          },
-        })
+        .get(`/member/info/${memberId}`)
         .then((res) => {
+          console.log(res)
           this.setLoginMember(res.data.loginMember);
         })
         .catch((error) => {
