@@ -33,7 +33,7 @@
               <h5 class=" d-flex justify-content-start">
                   관광지 소개
               </h5>
-              <textarea class="form-control" readonly id="" rows="3"  ></textarea>
+              <textarea class="form-control" readonly id="" rows="3" v-model="selectedAttraction.overview" ></textarea>
           </div>
     </div>
     
