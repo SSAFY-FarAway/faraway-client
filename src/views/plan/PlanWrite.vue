@@ -18,6 +18,8 @@
         <h4 class="section-heading text-uppercase">
           {{ loginMember.loginId }} 님이 추천하는 여행계획입니다
         </h4>
+        <hr />
+
         <!-- 관광지 추가 사이드바 버튼 -->
         <div class="d-flex justify-content-center"></div>
         <div class="row p-0 m-0 col-12">
@@ -37,7 +39,7 @@
         <div class="col-md-12">
           <div class="mb-3">
             <h5 class="d-flex justify-content-start">제목</h5>
-            <input class="form-control" type="text" :value="plan.title" />
+            <input class="form-control" type="text" v-model="plan.title" />
           </div>
           <div>
             <h5 class="d-flex justify-content-start">내용</h5>
@@ -45,14 +47,18 @@
               class="form-control"
               id=""
               rows="3"
-              :value="plan.content"
+              v-model="plan.content"
             ></textarea>
           </div>
         </div>
       </div>
       <div class="d-flex justify-content-center mt-5">
-        <b-button class="col-6 mr-1" variant="secondary">CANCLE</b-button>
-        <b-button class="col-6 ml-1" variant="primary">WRITE</b-button>
+        <b-button class="col-6 mr-1" variant="secondary" @click="$router.go(-1)"
+          >CANCLE</b-button
+        >
+        <b-button class="col-6 ml-1" variant="primary" @click="writePlan"
+          >WRITE</b-button
+        >
       </div>
     </section>
   </div>
@@ -61,6 +67,7 @@
 import AttractionSearchSidebar from "@/components/attraction/AttractionSearchSidebar";
 import PlanKakaoMap from "@/components/plan/PlanKakaoMap";
 import PlanCard from "@/components/plan/PlanCard.vue";
+import http from "@/utils/api/http";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
@@ -75,7 +82,7 @@ export default {
       plan: {
         title: "",
         content: "",
-        travelPlan: [],
+        travelPlan: "",
       },
       attractionPath: [],
     };
@@ -92,6 +99,19 @@ export default {
       "addPickedAttraction",
       "removePickedAttraction",
     ]),
+    writePlan() {
+      this.plan.travelPlan = `this.getContentIds.toString()`;
+
+      http.post("/plan/", this.plan).then((res) => {
+        if (res.status === 200) {
+          this.$alertSuccess(
+            "여행 계획 작성 성공",
+            "여행 계획을 성공적으로 작성했습니다. 해당 게시글로 이동합니다."
+          );
+          this.$router.replace(`/plan/${res.data}`);
+        }
+      });
+    },
   },
 };
 </script>

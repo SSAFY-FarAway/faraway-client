@@ -47,6 +47,7 @@ export default {
   methods: {
     ...mapActions("planStore", ["removePlan"]),
     removeMyPath() {
+      this.$alertSuccess("경로 삭제", "경로가 성공적으로 삭제되었습니다.");
       this.removePlan(this.plan);
     },
   },

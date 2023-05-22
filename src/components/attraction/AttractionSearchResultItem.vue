@@ -43,6 +43,7 @@ export default {
       this.setAttraction(this.attraction);
     },
     addMyPath(attraction) {
+      this.$alertSuccess("경로 추가", "경로가 성공적으로 추가되었습니다.");
       this.addPlan(attraction);
     },
   },
