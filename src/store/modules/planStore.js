@@ -6,13 +6,17 @@ const planStore = {
   getters: {
     getContentIds(state) {
       const contentIds = [];
-      console.log(state);
       state.myPlan.forEach((el) => {
-        console.log(el);
-        console.log(el.contentId);
         contentIds.push(el.contentId);
       });
       return contentIds;
+    },
+    getMarkers(state) {
+      const markers = [];
+      state.myPlan.forEach((el) => {
+        markers.push(el.marker);
+      });
+      return markers;
     },
   },
   mutations: {

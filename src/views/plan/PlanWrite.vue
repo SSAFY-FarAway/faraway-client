@@ -5,7 +5,7 @@
       <div class="row m-0 p-0">
         <!-- 사용자 추천 경로 -->
         <div class="col-12 m-0 p-0 text-center">
-          <plan-kakao-map mapId="write-map" :attractions="attractionPath" />
+          <plan-kakao-map mapId="write-map" />
         </div>
       </div>
     </div>
@@ -100,7 +100,7 @@ export default {
       "removePickedAttraction",
     ]),
     writePlan() {
-      this.plan.travelPlan = `this.getContentIds.toString()`;
+      this.plan.travelPlan = `${this.getContentIds.toString()}`;
 
       http.post("/plan/", this.plan).then((res) => {
         if (res.status === 200) {
