@@ -46,7 +46,7 @@
 
       <!-- 파일 첨부 영역 -->
       <!-- TODO: 파일 없는 경우 처리 해야함 -->
-      <div v-if="attachments">
+      <div v-if="attachments.length">
         <p class="font-weight-bold">첨부파일</p>
         <ul class="pl-3">
           <li v-for="attachment in attachments" :key="attachment.id">
