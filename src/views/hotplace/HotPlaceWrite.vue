@@ -100,7 +100,7 @@ export default {
       const formData = new FormData();
       [...this.files].forEach((file) => formData.append("files", file));
       formData.append("request", new Blob([JSON.stringify(this.request)], {type: "application/json"}));
-      http.post("/hotplace", formData, {
+      http.post("/hot-place", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
