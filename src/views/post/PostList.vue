@@ -122,7 +122,7 @@ export default {
       const categoryId = this.$route.query.categoryId;
       const pageNumber = this.$route.query.pageNumber;
 
-      let url = `/post?categoryId=${categoryId}&`;
+      let url = `/post?categoryId=${categoryId}`;
       if (pageNumber) {
         url += `&pageNumber=${pageNumber}`;
       }
