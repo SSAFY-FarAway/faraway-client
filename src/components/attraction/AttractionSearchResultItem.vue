@@ -2,8 +2,7 @@
   <!-- TODO : img 디폴트 이미지 추가할 것. -->
   <b-card
     :title="attraction.title"
-    :img-src="attraction.firstImage"
-    img-alt="Image"
+    :img-src="$options.filters.defaultImgSrcFilter(attraction.firstImage)"
     img-top
     tag="article"
     style="max-width: 20rem"

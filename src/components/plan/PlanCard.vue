@@ -4,7 +4,7 @@
       <p class="m-1 font-weight-bold">{{ idx }}번째 경로</p>
       <b-card-img
         class="p-2"
-        :src="plan.firstImage"
+        :src="$options.filters.defaultImgSrcFilter(plan.firstImage)"
         style="height: 130px"
       ></b-card-img>
       <b-list-group flush>
