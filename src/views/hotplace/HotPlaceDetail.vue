@@ -135,7 +135,7 @@ export default {
   },
   created() {
     http
-        .get(`/hotplace/${this.$route.params.id}`)
+        .get(`/hot-place/${this.$route.params.id}`)
         .then((response) => {
           console.log(response);
           this.hotPlace = response.data;
