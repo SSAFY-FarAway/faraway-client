@@ -61,11 +61,11 @@
       <!-- 좋아요 버튼 -->
       <div class="d-flex justify-content-center align-items-center mt-5">
         <!-- 좋아요 눌렀을 때 -->
-        <button v-if="this.testLike" class="btn btn-primary">
+        <button v-if="this.likeId" class="btn btn-primary" @click="unlike">
           <b-icon icon="heart-fill" font-scale="1"></b-icon>
         </button>
         <!-- 좋아요 안 눌렀을 때 -->
-        <button v-else class="btn btn-outline-secondary">
+        <button v-else class="btn btn-outline-secondary" @click="like">
           <b-icon icon="heart-fill" font-scale="1"></b-icon>
         </button>
       </div>
@@ -100,49 +100,94 @@ import pageHeader from "@/components/common/page/pageHeader";
 import CommentForm from "@/components/common/comment/CommentForm.vue";
 import CommentRow from "@/components/common/comment/CommentRow";
 import { BIcon } from "bootstrap-vue";
+import jwtDecode from "jwt-decode";
 
 export default {
-  name: "PostDetail",
-  components: { pageHeader, CommentRow, CommentForm, BIcon },
-  data() {
-    return {
-      post: {},
-      comments: [],
-      attachments: [],
-      testLike: true,
-    };
-  },
-  created() {
-    http.get(`/post/${this.$route.params.postId}`).then((res) => {
-      console.log(res);
-      this.post = res.data;
-      this.comments = this.post.postCommentResponses;
-      this.attachments = this.post.attachmentResponses;
-    });
-  },
-  methods: {
-    moveModify() {
-      const url = `${this.$route.path}/edit`;
-      console.log(url);
-      this.$router.push(url);
+    name: "PostDetail",
+    components: {pageHeader, CommentRow, CommentForm, BIcon},
+    data() {
+        return {
+            post: {},
+            comments: [],
+            attachments: [],
+            likeId: Number,
+        };
     },
-    deletePost() {
-      if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
-        http.delete(`/post/${this.$route.params.postId}`).then((res) => {
-          if (res.status === 200) {
-            alert("삭제가 완료되었습니다.");
-            this.$router.replace(`/post/list`);
-          }
+    created() {
+        http.get(`/post/${this.$route.params.postId}`).then((res) => {
+            console.log(res);
+            this.post = res.data;
+            this.comments = this.post.postCommentResponses;
+            this.attachments = this.post.attachmentResponses;
+            this.likeId = this.post.likeId;
         });
-      }
     },
-    toTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+    methods: {
+        moveModify() {
+            const url = `${this.$route.path}/edit`;
+            console.log(url);
+            this.$router.push(url);
+        },
+        deletePost() {
+            if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
+                http.delete(`/post/${this.$route.params.postId}`).then((res) => {
+                    if (res.status === 200) {
+                        alert("삭제가 완료되었습니다.");
+                        this.$router.replace(`/post/list`);
+                    }
+                });
+            }
+        },
+        toTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        },
+        like() {
+            const accessToken = sessionStorage.getItem("access-token");
+            const decodedAccessToken = jwtDecode(accessToken);
+            const memberId = decodedAccessToken.memberId;
+
+            const data = {
+                postId: this.post.id,
+                memberId: memberId
+            }
+
+            http
+                .post("/post/like", data)
+                .then((response) => {
+                    console.log(`like response: ${response}`);
+                    if (response.status === 200) {
+                        this.likeId = response.data;
+                        this.$alertSuccess("좋아요", "게시글에 좋아요를 했습니다.");
+                    }
+                })
+                .catch(() => {
+                    this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+                });
+        },
+        unlike() {
+            console.log(`likeId: ${this.likeId}`)
+            http
+                .delete(`/post/like/${this.likeId}`)
+                .then((response) => {
+                    if(response.status === 200) {
+                        this.likeId = null;
+                        this.$alertSuccess("좋아요 취소", "좋아요 취소를 누르셨습니다.");
+                    }
+                })
+                .catch(() => {
+                    this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+                })
+        }
     },
-  },
+    watch: {
+        likeId(after, before){
+            console.log(before)
+            console.log(after)
+        }
+    }
 };
 </script>
 <style scoped>
