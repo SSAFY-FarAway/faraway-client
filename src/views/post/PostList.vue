@@ -14,9 +14,10 @@
         <input
           type="text"
           class="form-control ml-1"
+          v-model="keyword"
           placeholder="검색어 입력"
         />
-        <button type="button" class="btn btn-secondary ml-1 text-uppercase">
+        <button type="button" class="btn btn-secondary ml-1 text-uppercase" @click="search">
           Search
         </button>
       </form>
@@ -43,7 +44,7 @@
       </table>
     </div>
     <!-- 페이지네이션 -->
-    <page-navigation :totalCnt="pageTotalCnt" />
+    <page-navigation :totalPages="pageTotalCnt" />
   </div>
 </template>
 
@@ -67,6 +68,7 @@ export default {
   data() {
     return {
       selected: null,
+      keyword: "",
       options: [
         { value: null, text: "검색 조건" },
         { value: "title", text: "제목" },
@@ -79,7 +81,6 @@ export default {
         { title: "조회수", colSize: 1, colName: "hit" },
         { title: "작성일", colSize: 2, colName: "createdDate" },
       ],
-      keyword: "",
       posts: [],
       pageTotalCnt: 0,
     };
@@ -88,8 +89,7 @@ export default {
     this.getPosts();
   },
   watch: {
-    "$route.params"() {
-      console.log("gdgd");
+    "$route.fullPath"() {
       this.getPosts();
     },
   },
@@ -116,41 +116,36 @@ export default {
     },
   },
   methods: {
-    search() {
-      let url = `/post?${this.selected}=${this.keyword}&categoryId=1`;
-
-      http
-        .get(url)
-        .then((res) => {
-          if (res.status === 200) {
-            this.posts = res.data.data;
-          }
-        })
-        .catch(() => {
-          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
-        });
-    },
-
     getPosts() {
       const categoryId = this.$route.query.categoryId;
-      const pageNumber = this.$route.query.pageNumber;
-
-      let url = `/post?categoryId=${categoryId}`;
-      if (pageNumber) {
-        url += `&pageNumber=${pageNumber}`;
-      }
+      const pageNumber = this.isEmpty(this.$route.query.pageNumber);
+      const title = this.isEmpty(this.$route.query.title);
+      const content = this.isEmpty(this.$route.query.content);
+      let url = `/post?title=${title}&content=${content}&categoryId=${categoryId}&pageNumber=${pageNumber}`
+      console.log(`getURL: ${url}`);
       http
-        .get(url)
-        .then((res) => {
-          if (res.status === 200) {
-            this.pageTotalCnt = res.data.pageTotalCnt;
-            this.posts = res.data.data;
-          }
-        })
-        .catch(() => {
-          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
-        });
+          .get(url)
+          .then((res) => {
+            if (res.status === 200) {
+              this.pageTotalCnt = res.data.pageTotalCnt;
+              this.posts = res.data.data;
+              console.log(res);
+            }
+          })
+          .catch(() => {
+            this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+          });
     },
+    search() {
+      const categoryId = this.$route.query.categoryId;
+      let url = `/post?${this.selected}=${this.keyword}&categoryId=${categoryId}`;
+      this.$router.push(url).catch(() => {
+        this.getPosts();
+      });
+    },
+    isEmpty(value) {
+      return value || "";
+    }
   },
 };
 </script>

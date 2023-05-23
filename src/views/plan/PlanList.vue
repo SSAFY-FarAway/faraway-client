@@ -43,7 +43,7 @@
       </table>
     </div>
     <!-- 페이지네이션 -->
-    <page-navigation :totalCnt="pageTotalCnt" />
+    <page-navigation :totalPages="pageTotalCnt" />
   </div>
 </template>
 

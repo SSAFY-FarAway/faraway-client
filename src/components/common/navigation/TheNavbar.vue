@@ -14,15 +14,15 @@
             >
           </li>
           <li>
-            <router-link class="nav-link scrollto" to="/plan">Plan</router-link>
+            <router-link class="nav-link scrollto" to="/plan/list?categoryId=1&title=&content=">Plan</router-link>
           </li>
           <li>
-            <router-link class="nav-link scrollto" to="/hot-place"
+            <router-link class="nav-link scrollto" to="/hot-place/list"
               >Hot-Place</router-link
             >
           </li>
           <li>
-            <router-link class="nav-link scrollto" to="/post/list?categoryId=1"
+            <router-link class="nav-link scrollto" to="/post/list?categoryId=1&title=&content="
               >NOTICE</router-link
             >
           </li>
