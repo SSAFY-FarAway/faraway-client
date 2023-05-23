@@ -155,14 +155,14 @@ const routes = [
         children: [],
       },
       {
-        path: ":postId",
+        path: ":id",
         name: "PostDetail",
         component: PostDetail,
         beforeEnter: beforeLogin(true),
         children: [],
       },
       {
-        path: ":postId/edit",
+        path: ":id/edit",
         name: "PostModify",
         component: PostModify,
         beforeEnter: beforeLogin(true),
