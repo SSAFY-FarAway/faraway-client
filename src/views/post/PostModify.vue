@@ -92,7 +92,7 @@ export default {
             [...this.files].forEach((file) => formData.append("files", file));
             formData.append("request", new Blob([JSON.stringify(this.post)], {type: "application/json"}));
             console.log(this.post);
-            http.put(`/post/${this.$route.params.postId}`, formData, {
+            http.put(`/post/${this.$route.params.id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -117,7 +117,7 @@ export default {
         },
         getPost() {
             http
-                .get(`/post/${this.$route.params.postId}`)
+                .get(`/post/${this.$route.params.id}`)
                 .then((response) => {
                     console.log(response);
                     let data = response.data;

@@ -64,11 +64,14 @@
                 <!-- 좋아요 눌렀을 때 -->
                 <button v-if="this.likeId" class="btn btn-primary" @click="unlike">
                     <b-icon icon="heart-fill" font-scale="1"></b-icon>
+                    <span class="font-weight-bold ml-3">{{post.likeCnt}}</span>
                 </button>
                 <!-- 좋아요 안 눌렀을 때 -->
                 <button v-else class="btn btn-outline-secondary" @click="like">
                     <b-icon icon="heart-fill" font-scale="1"></b-icon>
+                    <span class="font-weight-bold ml-3">{{post.likeCnt}}</span>
                 </button>
+
             </div>
             <hr/>
 
@@ -116,7 +119,7 @@ export default {
         };
     },
     created() {
-        http.get(`/post/${this.$route.params.postId}`).then((res) => {
+        http.get(`/post/${this.$route.params.id}`).then((res) => {
             console.log(res);
             this.post = res.data;
             this.comments = this.post.postCommentResponses;
@@ -132,7 +135,7 @@ export default {
         },
         deletePost() {
             if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
-                http.delete(`/post/${this.$route.params.postId}`).then((res) => {
+                http.delete(`/post/${this.$route.params.id}`).then((res) => {
                     if (res.status === 200) {
                         alert("삭제가 완료되었습니다.");
                         this.$router.replace(`/post/list`);
@@ -163,6 +166,7 @@ export default {
                     if (response.status === 200) {
                         this.likeId = response.data;
                         this.$alertSuccess("좋아요", "게시글에 좋아요를 했습니다.");
+                        this.post.likeCnt++;
                     }
                 })
                 .catch(() => {
@@ -177,6 +181,7 @@ export default {
                     if (response.status === 200) {
                         this.likeId = null;
                         this.$alertSuccess("좋아요 취소", "좋아요 취소를 누르셨습니다.");
+                        this.post.likeCnt--;
                     }
                 })
                 .catch(() => {
@@ -188,7 +193,7 @@ export default {
         likeId(after, before) {
             console.log(before)
             console.log(after)
-        }
+        },
     },
     computed: {
         ...mapState("memberStore", ["isLogin", "loginMember"]),
