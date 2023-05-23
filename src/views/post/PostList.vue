@@ -24,18 +24,24 @@
 
     <!-- 게시글 List - 테이블 -->
     <div id="table-container">
-    <table class="table table-hover shadow rounded" id="table">
-      <thead>
-        <table-row-header :titles="titles" />
-      </thead>
-      <tbody>
-        <tr v-if='posts.length===0'>
-          <td colspan="6">현재 등록된 게시글이 없습니다.</td>
-        </tr>
-        <table-row-data v-for="post in posts" :key="post.id" :data="post" :titles="titles" domain="post" />
-      </tbody>
-    </table>
-  </div>
+      <table class="table table-hover shadow rounded" id="table">
+        <thead>
+          <table-row-header :titles="titles" />
+        </thead>
+        <tbody>
+          <tr v-if="posts.length === 0">
+            <td colspan="6">현재 등록된 게시글이 없습니다.</td>
+          </tr>
+          <table-row-data
+            v-for="post in posts"
+            :key="post.id"
+            :data="post"
+            :titles="titles"
+            domain="post"
+          />
+        </tbody>
+      </table>
+    </div>
     <!-- 페이지네이션 -->
     <page-navigation :totalCnt="pageTotalCnt" />
   </div>
@@ -82,7 +88,8 @@ export default {
     this.getPosts();
   },
   watch: {
-    $route() {
+    "$route.params"() {
+      console.log("gdgd");
       this.getPosts();
     },
   },
@@ -149,7 +156,7 @@ export default {
 </script>
 
 <style scoped>
-#table-container  { 
+#table-container {
   min-height: 550px;
 }
 </style>
