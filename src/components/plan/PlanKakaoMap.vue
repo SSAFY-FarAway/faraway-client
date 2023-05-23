@@ -17,7 +17,6 @@ export default {
       map: null,
       selectMarker: null,
       markers: [],
-      overlays: [],
     };
   },
 
@@ -50,33 +49,18 @@ export default {
 
     attractions(atts) {
       this.displayMarkers();
-      this.displayLines();
-      this.displayOverLays();
+      // this.displayLines();
 
       this.map.setCenter(
         new window.kakao.maps.LatLng(atts[0].latitude, atts[0].longitude)
       );
     },
 
-    myPlan(after, before) {
+    myPlan(after) {
       // 추가될 때만 수행
       // 시점 이동
       this.map.setCenter(
         new window.kakao.maps.LatLng(after.latitude, after.longitude)
-      );
-
-      // 이전에 띄워져있던 인포윈도우 close
-      if (before?.clickedInfoWindow) {
-        before.clickedInfoWindow.close();
-      }
-
-      // 현재 띄워진 인포윈도우 open
-      after.clickedInfoWindow.open(this.map, after.marker);
-
-      this.displayMyPlanMarkers();
-
-      this.map.setCenter(
-        new window.kakao.maps.LatLng(after[0].latitude, after[0].longitude)
       );
     },
   },
@@ -113,15 +97,6 @@ export default {
         if (this.attractions.length) {
           this.displayMarkers();
           this.displayLines();
-          this.displayOverLays();
-
-          if (this.markers.length) {
-            this.map.panTo(this.markers[0].position);
-          }
-        }
-
-        if (this.myPlan.length) {
-          this.displayMyPlanMarkers();
         }
       }
     },
@@ -129,8 +104,10 @@ export default {
     // 마커 표시
     displayMarkers() {
       this.markers.forEach((mk) => mk.setMap(null));
+
       this.attractions.forEach((el) => {
         // 인포윈도우 생성
+        console.log(this.makeContent(el))
         const infoWindow = new window.kakao.maps.InfoWindow({
           content: this.makeContent(el),
         });
@@ -177,6 +154,7 @@ export default {
         // 인포윈도우 생성
         const infoWindow = new window.kakao.maps.InfoWindow({
           content: this.makeContent(el),
+          removable: true
         });
 
         // 마커 생성
@@ -209,7 +187,7 @@ export default {
     },
 
     // 마커 인포윈도우의 content 만들기
-    makeContent(el) {
+    makeContent(el) { 
       return `
         <div class="wrap">
             <div class="info shadow ">
@@ -226,12 +204,14 @@ export default {
                         <div class="ellipsis">${el.addr1}</div>
                         <div class="jibun ellipsis">(우)${el.zipcode}</div>
                     </div>
+                    
                 </div>
             </div>
         </div>
     `;
-    },
 
+    },
+    
     // 마커 간 거리 표시 (라인)
     displayLines() {
       let linePath = [];
@@ -251,27 +231,11 @@ export default {
       polyline.setMap(this.map);
     },
 
-    displayOverLays() {
-      for (let i = 0; i < this.attractions.length; i++) {
-        const innerHTML = `
-            <div class="customoverlay">
-                <a>
-                    <span id="numbers">${i + 1}</span>
-                    <span class="title">${this.attractions[i].title}</span>
-                </a>
-            </div>`;
 
-        const overlay = new window.kakao.maps.CustomOverlay({
-          map: this.map,
-          position: this.markers[i].position,
-          content: innerHTML,
-          yAnchor: 0.3,
-        });
-        this.overlays.push(overlay);
-      }
-    },
   },
 };
+
+
 </script>
 
 <style scoped>
