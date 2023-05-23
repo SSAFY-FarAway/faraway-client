@@ -52,11 +52,22 @@
         />
       </div>
       <div class="col-12 mt-2">
+        <b-form-input
+            class="col-12"
+            id="input-title"
+            v-model="title"
+            placeholder="관광지명을 입력해주세요."
+        />
+      </div>
+      <div class="col-12 mt-2">
         <b-button class="col-12" variant="primary" @click="search(1)"
           >검색</b-button
         >
       </div>
       <!-- 검색 결과 -->
+      <div class="mt-3 font-weight-bold text-center" v-if="attractions.length === 0">
+        검색결과가 없습니다.
+      </div>
       <div
         class="my-2"
         v-for="attraction in attractions"
@@ -112,7 +123,7 @@ export default {
         { value: "38", text: "쇼핑" },
         { value: "39", text: "음식점" },
       ],
-      keyword: "",
+      title: "",
       attractions: [],
       totalPages: Number,
     };
@@ -152,10 +163,11 @@ export default {
       http
         .get("/attraction", {
           params: {
-            sidoCode: this.sidoSelected,
-            gugunCode: this.gugunSelected,
-            contentTypeId: this.contentSelected,
+            sidoCode: this.setParam(this.sidoSelected),
+            gugunCode: this.setParam(this.gugunSelected),
+            contentTypeId: this.setParam(this.contentSelected),
             pageNumber: currentPage,
+            title: this.title,
           },
           headers: {
             "Content-Type": "application/json",
@@ -173,6 +185,12 @@ export default {
         behavior: "smooth",
       });
     },
+    setParam(value) {
+      if (value === 0) {
+        return null;
+      }
+      return value;
+    }
   },
 };
 </script>
