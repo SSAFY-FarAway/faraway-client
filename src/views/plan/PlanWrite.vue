@@ -5,7 +5,7 @@
       <div class="row m-0 p-0">
         <!-- 사용자 추천 경로 -->
         <div class="col-12 m-0 p-0 text-center">
-          <plan-kakao-map mapId="write-map" />
+          <plan-write-kakao-map mapId="write-map" />
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@
 </template>
 <script>
 import AttractionSearchSidebar from "@/components/attraction/AttractionSearchSidebar";
-import PlanKakaoMap from "@/components/plan/PlanKakaoMap";
+import PlanWriteKakaoMap from "@/components/plan/PlanWriteKakaoMap";
 import PlanCard from "@/components/plan/PlanCard.vue";
 import http from "@/utils/api/http";
 import { mapActions, mapGetters, mapState } from "vuex";
@@ -74,7 +74,7 @@ export default {
   name: "PlanWrite",
   components: {
     AttractionSearchSidebar,
-    PlanKakaoMap,
+    PlanWriteKakaoMap,
     PlanCard,
   },
   data() {
