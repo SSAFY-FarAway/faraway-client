@@ -52,7 +52,7 @@
         />
       </div>
       <div class="col-12 mt-2">
-        <b-button class="col-12" variant="primary" @click="search"
+        <b-button class="col-12" variant="primary" @click="search(1)"
           >검색</b-button
         >
       </div>
@@ -68,6 +68,7 @@
         />
       </div>
       <attraction-search-result-totop-item v-if="attractions.length" />
+      <page-navigation v-if="attractions.length" :total-pages="totalPages" @search='search'></page-navigation>
     </b-sidebar>
   </div>
 </template>
@@ -79,10 +80,12 @@ import AttractionSearchResultTotopItem from "./AttractionSearchResultTotopItem";
 import { BIcon } from "bootstrap-vue";
 
 import { mapActions } from "vuex";
+import PageNavigation from "@/components/attraction/pageNavigation.vue";
 
 export default {
   name: "AttractionSearchSidebar",
   components: {
+    PageNavigation,
     BIcon,
     AttractionSearchResultItem,
     AttractionSearchResultTotopItem,
@@ -109,8 +112,9 @@ export default {
         { value: "38", text: "쇼핑" },
         { value: "39", text: "음식점" },
       ],
-
+      keyword: "",
       attractions: [],
+      totalPages: Number,
     };
   },
   created() {
@@ -144,13 +148,14 @@ export default {
   },
   methods: {
     ...mapActions("attractionStore", ["setAttractions"]),
-    search() {
+    search(currentPage) {
       http
         .get("/attraction", {
           params: {
             sidoCode: this.sidoSelected,
             gugunCode: this.gugunSelected,
             contentTypeId: this.contentSelected,
+            pageNumber: currentPage,
           },
           headers: {
             "Content-Type": "application/json",
@@ -159,6 +164,7 @@ export default {
         .then((res) => {
           this.attractions = res.data.data;
           this.setAttractions(res.data.data);
+          this.totalPages = res.data.pageTotalCnt;
         });
     },
     toTop() {

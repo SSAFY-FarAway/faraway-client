@@ -142,12 +142,6 @@ const routes = [
     redirect: "/post/list",
     children: [
       {
-        path: "list",
-        name: "PostList",
-        component: PostList,
-        children: [],
-      },
-      {
         path: "write",
         name: "PostWrite",
         component: PostWrite,
@@ -155,14 +149,20 @@ const routes = [
         children: [],
       },
       {
-        path: ":id",
+        path: ":categoryId/list",
+        name: "PostList",
+        component: PostList,
+        children: [],
+      },
+      {
+        path: ":categoryId/:postId",
         name: "PostDetail",
         component: PostDetail,
         beforeEnter: beforeLogin(true),
         children: [],
       },
       {
-        path: ":id/edit",
+        path: ":categoryId/:postId/edit",
         name: "PostModify",
         component: PostModify,
         beforeEnter: beforeLogin(true),

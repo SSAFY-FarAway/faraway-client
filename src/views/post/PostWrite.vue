@@ -8,15 +8,15 @@
   </b-form-select>
     <!-- 게시글 제목 -->
     <div class="row m-0 mt-3">
-      <input type="text" class="form-control " id="title" style="font-size : 1.1em" v-model="request.title" placeholder="제목을 입력해주세요"/>
+      <input type="text" class="form-control " id="title" style="font-size : 1.1em" v-model="request.title" v-focus placeholder="제목을 입력해주세요"/>
     </div>
 
     <!-- 게시글 정보 -->
     <div class="mt-3">
-      <span id="member-id" class="text-secondary fw-light" style="font-size : 0.9em">
-        작성자 : {{ loginMember.loginId }} 
-      </span>
-      <br />
+<!--      <span id="member-id" class="text-secondary fw-light" style="font-size : 0.9em">-->
+<!--        작성자 : {{ loginMember.loginId }} -->
+<!--      </span>-->
+<!--      <br />-->
       <span id="created-date" class="text-secondary fw-light" style="font-size : 0.9em">
         작성일 : {{ $options.filters.timeFilter(new Date()) }}
       </span>
@@ -94,7 +94,11 @@ export default {
             alert("글 작성 완료!");
             this.$router.replace(`/post/${response.data}`);
           }
-        });
+        })
+          .catch((res) => {
+              this.$alertDanger("오류 확인", res);
+              this.$alertDanger("오류발생", "처리 중 오류가 발생하였습니다.");
+          });
     }
   },
   computed: {

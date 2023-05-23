@@ -1,82 +1,80 @@
 <template>
-  <div class="container" id="mypage-section">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black shadow border border-primary" style="border-radius: 25px">
-          <div class="card-body p-md-5 sh" id="bgimg">
-            <div class="row justify-content-center">
-              <div class="container" id="article-list-section">
-                <div class="row justify-content-center">
-                  <div class="col-lg-8 col-md-10 col-sm-12">
-                    <h2 class="border border-warning rounded my-3 py-3 shadow-sm  text-center">
-                      글수정
-                    </h2>
-                  </div>
-                  <div class="col-lg-8 col-md-10 col-sm-12">
-                    <form @submit.prevent>
-                      <div class="mb-3">
-                        <label for="title" class="form-label fw-bolder">제목 :
-                        </label>
-                        <input type="text" class="form-control" id="title"
-                               v-model="post.title" placeholder="제목을 입력해주세요." />
-                      </div>
-                      <div class="mb-3">
-                        <label for="category" class="form-label fw-bolder">카테고리 : </label>
-                        <span id="category" class="form-control">{{categoryName}}</span>
-                      </div>
-                      <div class="mb-3">
-                        <label for="content" class="form-label fw-bolder">내용 :
-                        </label>
-                        <textarea class="form-control" id="content" v-model="post.content"
-                                  rows="7" placeholder="내용을 입력해주세요."></textarea>
-                      </div>
-                      <div class="mb-3">
-                        <label for="files" class="form-label">기존 파일:</label>
-                          <div v-for="attachment in attachments" :key="attachment.id">
-                            <span :id="attachment.id" class="form-control"  v-if="check(attachment.id)">
-                              {{attachment.fileName}}
-                              <button id="btn-delete-file" class="btn-outline-danger" @click="addDeleteId(attachment.id)">삭제</button>
-                            </span>
-                          </div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="upload-file" class="form-label">파일 : </label>
-                        <input id="upload-file" type="file" @change="selectFile" class="form-control border" ref="uploadFile" multiple>
-                      </div>
-                      <div class="col-auto text-center">
-                        <button id="btn-register"
-                                @click="modify"
-                                class="btn shadow btn-primary mb-3">
-                          글작성
-                        </button>
-                        <button @click="reset"
-                                class="btn btn-danger shadow mb-3">초기화</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="container">
+        <!-- Header -->
+        <page-header title="WRITE" subTitle="게시글 수정"/>
+        <hr />
+        <!-- 카테고리 필터 예정 -->
+
+        <!-- 게시글 제목 -->
+        <div class="row m-0 mt-3">
+            <input type="text" class="form-control " id="title" style="font-size : 1.1em" v-model="post.title" v-focus placeholder="제목을 입력해주세요"/>
         </div>
-      </div>
+
+        <!-- 게시글 정보 -->
+        <div class="mt-3">
+            <!--      <span id="member-id" class="text-secondary fw-light" style="font-size : 0.9em">-->
+            <!--        작성자 : {{ loginMember.loginId }} -->
+            <!--      </span>-->
+            <!--      <br />-->
+            <span id="created-date" class="text-secondary fw-light" style="font-size : 0.9em">
+        작성일 : {{ $options.filters.timeFilter(new Date()) }}
+      </span>
+        </div>
+
+        <!-- 게시글 내용 -->
+        <textarea class="form-control mt-3" id="content" v-model="post.content" rows="7" placeholder="내용을 입력해주세요">
+    </textarea>
+
+        <!-- 기존 파일 영역 -->
+        <div class="mt-3">
+            <p class="font-weight-bold">기존파일</p>
+            <div v-for="attachment in post.attachments" :key="attachment.id">
+                <span class="" :id="attachment.id" v-if="check(attachment.id)">
+                    {{attachment.fileName}}
+                    <b-icon
+                            style=" color: red; cursor: pointer"
+                            icon="x-square-fill"
+                            font-scale="1"
+                            class="font-weight-lighter" @click="addDeleteId(attachment.id)"></b-icon>
+                </span>
+            </div>
+        </div>
+
+        <!-- 파일 첨부 영역 -->
+        <div class='mt-3'>
+            <p class="font-weight-bold">첨부파일</p>
+            <input style="cursor:pointer" type="file" @change="selectFile" ref="uploadFile" multiple/>
+        </div>
+
+        <hr/>
+
+        <!-- 게시글 하단 메뉴 -->
+        <div class="row p-0 m-0 justify-content-end">
+            <button @click="$router.go(-1)" class="btn btn-secondary">
+                이전으로
+            </button>
+            <button class="btn btn-primary ml-2" @click="modify">글 수정</button>
+        </div>
+
     </div>
-  </div>
 </template>
 
 <script>
 import http from "@/utils/api/http";
+import pageHeader from "@/components/common/page/pageHeader.vue";
+import {BIcon} from "bootstrap-vue";
 
 export default {
     name: "PostModify",
-    components: {},
+    components: {BIcon, pageHeader},
     data() {
         return {
-            attachments: [],
-            categoryName: "",
             post: {
                 title: "",
                 content: "",
+                categoryId: "",
+                categoryName: "",
+                attachments: [],
                 deleteAttachmentIds: [],
             },
             files: [],
@@ -92,7 +90,7 @@ export default {
             [...this.files].forEach((file) => formData.append("files", file));
             formData.append("request", new Blob([JSON.stringify(this.post)], {type: "application/json"}));
             console.log(this.post);
-            http.put(`/post/${this.$route.params.id}`, formData, {
+            http.put(`/post/${this.$route.params.postId}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -100,8 +98,8 @@ export default {
                 .then((response) => {
                     console.log(response);
                     if (response.status === 200) {
-                        alert("글 수정 완료!");
-                        this.$router.replace(`/post/view/${response.data}`);
+                        this.$alertSuccess("글 수정 완료!");
+                        this.$router.replace(`/post/${this.$route.params.categoryId}/${response.data}`);
                     }
                 });
         },
@@ -117,14 +115,15 @@ export default {
         },
         getPost() {
             http
-                .get(`/post/${this.$route.params.id}`)
+                .get(`/post/${this.$route.params.postId}`)
                 .then((response) => {
                     console.log(response);
                     let data = response.data;
                     this.post.title = data.title;
                     this.post.content = data.content;
-                    this.categoryName = data.categoryName;
-                    this.attachments = data.attachmentResponses;
+                    this.post.categoryId = data.categoryId;
+                    this.post.categoryName = data.categoryName;
+                    this.post.attachments = data.attachmentResponses;
                 })
         },
     },
