@@ -23,7 +23,8 @@
       <b-icon icon="heart-fill" font-scale="1"></b-icon>
       <span class="font-weight-bold ml-3">{{ this.likeCnt }}</span>
     </button>
-
+    
+    <!-- 여행 계획의 아이템으로 사용되는 경우 -->
     <button
         class="btn btn-primary"
         v-if="domain === 'plan'"
@@ -54,6 +55,11 @@ export default {
   },
   created() {
   },
+  computed: {
+    ...mapState("planStore", ["myPlan"]),
+    ...mapState("memberStore", ["isLogin", "loginMember"]),
+  },
+  created() {},
   methods: {
     ...mapActions("attractionStore", ["setAttraction"]),
     ...mapActions("planStore", ["addPlan"]),
@@ -61,8 +67,21 @@ export default {
       this.setAttraction(this.attraction);
     },
     addMyPath(attraction) {
-      this.$alertSuccess("경로 추가", "경로가 성공적으로 추가되었습니다.");
-      this.addPlan(attraction);
+      let flag = true;
+
+      if (
+        this.myPlan.filter((el) => el.contentId === attraction.contentId)
+          .length > 0
+      ) {
+        flag = false;
+      }
+
+      if (flag) {
+        this.$alertSuccess("경로 추가", "경로가 성공적으로 추가되었습니다.");
+        this.addPlan(attraction);
+      } else {
+        this.$alertDanger("경로 추가 실패", "이미 추가된 경로입니다.");
+      }
     },
     like() {
       const accessToken = sessionStorage.getItem("access-token");
@@ -105,9 +124,6 @@ export default {
           })
     },
   },
-  computed: {
-    ...mapState("memberStore", ["isLogin", "loginMember"]),
-  }
 };
 </script>
 

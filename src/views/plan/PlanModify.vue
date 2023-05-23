@@ -12,7 +12,7 @@
     <section class="container my-5" id="share-plan-view">
       <div class="text-center fw-bold" role="alert">
         <h2 class="row d-flex justify-content-around my-4">
-          Write Travle Plan
+          Modify Travle Plan
         </h2>
         <!-- 헤더 영역 -->
         <h4 class="section-heading text-uppercase">
@@ -55,8 +55,8 @@
         <b-button class="col-6 mr-1" variant="secondary" @click="$router.go(-1)"
           >CANCEL</b-button
         >
-        <b-button class="col-6 ml-1" variant="primary" @click="writePlan"
-          >WRITE</b-button
+        <b-button class="col-6 ml-1" variant="primary" @click="modifyPlan"
+          >MODIFY</b-button
         >
       </div>
     </section>
@@ -92,24 +92,47 @@ export default {
     ...mapState("planStore", ["myPlan"]),
     ...mapGetters("planStore", ["getContentIds"]),
   },
-  created() {},
+  created() {
+    this.getPlanData();
+  },
   methods: {
     ...mapActions("attractionStore", [
       "addPickedAttraction",
       "removePickedAttraction",
     ]),
-    writePlan() {
+    ...mapActions("planStore", ["addPlan", "clearPlan"]),
+    modifyPlan() {
       this.plan.travelPlan = `${this.getContentIds.toString()}`;
 
-      http.post("/plan/", this.plan).then((res) => {
+      http.put(`/plan/${this.$route.params.planId}`, this.plan).then((res) => {
         if (res.status === 200) {
           this.$alertSuccess(
-            "여행 계획 작성 성공",
-            "여행 계획을 성공적으로 작성했습니다. 해당 게시글로 이동합니다."
+            "여행 계획 수정 성공",
+            "여행 계획을 성공적으로 수정했습니다. 해당 게시글로 이동합니다."
           );
           this.$router.replace(`/plan/${res.data}`);
         }
       });
+    },
+    getPlanData() {
+      const planId = this.$route.params.planId;
+      http
+        .get(`/plan/${planId}`)
+        .then((res) => {
+          if (res.status === 200) {
+            this.plan = res.data;
+            this.clearPlan();
+            res.data.attractionResponses.forEach((el) => {
+              this.addPlan(el);
+            });
+          }
+        })
+        .catch(() => {
+          this.$alertDanger(
+            "데이터 로드 실패 !",
+            "추후에 예외처리 로직 추가 예정"
+          );
+        });
     },
   },
 };

@@ -96,8 +96,8 @@ export default {
 
       let polyline = new window.kakao.maps.Polyline({
         path: linePath, // 선을 구성하는 좌표배열
-        strokeWeight: 3,
-        strokeColor: "orange",
+        strokeWeight: 4,
+        strokeColor: "red",
         strokeOpacity: 0.7,
         strokeStyle: "solid",
       });

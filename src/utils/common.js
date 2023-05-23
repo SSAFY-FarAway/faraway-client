@@ -26,6 +26,19 @@ export const methods = {
       solid: true,
     });
   },
+  toTop(ref) {
+    if (ref) {
+      ref.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  },
 };
 
 export default {
@@ -33,5 +46,6 @@ export default {
     Vue.prototype.$alertDefault = methods.alertDefault;
     Vue.prototype.$alertSuccess = methods.alertSuccess;
     Vue.prototype.$alertDanger = methods.alertDanger;
+    Vue.prototype.$toTop = methods.toTop;
   },
 };
