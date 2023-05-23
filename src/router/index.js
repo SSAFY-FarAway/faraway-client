@@ -32,7 +32,7 @@ const beforeLogin = isAuth => (from, to, next) => {
   const isLogin = store.getters["memberStore/getIsLogin"];
   if ((isLogin && isAuth) || (!isLogin && !isAuth)) {
     console.log("여 왔는가");
-    return next(to);
+    return next();
   } else {
     console.log("여기로 왔는가");
     // 로그인 화면으로 이동

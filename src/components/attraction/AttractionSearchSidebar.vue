@@ -34,7 +34,7 @@
         />
       </div>
       <div class="col-12 mt-2">
-        <b-button class="col-12" variant="primary" @click="search"
+        <b-button class="col-12" variant="primary" @click="search(1)"
           >검색</b-button
         >
       </div>
@@ -47,6 +47,8 @@
         <attraction-search-result-item :attraction="attraction" />
       </div>
       <attraction-search-result-totop-item v-if="attractions.length" />
+
+        <page-navigation v-if="attractions.length" :total-pages="totalPages" @search='search'></page-navigation>
     </b-sidebar>
   </div>
 </template>
@@ -55,85 +57,97 @@
 import http from "@/utils/api/http";
 import AttractionSearchResultItem from "./AttractionSearchResultItem";
 import AttractionSearchResultTotopItem from "./AttractionSearchResultTotopItem";
-import { mapActions } from "vuex";
+import {mapActions} from "vuex";
+import PageNavigation from "@/components/attraction/pageNavigation.vue";
 
 export default {
-  name: "AttractionSearchSidebar",
-  components: {
-    AttractionSearchResultItem,
-    AttractionSearchResultTotopItem,
-  },
-  data() {
-    return {
-      // select
-      sidoSelected: 0,
-      sidoOptions: [{ value: 0, text: "검색할 시/도" }],
-      gugunSelected: 0,
-      gugunOptions: [{ value: 0, text: "검색할 구/군" }],
-      contentSelected: 0,
-      contentOptions: [
-        { value: 0, text: "여행지 유형" },
-        { value: "12", text: "관광지" },
-        { value: "14", text: "문화시설" },
-        { value: "15", text: "축제/공연/행사" },
-        { value: "25", text: "여행코스" },
-        { value: "28", text: "레포츠" },
-        { value: "32", text: "숙박" },
-        { value: "38", text: "쇼핑" },
-        { value: "39", text: "음식점" },
-      ],
-
-      attractions: [],
-    };
-  },
-  created() {
-    // 시도 옵션 추가
-    http.get("/attraction/sido").then((res) => {
-      if (res.status === 200) {
-        res.data.forEach((el) => {
-          const option = { value: el.sidoCode, text: el.sidoName };
-          this.sidoOptions.push(option);
-        });
-      }
-    });
-  },
-  watch: {
-    sidoSelected() {
-      this.gugunOptions = [{ value: 0, text: "검색할 구/군" }];
-      this.gugunSelected = 0;
-
-      if (this.sidoSelected) {
-        http.get(`/attraction/gugun/${this.sidoSelected}`).then((res) => {
-          if (res.status === 200) {
-            res.data.forEach((el) => {
-              const option = { value: el.gugunCode, text: el.gugunName };
-              this.gugunOptions.push(option);
-            });
-          }
-        });
-      }
+    name: "AttractionSearchSidebar",
+    components: {
+        PageNavigation,
+        AttractionSearchResultItem,
+        AttractionSearchResultTotopItem,
     },
-  },
-  methods: {
-    ...mapActions("attractionStore", ["setAttractions"]),
-    search() {
-      http
-        .get("/attraction", {
-          params: {
-            sidoCode: this.sidoSelected,
-            gugunCode: this.gugunSelected,
-            contentTypeId: this.contentSelected,
-          },
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          this.attractions = res.data.data;
-          this.setAttractions(res.data.data);
+    data() {
+        return {
+            // select
+            sidoSelected: 0,
+            sidoOptions: [{value: 0, text: "검색할 시/도"}],
+            gugunSelected: 0,
+            gugunOptions: [{value: 0, text: "검색할 구/군"}],
+            contentSelected: 0,
+            contentOptions: [
+                {value: 0, text: "여행지 유형"},
+                {value: "12", text: "관광지"},
+                {value: "14", text: "문화시설"},
+                {value: "15", text: "축제/공연/행사"},
+                {value: "25", text: "여행코스"},
+                {value: "28", text: "레포츠"},
+                {value: "32", text: "숙박"},
+                {value: "38", text: "쇼핑"},
+                {value: "39", text: "음식점"},
+            ],
+            attractions: [],
+            totalPages: Number,
+        };
+    },
+    created() {
+        // 시도 옵션 추가
+        http.get("/attraction/sido").then((res) => {
+            if (res.status === 200) {
+                res.data.forEach((el) => {
+                    const option = {value: el.sidoCode, text: el.sidoName};
+                    this.sidoOptions.push(option);
+                });
+            }
         });
     },
-  },
+    watch: {
+        sidoSelected() {
+            this.gugunOptions = [{value: 0, text: "검색할 구/군"}];
+            this.gugunSelected = 0;
+
+            if (this.sidoSelected) {
+                http.get(`/attraction/gugun/${this.sidoSelected}`).then((res) => {
+                    if (res.status === 200) {
+                        res.data.forEach((el) => {
+                            const option = {value: el.gugunCode, text: el.gugunName};
+                            this.gugunOptions.push(option);
+                        });
+                    }
+                });
+            }
+        },
+    },
+    methods: {
+        ...mapActions("attractionStore", ["setAttractions"]),
+        search(currentPage) {
+            console.log(currentPage);
+            if (!this.isSelectedAll()) {
+                this.$alertDanger("항목 선택", "모든 항목이 선택되어야 합니다");
+                return;
+            }
+            http
+                .get("/attraction", {
+                    params: {
+                        sidoCode: this.sidoSelected,
+                        gugunCode: this.gugunSelected,
+                        contentTypeId: this.contentSelected,
+                        pageNumber: currentPage,
+                    },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then((res) => {
+                    this.attractions = res.data.data;
+                    this.setAttractions(res.data.data);
+                    this.totalPages = res.data.pageTotalCnt;
+                });
+        },
+        isSelectedAll() {
+            return !(!this.sidoSelected || !this.gugunSelected || !this.contentSelected);
+        }
+    },
 };
 </script>
 

@@ -155,7 +155,7 @@ export default {
             }
 
             http
-                .post("/post/like", data)
+                .post(`/post/${this.post.id}/like`, data)
                 .then((response) => {
                     console.log(`like response: ${response}`);
                     if (response.status === 200) {
