@@ -1,5 +1,5 @@
 <template>
-  <div id="map-container" :ref="mapId" class="shadow" />
+  <div id="map-container" :ref="mapId" />
 </template>
 
 <script>
@@ -7,7 +7,6 @@ import KAKAO_API_KEY from "@/utils/api/kakao_config";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
-  name: "PlanKakaoMap",
   components: {},
   props: {
     mapId: String,
@@ -19,19 +18,17 @@ export default {
       markers: [],
     };
   },
-
   mounted() {
     if (window.kakao && window.kakao.maps) {
-      // 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
       this.loadMap();
     } else {
-      // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
     }
   },
 
   created() {},
   watch: {
+    // 현재 선택(클릭)된 관광지가 변할 때
     selectedAttraction(after, before) {
       // 시점 이동
       this.map.setCenter(
@@ -43,25 +40,25 @@ export default {
         before.clickedInfoWindow.close();
       }
 
-      // 현재 띄워진 인포윈도우 open
+      // 현재 선택된 관광지의 인포윈도우 open
       after.clickedInfoWindow.open(this.map, after.marker);
     },
-
     attractions(atts) {
-      this.displayMarkers();
-      // this.displayLines();
+      if (window.kakao != undefined) {
+        this.displayMarkers();
 
-      this.map.setCenter(
-        new window.kakao.maps.LatLng(atts[0].latitude, atts[0].longitude)
-      );
+        this.map.setCenter(
+          new window.kakao.maps.LatLng(atts[0].latitude, atts[0].longitude)
+        );
+      }
     },
-
     myPlan(after) {
-      // 추가될 때만 수행
+      console.log(after);
       // 시점 이동
       this.map.setCenter(
         new window.kakao.maps.LatLng(after.latitude, after.longitude)
       );
+      // this.displayMyPlanMarkers();
     },
   },
   computed: {
@@ -86,61 +83,67 @@ export default {
       if (window.kakao != undefined) {
         const container = this.$refs[this.mapId]; // 지도를 담을 DOM 영역
         const options = {
-          // 지도를 생성할 때 필요한 기본 옵션
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 7, // 지도의 레벨(확대, 축소 정도)
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          level: 7,
         };
 
-        // 지도 생성 및 객체 리턴
+        // 지도 생성
         this.map = new window.kakao.maps.Map(container, options);
-
-        if (this.attractions.length) {
-          this.displayMarkers();
-          this.displayLines();
-        }
       }
     },
-
-    // 마커 표시
     displayMarkers() {
+      // 초기화
       this.markers.forEach((mk) => mk.setMap(null));
 
       this.attractions.forEach((el) => {
-        // 인포윈도우 생성
-        console.log(this.makeContent(el))
         const infoWindow = new window.kakao.maps.InfoWindow({
           content: this.makeContent(el),
         });
 
-        // 마커 생성
+        const clickedInfoWindow = new window.kakao.maps.InfoWindow({
+          content: this.makeContent(el),
+        });
+
         const marker = new window.kakao.maps.Marker({
           map: this.map,
           position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
           title: el.title,
         });
-        const clickedInfoWindow = new window.kakao.maps.InfoWindow({
-          content: this.makeContent(el),
-        });
 
-        // 각 관광지 객체에 인포윈도우, 마커정보 기록
+        // 각 관광지 객체에 인포윈도우, 마커정보 저장
         el.clickedInfoWindow = clickedInfoWindow;
         el.marker = marker;
 
         // 마커에 클릭 이벤트를 등록
-        window.kakao.maps.event.addListener(marker, "click", () => {
-          clickedInfoWindow.open(this.map, marker);
-          this.setAttraction(el);
-        });
+        window.kakao.maps.event.addListener(
+          marker,
+          "click",
+          () => {
+            clickedInfoWindow.open(this.map, marker);
+            this.setAttraction(el);
+          },
+          { passive: false }
+        );
 
         // 마커에 마우스오버 이벤트를 등록
-        window.kakao.maps.event.addListener(marker, "mouseover", () => {
-          infoWindow.open(this.map, marker);
-        });
+        window.kakao.maps.event.addListener(
+          marker,
+          "mouseover",
+          () => {
+            infoWindow.open(this.map, marker);
+          },
+          { passive: false }
+        );
 
         // 마커에 마우스아웃 이벤트를 등록
-        window.kakao.maps.event.addListener(marker, "mouseout", () => {
-          infoWindow.close();
-        });
+        window.kakao.maps.event.addListener(
+          marker,
+          "mouseout",
+          () => {
+            infoWindow.close();
+          },
+          { passive: false }
+        );
 
         // markers에 marker push
         this.markers.push(marker);
@@ -151,13 +154,11 @@ export default {
     displayMyPlanMarkers() {
       this.getMarkers.forEach((mk) => mk.setMap(null));
       this.myPlan.forEach((el) => {
-        // 인포윈도우 생성
         const infoWindow = new window.kakao.maps.InfoWindow({
           content: this.makeContent(el),
-          removable: true
+          removable: true,
         });
 
-        // 마커 생성
         const marker = new window.kakao.maps.Marker({
           map: this.map,
           position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
@@ -173,13 +174,18 @@ export default {
 
         // 마커에 마우스오버 이벤트를 등록
         window.kakao.maps.event.addListener(marker, "mouseover", () => {
-          infoWindow.open(this.map, marker);
+          infoWindow.open(this.map, marker, { passive: false });
         });
 
         // 마커에 마우스아웃 이벤트를 등록
-        window.kakao.maps.event.addListener(marker, "mouseout", () => {
-          infoWindow.close();
-        });
+        window.kakao.maps.event.addListener(
+          marker,
+          "mouseout",
+          () => {
+            infoWindow.close();
+          },
+          { passive: false }
+        );
 
         // markers에 marker push
         this.markers.push(marker);
@@ -187,7 +193,7 @@ export default {
     },
 
     // 마커 인포윈도우의 content 만들기
-    makeContent(el) { 
+    makeContent(el) {
       return `
         <div class="wrap">
             <div class="info shadow ">
@@ -204,14 +210,13 @@ export default {
                         <div class="ellipsis">${el.addr1}</div>
                         <div class="jibun ellipsis">(우)${el.zipcode}</div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
     `;
-
     },
-    
+
     // 마커 간 거리 표시 (라인)
     displayLines() {
       let linePath = [];
@@ -230,12 +235,8 @@ export default {
 
       polyline.setMap(this.map);
     },
-
-
   },
 };
-
-
 </script>
 
 <style scoped>

@@ -21,48 +21,87 @@
         </div>
       </div>
     </div>
+
     <div class="container">
-      <section class="page-section p-3 mt-3" id="share-plan-view">
-        <div class="text-center fw-bold" role="alert">
-          <h2 class="row d-flex justify-content-around my-4">Travle Plan</h2>
-          <h4 class="section-heading text-uppercase">
-            '{{ plan.loginId }}' 님이 추천하는 여행계획입니다
-          </h4>
-          <hr />
-          <!-- 게시글 영역 -->
-          <div class="col-md-12">
-            <div class="mb-3">
-              <h5 class="d-flex justify-content-start">제목</h5>
-              <input
-                class="form-control"
-                type="text"
-                readonly
-                :value="plan.title"
-              />
-            </div>
-            <div>
-              <h5 class="d-flex justify-content-start">내용</h5>
-              <textarea
-                class="form-control"
-                readonly
-                id=""
-                rows="3"
-                :value="plan.content"
-              ></textarea>
-            </div>
+      <page-header title="Plan" subTitle="여행경로 상세보기" />
+      <hr />
+      <!-- 경로 카드 -->
+      <div class="row p-0 m-0 col-12">
+        <plan-card
+          class="col-3 p-0 mb-4"
+          v-for="(p, idx) in plan.attractionResponses"
+          :key="p.contentId"
+          :plan="p"
+          :idx="idx + 1"
+          :maxIdx="plan.attractionResponses.length"
+        />
+      </div>
+      <hr />
+
+      <!-- 게시글 제목 -->
+      <div class="row m-0 mt-3">
+        <h2 id="title" class="col-11 p-0">{{ plan.title ?? "제목" }}</h2>
+        <b-dropdown
+          v-if="plan.memberId === loginMember.id"
+          class="col-1 p-0"
+          size="md"
+          variant="link"
+          toggle-class="text-decoration-none"
+          no-caret
+        >
+          <template #button-content>
+            <b-icon
+              icon="caret-down-fill"
+              font-scale="1"
+              style="color: var(--main-color)"
+            ></b-icon>
+          </template>
+          <b-dropdown-item @click="moveModify">여행계획 수정</b-dropdown-item>
+          <b-dropdown-item @click="deletePlan">여행계획 삭제</b-dropdown-item>
+        </b-dropdown>
+      </div>
+
+      <!-- 게시글 정보 -->
+      <div class="mt-2">
+        <span id="member-id" class="text-secondary fw-light">
+          작성자 : {{ plan.loginId }}<br />
+          조회수 : {{ plan.hit }}
+        </span>
+
+        <!-- 게시글 내용 -->
+        <div class="mt-3" id="content">
+          <div class="h5" style="word-wrap: break-word">
+            {{ plan.content ?? "내용" }}
           </div>
         </div>
-      </section>
+
+        <hr />
+      </div>
+
+      <!-- 게시글 하단 메뉴 -->
+      <div class="row p-0 m-0 justify-content-end">
+        <router-link to="/plan/list" class="btn btn-outline-secondary">
+          목록으로
+        </router-link>
+        <button class="btn btn-outline-secondary ml-2" @click="$toTop()">
+          TOP
+        </button>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import http from "@/utils/api/http";
+import pageHeader from "@/components/common/page/pageHeader";
+import PlanCard from "@/components/plan/PlanCard.vue";
 import PlanDetailKakaoMap from "@/components/plan/PlanDetailKakaoMap";
+import { mapState } from "vuex";
 
 export default {
   name: "PlanList",
   components: {
+    pageHeader,
+    PlanCard,
     PlanDetailKakaoMap,
   },
   data() {
@@ -98,6 +137,32 @@ export default {
           );
         });
     },
+    moveModify() {
+      this.$router.push(`${this.$route.fullPath}/edit`);
+    },
+    deletePlan() {
+      if (
+        confirm(
+          "정말 삭제하시겠습니까? \n삭제된 여행계획은 복구할 수 없습니다."
+        )
+      ) {
+        http
+          .delete(`/plan/${this.$route.params.planId}`)
+          .then((res) => {
+            if (res.status === 200) {
+              this.$alertDanger("삭제 완료", "삭제가 완료되었습니다.");
+              this.$router.replace(`/plan/list`);
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+            this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+          });
+      }
+    },
+  },
+  computed: {
+    ...mapState("memberStore", ["isLogin", "loginMember"]),
   },
 };
 </script>
@@ -105,5 +170,9 @@ export default {
 <style scoped>
 #search-select-box {
   width: 200px;
+}
+
+#content {
+  min-height: 400px;
 }
 </style>

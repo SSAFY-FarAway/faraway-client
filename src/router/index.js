@@ -1,24 +1,25 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/HomeView";
-import AttractionView from "../views/AttractionView";
-import MemberView from "../views/MemberView";
-import PlanView from "../views/PlanView";
-import PostView from "../views/PostView";
+import HomeView from "@/views/HomeView";
+import AttractionView from "@/views/AttractionView";
+import MemberView from "@/views/MemberView";
+import PlanView from "@/views/PlanView";
+import PostView from "@/views/PostView";
 import PostDetail from "@/views/post/PostDetail";
-import HotPlaceView from "../views/HotplaceView";
+import HotPlaceView from "@/views/HotplaceView";
 
-import TheIndex from "../views/home/TheIndex";
-import MemberList from "../views/member/MemberList";
-import MemberRegister from "../views/member/MemberRegister";
-import MemberMypage from "../views/member/MemberMyPage";
-import MemberFind from "../views/member/MemberFind";
-import MemberLogin from "../views/member/MemberLogin";
-import AttrationIndex from "../views/attraction/AttrationIndex";
-import PlanList from "../views/plan/PlanList";
-import PlanDetail from "../views/plan/PlanDetail";
-import PlanWrite from "../views/plan/PlanWrite";
-import PostList from "../views/post/PostList";
+import TheIndex from "@/views/home/TheIndex";
+import MemberList from "@/views/member/MemberList";
+import MemberRegister from "@/views/member/MemberRegister";
+import MemberMypage from "@/views/member/MemberMyPage";
+import MemberFind from "@/views/member/MemberFind";
+import MemberLogin from "@/views/member/MemberLogin";
+import AttrationIndex from "@/views/attraction/AttrationIndex";
+import PlanList from "@/views/plan/PlanList";
+import PlanDetail from "@/views/plan/PlanDetail";
+import PlanWrite from "@/views/plan/PlanWrite";
+import PlanModify from "@/views/plan/PlanModify";
+import PostList from "@/views/post/PostList";
 import PostWrite from "@/views/post/PostWrite.vue";
 import PostModify from "@/views/post/PostModify.vue";
 import HotPlaceDetail from "@/views/hotplace/HotPlaceDetail.vue";
@@ -123,6 +124,13 @@ const routes = [
         name: "PlanWrite",
         component: PlanWrite,
         props: true,
+        beforeEnter: beforeLogin(true),
+        children: [],
+      },
+      {
+        path: ":planId/edit",
+        name: "PlanModify",
+        component: PlanModify,
         beforeEnter: beforeLogin(true),
         children: [],
       },
