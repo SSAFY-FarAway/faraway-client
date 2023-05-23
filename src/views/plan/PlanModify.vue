@@ -100,7 +100,7 @@ export default {
       "addPickedAttraction",
       "removePickedAttraction",
     ]),
-    ...mapActions("planStore", ["addPlan"]),
+    ...mapActions("planStore", ["addPlan", "clearPlan"]),
     modifyPlan() {
       this.plan.travelPlan = `${this.getContentIds.toString()}`;
 
@@ -119,9 +119,9 @@ export default {
       http
         .get(`/plan/${planId}`)
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             this.plan = res.data;
+            this.clearPlan();
             res.data.attractionResponses.forEach((el) => {
               this.addPlan(el);
             });
