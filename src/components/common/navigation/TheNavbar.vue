@@ -53,7 +53,7 @@
           </li>
           <!-- 로그인 했을 때 -->
           <li class="dropdown nav-link" v-if="isLogin">
-            <router-link to="/member/login">
+            <router-link to="/member/mypage">
               {{ loginMember?.loginId }} &nbsp;
               <b-icon icon="person-fill" font-scale="1" />
             </router-link>
@@ -107,6 +107,7 @@
 import { mapActions, mapState } from "vuex";
 import jwtDecode from "jwt-decode";
 import http from "@/utils/api/http";
+import router from '@/router/index';
 
 export default {
   name: "TheNavbar",
@@ -127,9 +128,13 @@ export default {
 
       await http.get(`/member/logout/${token.memberId}`).then((res) => {
         if (res.status === 200) {
+          this.$alertSuccess("로그아웃 성공", "메인페이지로 이동합니다.");
           console.log("[로그아웃 성공]")
           console.log(res)
           this.setIsLogin(false);
+          if (router.currentRoute.path !== "/index") {
+              router.push("/"); // 로그아웃 후 메인 페이지로 이동
+            }
         }
       }).catch((error) => {
         this.$alertDanger("로그아웃에 실패했습니다.","잠시 후 다시 시도하세요.")
