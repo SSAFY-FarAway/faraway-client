@@ -16,13 +16,13 @@
     <!-- 메인 섹션 -->
     <section class="container py-5">
       <div class="text-center" style="margin: 80px 0">
-        <h2 class="section-heading text-uppercase animate__animated animate__fadeInDown">Customize Your Travel</h2>
-        <h3 class="section-subheading text-muted animate__animated animate__fadeInDown">
+        <h1 class="section-heading text-uppercase animate__animated animate__fadeInDown">Customize Your Travel</h1>
+        <h2 class="section-subheading text-muted animate__animated animate__fadeInDown">
           <p>
             You can make your own Plan By our Website And Share your Gorgeous
             Plan!
           </p>
-        </h3>
+        </h2>
       </div>
 
       <!-- 카드 영역 -->
