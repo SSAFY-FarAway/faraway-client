@@ -171,10 +171,9 @@ export default {
   },
   created(){
      http
-            .get(`/member/${this.$route.params.memberId}`)
-            .then((response) => {
-                console.log(response);
-                this.memberInfo = response.data;
+            .get(`/member/mypage`)
+            .then((res) => {
+                this.memberInfo = res.data;
                 console.log(this.memberInfo)
             })
   },
