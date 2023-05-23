@@ -126,10 +126,15 @@ export default {
       const token = jwtDecode(sessionStorage.getItem("access-token"));
 
       await http.get(`/member/logout/${token.memberId}`).then((res) => {
-        console.log(res);
         if (res.status === 200) {
+          console.log("[로그아웃 성공]")
+          console.log(res)
           this.setIsLogin(false);
         }
+      }).catch((error) => {
+        this.$alertDanger("로그아웃에 실패했습니다.","잠시 후 다시 시도하세요.")
+        console.log("[로그아웃 실패]")
+        console.log(error)
       });
     },
   },

@@ -134,27 +134,31 @@ export default {
     };
   },
   created() {
-    http.get(`/hot-place/${this.$route.params.id}`).then((response) => {
-      console.log(response);
-      this.hotPlace = response.data;
-      this.comments = this.hotPlace.commentResponses;
-      this.images = this.hotPlace.imageResponses;
-    });
+    http
+        .get(`/hot-place/${this.$route.params.id}`)
+        .then((response) => {
+          console.log(response);
+          this.hotPlace = response.data;
+          this.comments = this.hotPlace.commentResponses;
+          this.images = this.hotPlace.imageResponses;
+        })
   },
   methods: {
     modifyHotPlace() {
       if (confirm("수정 페이지로 이동하시겠습니까?")) {
-        location.href = `/hot-place/${this.$route.params.id}/edit`;
+        location.href = `/hotplace/modify/${this.$route.params.id}`;
       }
     },
     deleteHotPlace() {
       if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
-        http.delete(`/hotplace/${this.$route.params.id}`).then((response) => {
-          if (response.status === 200) {
-            alert("삭제가 완료되었습니다.");
-            this.$router.replace(`/hot-place/list`);
-          }
-        });
+        http
+            .delete(`/hotplace/${this.$route.params.id}`)
+            .then((response) => {
+              if (response.status === 200) {
+                alert("삭제가 완료되었습니다.");
+                this.$router.replace(`/hotplace/list`);
+              }
+            })
       }
     },
     clipBoardCopy(){
