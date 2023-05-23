@@ -38,7 +38,7 @@
             :key="post.id"
             :data="post"
             :titles="titles"
-            domain="post"
+            :domain="'post/'+$route.params.categoryId"
           />
         </tbody>
       </table>
@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     getPosts() {
-      const categoryId = this.$route.query.categoryId;
+      const categoryId = this.$route.params.categoryId;
       const pageNumber = this.isEmpty(this.$route.query.pageNumber);
       const title = this.isEmpty(this.$route.query.title);
       const content = this.isEmpty(this.$route.query.content);

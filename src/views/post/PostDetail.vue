@@ -42,7 +42,8 @@
 
             <!-- 게시글 내용 -->
             <div class="mt-3" id="content">
-                <pre>{{ post.content }}</pre>
+                <!--                <pre class="h5">{{ post.content }}</pre>-->
+                <div class="h5" style="word-wrap: break-word">{{ post.content }}</div>
             </div>
 
             <!-- 파일 첨부 영역 -->
@@ -64,12 +65,12 @@
                 <!-- 좋아요 눌렀을 때 -->
                 <button v-if="this.likeId" class="btn btn-primary" @click="unlike">
                     <b-icon icon="heart-fill" font-scale="1"></b-icon>
-                    <span class="font-weight-bold ml-3">{{post.likeCnt}}</span>
+                    <span class="font-weight-bold ml-3">{{ post.likeCnt }}</span>
                 </button>
                 <!-- 좋아요 안 눌렀을 때 -->
                 <button v-else class="btn btn-outline-secondary" @click="like">
                     <b-icon icon="heart-fill" font-scale="1"></b-icon>
-                    <span class="font-weight-bold ml-3">{{post.likeCnt}}</span>
+                    <span class="font-weight-bold ml-3">{{ post.likeCnt }}</span>
                 </button>
 
             </div>
@@ -119,28 +120,40 @@ export default {
         };
     },
     created() {
-        http.get(`/post/${this.$route.params.id}`).then((res) => {
-            console.log(res);
-            this.post = res.data;
-            this.comments = this.post.postCommentResponses;
-            this.attachments = this.post.attachmentResponses;
-            this.likeId = this.post.likeId;
-        });
+        http.get(`/post/${this.$route.params.postId}`)
+            .then((res) => {
+                console.log(res);
+                this.post = res.data;
+                this.comments = this.post.postCommentResponses;
+                this.attachments = this.post.attachmentResponses;
+                this.likeId = this.post.likeId;
+            })
+            .catch((res) => {
+                this.$alertDanger("오류 확인", res);
+                if (res.status === 401) {
+                    this.$alertDanger("로그인 만료", "로그인이 만료 되었습니다. 다시 로그인해주세요.");
+                }
+            });
     },
     methods: {
         moveModify() {
-            const url = `${this.$route.path}/edit`;
+            const url = `${this.$route.fullPath}/edit`;
             console.log(url);
             this.$router.push(url);
         },
         deletePost() {
             if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
-                http.delete(`/post/${this.$route.params.id}`).then((res) => {
-                    if (res.status === 200) {
-                        alert("삭제가 완료되었습니다.");
-                        this.$router.replace(`/post/list`);
-                    }
-                });
+                http.delete(`/post/${this.$route.params.postId}`)
+                    .then((res) => {
+                        if (res.status === 200) {
+                            this.$alertDanger("삭제 완료", "삭제가 완료되었습니다.");
+                            this.$router.replace(`/post/${this.$route.params.categoryId}/list`);
+                        }
+                    })
+                    .catch((res) => {
+                        this.$alertDanger("오류 확인", res);
+                        this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+                    });
             }
         },
         toTop() {
@@ -158,18 +171,18 @@ export default {
                 postId: this.post.id,
                 memberId: memberId
             }
-
             http
                 .post(`/post/${this.post.id}/like`, data)
-                .then((response) => {
-                    console.log(`like response: ${response}`);
-                    if (response.status === 200) {
-                        this.likeId = response.data;
-                        this.$alertSuccess("좋아요", "게시글에 좋아요를 했습니다.");
+                .then((res) => {
+                    console.log(`like res: ${res}`);
+                    if (res.status === 200) {
+                        this.likeId = res.data;
                         this.post.likeCnt++;
+                        this.$alertSuccess("좋아요", "게시글에 좋아요를 했습니다.");
                     }
                 })
-                .catch(() => {
+                .catch((res) => {
+                    this.$alertDanger("오류 확인", res);
                     this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
                 });
         },
@@ -177,14 +190,15 @@ export default {
             console.log(`likeId: ${this.likeId}`)
             http
                 .delete(`/post/like/${this.likeId}`)
-                .then((response) => {
-                    if (response.status === 200) {
+                .then((res) => {
+                    if (res.status === 200) {
                         this.likeId = null;
-                        this.$alertSuccess("좋아요 취소", "좋아요 취소를 누르셨습니다.");
                         this.post.likeCnt--;
+                        this.$alertSuccess("좋아요 취소", "좋아요 취소를 누르셨습니다.");
                     }
                 })
-                .catch(() => {
+                .catch((res) => {
+                    this.$alertDanger("오류 확인", res);
                     this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
                 })
         }

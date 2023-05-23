@@ -14,6 +14,11 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(common);
+Vue.directive("focus", {
+  inserted(el) {
+     el.focus();
+  }
+});
 
 import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
