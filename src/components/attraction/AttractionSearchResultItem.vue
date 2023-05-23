@@ -1,13 +1,13 @@
 <template>
   <!-- TODO : img 디폴트 이미지 추가할 것. -->
   <b-card
-      :title="attraction.title"
-      :img-src="$options.filters.defaultImgSrcFilter(attraction.firstImage)"
-      img-top
-      tag="article"
-      style="max-width: 20rem"
-      class="mb-1"
-      @click="selectAttraction"
+    :title="attraction.title"
+    :img-src="$options.filters.defaultImgSrcFilter(attraction.firstImage)"
+    img-top
+    tag="article"
+    style="max-width: 20rem"
+    class="mb-1"
+    @click="selectAttraction"
   >
     <b-card-text>
       {{ attraction.addr1 }}
@@ -23,12 +23,12 @@
       <b-icon icon="heart-fill" font-scale="1"></b-icon>
       <span class="font-weight-bold ml-3">{{ this.likeCnt }}</span>
     </button>
-    
+
     <!-- 여행 계획의 아이템으로 사용되는 경우 -->
     <button
-        class="btn btn-primary"
-        v-if="domain === 'plan'"
-        @click="addMyPath(attraction)"
+      class="btn btn-primary"
+      v-if="domain === 'plan'"
+      @click="addMyPath(attraction)"
     >
       내 경로에 추가하기
     </button>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 import jwtDecode from "jwt-decode";
 import http from "@/utils/api/http";
 
@@ -53,13 +53,11 @@ export default {
       likeCnt: this.attraction.likeCnt,
     };
   },
-  created() {
-  },
+  created() {},
   computed: {
     ...mapState("planStore", ["myPlan"]),
     ...mapState("memberStore", ["isLogin", "loginMember"]),
   },
-  created() {},
   methods: {
     ...mapActions("attractionStore", ["setAttraction"]),
     ...mapActions("planStore", ["addPlan"]),
@@ -90,38 +88,38 @@ export default {
 
       const data = {
         attractionId: this.attraction.contentId,
-        memberId: memberId
-      }
+        memberId: memberId,
+      };
       http
-          .post(`/attraction/${this.attraction.contentId}/like`, data)
-          .then((res) => {
-            console.log(`like res: ${res}`);
-            if (res.status === 200) {
-              this.likeId = res.data;
-              this.likeCnt++;
-              this.$alertSuccess("좋아요", "관광지에 좋아요를 했습니다.");
-            }
-          })
-          .catch((res) => {
-            this.$alertDanger("오류 확인", res);
-            this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
-          });
+        .post(`/attraction/${this.attraction.contentId}/like`, data)
+        .then((res) => {
+          console.log(`like res: ${res}`);
+          if (res.status === 200) {
+            this.likeId = res.data;
+            this.likeCnt++;
+            this.$alertSuccess("좋아요", "관광지에 좋아요를 했습니다.");
+          }
+        })
+        .catch((res) => {
+          this.$alertDanger("오류 확인", res);
+          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+        });
     },
     unlike() {
-      console.log(`likeId: ${this.likeId}`)
+      console.log(`likeId: ${this.likeId}`);
       http
-          .delete(`/attraction/like/${this.likeId}`)
-          .then((res) => {
-            if (res.status === 200) {
-              this.likeId = null;
-              this.likeCnt--;
-              this.$alertSuccess("좋아요 취소", "좋아요 취소를 누르셨습니다.");
-            }
-          })
-          .catch((res) => {
-            this.$alertDanger("오류 확인", res);
-            this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
-          })
+        .delete(`/attraction/like/${this.likeId}`)
+        .then((res) => {
+          if (res.status === 200) {
+            this.likeId = null;
+            this.likeCnt--;
+            this.$alertSuccess("좋아요 취소", "좋아요 취소를 누르셨습니다.");
+          }
+        })
+        .catch((res) => {
+          this.$alertDanger("오류 확인", res);
+          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+        });
     },
   },
 };
