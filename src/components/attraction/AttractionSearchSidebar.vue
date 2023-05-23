@@ -170,9 +170,6 @@ export default {
   methods: {
     ...mapActions("attractionStore", ["setAttractions"]),
     search(currentPage) {
-      console.log(this.sidoSelected);
-      console.log(this.gugunSelected);
-      console.log(this.contentSelected);
       http
         .get("/attraction", {
           params: {
@@ -194,6 +191,7 @@ export default {
     toTop() {
       const element =
         this.$refs.searchResult.$el.querySelector(".b-sidebar-body");
+      console.log();
       this.$toTop(element);
     },
   },

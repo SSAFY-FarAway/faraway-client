@@ -1,6 +1,6 @@
 <template>
   <div id="card-container" class="d-flex align-items-center">
-    <b-card class="font-small text-center" style="width: 220px" no-body>
+    <b-card class="font-small" style="width: 220px" no-body>
       <p class="m-1 font-weight-bold">{{ idx }}번째 경로</p>
       <b-card-img
         class="p-2"
@@ -15,18 +15,13 @@
           plan.addr1
         }}</b-list-group-item>
         <b-list-group-item class="hidden-text p-1"
-          ><a
-            class="btn font-small font-weight-bold text-white"
-            style="background-color: #2db400"
-            @click="openNaverSearch(plan.title)"
-          >
-            NAVER 검색하기
-          </a></b-list-group-item
+          ><button class="btn btn-danger font-small" @click="removeMyPath">
+            내 경로에서 삭제
+          </button></b-list-group-item
         >
       </b-list-group>
     </b-card>
     <b-icon
-      v-if="maxIdx !== idx"
       class="mx-2"
       style="z-index: 99; top: 40%; right: 0px; color: var(--main-color)"
       icon="arrow-right-circle-fill"
@@ -44,7 +39,6 @@ export default {
   props: {
     plan: Object,
     idx: Number,
-    maxIdx: Number,
   },
   data() {
     return {};
@@ -52,11 +46,9 @@ export default {
   created() {},
   methods: {
     ...mapActions("planStore", ["removePlan"]),
-    openNaverSearch(title) {
-      window.open(
-        `https://search.naver.com/search.naver?query=${title}`,
-        "_blank"
-      );
+    removeMyPath() {
+      this.$alertSuccess("경로 삭제", "경로가 성공적으로 삭제되었습니다.");
+      this.removePlan(this.plan);
     },
   },
 };
