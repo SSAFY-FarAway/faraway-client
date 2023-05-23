@@ -81,7 +81,6 @@ export default {
       http
         .post("/member/login", this.loginMember)
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             this.$alertSuccess("로그인 성공", "메인페이지로 이동합니다.");
             this.setIsLogin(true);
