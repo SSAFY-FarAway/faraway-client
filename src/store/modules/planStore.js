@@ -31,6 +31,9 @@ const planStore = {
         state.myPlan.splice(idx, 1);
       }
     },
+    CLEAR_PLAN(state) {
+      state.myPlan.length = 0;
+    },
   },
   actions: {
     addPlan({ commit }, payload) {
@@ -38,6 +41,9 @@ const planStore = {
     },
     removePlan({ commit }, payload) {
       commit("REMOVE_PLAN", payload);
+    },
+    clearPlan({ commit }) {
+      commit("CLEAR_PLAN");
     },
   },
 };
