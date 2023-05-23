@@ -25,21 +25,19 @@ import HotPlaceDetail from "@/views/hotplace/HotPlaceDetail.vue";
 import HotPlaceList from "@/views/hotplace/HotPlaceList.vue";
 import HotPlaceWrite from "@/views/hotplace/HotPlaceWrite.vue";
 import hotPlaceModify from "@/views/hotplace/HotPlaceModify.vue";
-import store from "@/store"
+import store from "@/store";
 
-const beforeLogin = isAuth => (from, to, next) => {
+const beforeLogin = (isAuth) => (from, to, next) => {
   console.log(store);
   const isLogin = store.getters["memberStore/getIsLogin"];
   if ((isLogin && isAuth) || (!isLogin && !isAuth)) {
-    console.log("여 왔는가");
     return next();
   } else {
-    console.log("여기로 왔는가");
     // 로그인 화면으로 이동
     alert("로그인이 필요한 페이지 입니다. 로그인 페이지로 이동합니다.");
     router.replace("/member/login");
   }
-}
+};
 
 Vue.use(VueRouter);
 
@@ -124,6 +122,7 @@ const routes = [
         path: "write",
         name: "PlanWrite",
         component: PlanWrite,
+        props: true,
         beforeEnter: beforeLogin(true),
         children: [],
       },

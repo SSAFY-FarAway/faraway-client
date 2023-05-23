@@ -21,21 +21,27 @@
         </button>
       </form>
     </div>
-    
+
     <!-- 여행경로 List - 테이블 -->
     <div id="table-container">
-    <table class="table table-hover shadow rounded">
-      <thead>
-        <table-row-header :titles="titles" />
-      </thead>
-      <tbody>
-          <tr v-if='plans.length===0'>
+      <table class="table table-hover shadow rounded">
+        <thead>
+          <table-row-header :titles="titles" />
+        </thead>
+        <tbody>
+          <tr v-if="plans.length === 0">
             <td colspan="6">현재 등록된 게시글이 없습니다.</td>
           </tr>
-          <table-row-data v-for="plan in plans" :key="plan.id" :data="plan" :titles='titles' domain='plan' />
-      </tbody>
-    </table>
-  </div>
+          <table-row-data
+            v-for="plan in plans"
+            :key="plan.id"
+            :data="plan"
+            :titles="titles"
+            domain="plan"
+          />
+        </tbody>
+      </table>
+    </div>
     <!-- 페이지네이션 -->
     <page-navigation :totalPages="pageTotalCnt" />
   </div>
@@ -67,42 +73,42 @@ export default {
         { value: "member", text: "작성자" },
       ],
       titles: [
-        { title: "No", colSize: 1, colName: "id"},
-        { title: "제목", colSize: 5, colName: "title"  },
-        { title: "작성자", colSize: 3, colName: "loginId"  },
-        { title: "조회수", colSize: 1, colName: "hit"  },
-        { title: "작성일", colSize: 2, colName: "createdDate"  },
+        { title: "No", colSize: 1, colName: "id" },
+        { title: "제목", colSize: 5, colName: "title" },
+        { title: "작성자", colSize: 3, colName: "loginId" },
+        { title: "조회수", colSize: 1, colName: "hit" },
+        { title: "작성일", colSize: 2, colName: "createdDate" },
       ],
       plans: [],
       pageTotalCnt: 0,
     };
   },
   created() {
-    this.getPlans()
+    this.getPlans();
   },
   methods: {
     getPlans() {
       http
-      .get("/plan")
-      .then((res) => {
-        console.log(res)
-        if (res.status === 200) {
-          this.pageTotalCnt = res.data.pageTotalCnt;
-          this.plans = res.data.data;
-        }
-      })
-      .catch(() => {
-        this.$alertDanger(
-          "데이터 로드 실패 !",
-          "추후에 예외처리 로직 추가 예정"
-        );
-      });
-    }
+        .get("/plan")
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.pageTotalCnt = res.data.pageTotalCnt;
+            this.plans = res.data.data;
+          }
+        })
+        .catch(() => {
+          this.$alertDanger(
+            "데이터 로드 실패 !",
+            "추후에 예외처리 로직 추가 예정"
+          );
+        });
+    },
   },
 };
 </script>
 <style scoped>
-#table-container { 
+#table-container {
   min-height: 550px;
 }
 </style>

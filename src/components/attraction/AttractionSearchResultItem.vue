@@ -2,8 +2,7 @@
   <!-- TODO : img 디폴트 이미지 추가할 것. -->
   <b-card
     :title="attraction.title"
-    :img-src="attraction.firstImage"
-    img-alt="Image"
+    :img-src="$options.filters.defaultImgSrcFilter(attraction.firstImage)"
     img-top
     tag="article"
     style="max-width: 20rem"
@@ -13,6 +12,13 @@
     <b-card-text>
       {{ attraction.addr1 }}
     </b-card-text>
+    <button
+      class="btn btn-primary"
+      v-if="domain === 'plan'"
+      @click="addMyPath(attraction)"
+    >
+      내 경로에 추가하기
+    </button>
   </b-card>
 </template>
 
@@ -24,17 +30,21 @@ export default {
   components: {},
   props: {
     attraction: Object,
+    domain: String,
   },
   data() {
-    return {
-      message: "",
-    };
+    return {};
   },
   created() {},
   methods: {
     ...mapActions("attractionStore", ["setAttraction"]),
+    ...mapActions("planStore", ["addPlan"]),
     selectAttraction() {
       this.setAttraction(this.attraction);
+    },
+    addMyPath(attraction) {
+      this.$alertSuccess("경로 추가", "경로가 성공적으로 추가되었습니다.");
+      this.addPlan(attraction);
     },
   },
 };

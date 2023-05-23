@@ -34,8 +34,7 @@ export default {
         value.includes("login") || value.includes("register") ? true : false;
     },
     loginCheck() {
-      console.log(this.isLogin);
-      console.log("login?");
+      console.log("로그인 상태 : " + this.isLogin)
     },
   },
   watch: {
