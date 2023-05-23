@@ -174,6 +174,7 @@ export default {
           },
         })
         .then((res) => {
+          console.log(res);
           this.attractions = res.data.data;
           this.setAttractions(res.data.data);
           this.totalPages = res.data.pageTotalCnt;
