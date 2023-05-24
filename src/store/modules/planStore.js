@@ -24,9 +24,7 @@ const planStore = {
       state.myPlan.push(plan);
     },
     REMOVE_PLAN(state, plan) {
-      const idx = state.myPlan.findIndex(
-        (el) => el.contentId === plan.contentId
-      );
+      const idx = state.myPlan.findIndex((el) => el.contentId === plan.contentId);
       if (idx != -1) {
         state.myPlan.splice(idx, 1);
       }

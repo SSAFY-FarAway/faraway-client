@@ -91,7 +91,6 @@ export default {
       http
         .get("/plan")
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             this.pageTotalCnt = res.data.pageTotalCnt;
             this.plans = res.data.data;

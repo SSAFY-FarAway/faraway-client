@@ -5,7 +5,7 @@
       <div class="row m-0 p-0">
         <!-- 사용자 추천 경로 -->
         <div class="col-12 m-0 p-0 text-center">
-          <plan-write-kakao-map mapId="write-map" />
+          <plan-write-kakao-map mapId="modify-map" />
         </div>
       </div>
     </div>

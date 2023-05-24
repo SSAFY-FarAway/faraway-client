@@ -139,7 +139,6 @@ export default {
       http
         .get(`/plan/${planId}`)
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             this.plan = res.data;
             this.likeId = this.plan.likeId;
