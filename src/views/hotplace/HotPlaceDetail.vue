@@ -149,6 +149,7 @@ export default {
         this.hotPlace = response.data;
         this.comments = this.hotPlace.commentResponses;
         this.images = this.hotPlace.imageResponses;
+        this.likeId = response.data.likeId;
       });
     },
     modifyHotPlace() {
