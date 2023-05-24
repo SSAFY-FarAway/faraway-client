@@ -92,7 +92,7 @@ export default {
           console.log(response);
           if (response.status === 200) {
             alert("글 작성 완료!");
-            this.$router.replace(`/post/${response.data}`);
+            this.$router.replace(`/post/${this.request.categoryId}/${response.data}`);
           }
         })
           .catch((res) => {
