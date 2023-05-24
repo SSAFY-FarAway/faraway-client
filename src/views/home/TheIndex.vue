@@ -99,6 +99,7 @@ export default {
     if (this.isLogin && sessionStorage.getItem("access-token")) {
         this.getMemberInfo();
     }
+    
   },
   computed: {
     ...mapState("memberStore",["isLogin"])

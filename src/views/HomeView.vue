@@ -8,6 +8,12 @@ import { RouterView } from "vue-router";
 export default {
   name: "HomeView",
   components: { RouterView },
+  mounted() {
+    this.$toTop();
+  },
+  updated() {
+    this.$toTop();
+  },
 };
 </script>
 

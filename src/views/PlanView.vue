@@ -13,7 +13,12 @@ export default {
       message: "",
     };
   },
-  created() {},
+  mounted() {
+    this.$toTop();
+  },
+  updated() {
+    this.$toTop();
+  },
   methods: {},
 };
 </script>
