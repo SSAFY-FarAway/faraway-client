@@ -1,7 +1,5 @@
 <template>
   <div class="hotplace-container">
-    <hr style="border-top: 1px solid rgb(219, 219, 219)" />
-
     <!-- 아이디, 작성일, 별점, 주소 -->
     <div id="item-header">
       <b-icon class="mr-1 color-primary" icon="person-fill" font-scale="1" />
@@ -89,6 +87,7 @@
         >댓글 {{ hotPlace.commentCnt }}개 모두 보기</span
       >
     </div>
+    <hr style="border-top: 1px solid rgb(219, 219, 219)" />
   </div>
 </template>
 

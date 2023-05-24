@@ -15,17 +15,25 @@
           type="text"
           class="form-control ml-1"
           v-model="keyword"
-          placeholder="검색어 입력"
+          placeholder="키워드 입력"
         />
-        <button
-          type="button"
-          class="btn btn-secondary ml-1 text-uppercase"
-          @click="search"
-        >
-          Search
-        </button>
       </form>
     </div>
+    <hr style="border-top: 1px solid rgb(219, 219, 219)" />
+
+    <div class="row p-0 m-0 justify-content-end">
+      <span class="font-weight-bold mr-3">피드 정렬</span>
+      <b-form-group class="m-0" v-slot="{ ariaDescribedby }">
+        <b-form-radio-group
+          id="radio-group-1"
+          v-model="feedSelected"
+          :options="feedOptions"
+          :aria-describedby="ariaDescribedby"
+        ></b-form-radio-group>
+      </b-form-group>
+    </div>
+    <hr style="border-top: 1px solid rgb(219, 219, 219)" />
+
     <feed-item
       v-for="hotPlace in hotPlaces"
       :key="hotPlace.id"
@@ -33,10 +41,18 @@
       @like="like(hotPlace.id)"
       @unlike="unlike(hotPlace.id)"
     />
+    <div
+      v-if="!hotPlaces.length"
+      class="d-flex flex-column align-items-center mt-3"
+    >
+      <b-icon class="text-center" icon="folder-x" font-scale="5" />
+      <h3 class="text-center mt-3">피드가 존재하지 않습니다.</h3>
+    </div>
   </div>
 </template>
 
 <script>
+import { BIcon } from "bootstrap-vue";
 import pageHeader from "@/components/common/page/pageHeader";
 import writeBtn from "@/components/common/page/writeBtn";
 import FeedItem from "@/components/hotplace/FeedItem";
@@ -50,15 +66,21 @@ export default {
     pageHeader,
     writeBtn,
     FeedItem,
+    BIcon,
   },
   data() {
     return {
-      selected: null,
+      selected: "title",
+      feedSelected: 1,
       keyword: "",
       options: [
-        { value: null, text: "검색 조건" },
         { value: "title", text: "제목" },
         { value: "content", text: "내용" },
+      ],
+      feedOptions: [
+        { value: 1, text: "최신 순" },
+        { value: 2, text: "조회수 순" },
+        { value: 3, text: "좋아요 순" },
       ],
       titles: [
         { title: "No", colSize: 1, colName: "id" },
@@ -77,7 +99,10 @@ export default {
     this.getHotPlaces();
   },
   watch: {
-    "$route.fullPath"() {
+    keyword() {
+      this.getHotPlaces();
+    },
+    feedSelected() {
       this.getHotPlaces();
     },
   },
@@ -87,11 +112,9 @@ export default {
   methods: {
     getHotPlaces() {
       const pageNumber = this.isEmpty(this.$route.query.pageNumber);
-      const title = this.isEmpty(this.$route.query.title);
-      const content = this.isEmpty(this.$route.query.content);
       const memberId = this.getMemberId();
 
-      let url = `/hot-place?title=${title}&content=${content}&pageNumber=${pageNumber}`;
+      let url = `/hot-place?${this.selected}=${this.keyword}&pageNumber=${pageNumber}&orderType=${this.feedSelected}`;
       if (memberId) {
         url += `&memberId=${memberId}`;
       }
@@ -99,7 +122,6 @@ export default {
         .get(url)
         .then((res) => {
           if (res.status === 200) {
-            console.log(res);
             this.hotPlaces = res.data.data;
             this.pageTotalCnt = res.data.pageTotalCnt;
           }
@@ -107,12 +129,6 @@ export default {
         .catch(() => {
           this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
         });
-    },
-    search() {
-      let url = `/hot-place?${this.selected}=${this.keyword}`;
-      this.$router.push(url).catch(() => {
-        this.getHotPlaces();
-      });
     },
     isEmpty(value) {
       return value || "";
