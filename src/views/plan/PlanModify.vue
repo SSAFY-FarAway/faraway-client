@@ -103,7 +103,7 @@ export default {
     ...mapActions("planStore", ["addPlan", "clearPlan"]),
     modifyPlan() {
       this.planPost.travelPlan = `${this.getContentIds.toString()}`;
-      const url = `/plan/${this.$route.params.planId}`
+      const url = `/plan/${this.$route.params.id}`
       console.log(url)
       console.log(this.planPost)
       http.put(url, this.planPost).then((res) => {
