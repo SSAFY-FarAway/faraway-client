@@ -26,7 +26,7 @@
 
     <!-- 여행 계획의 아이템으로 사용되는 경우 -->
     <button
-      class="btn btn-primary"
+      class="btn btn-primary ml-2"
       v-if="domain === 'plan'"
       @click="addMyPath(attraction)"
     >

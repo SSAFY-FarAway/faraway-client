@@ -307,7 +307,7 @@ export default {
     },
 
     showLoginPwd(){
-      const loginPwdBox = this.$refs["login-pwd"];
+      const loginPwdBox = this.$refs["loginPwd"];
       const icon = this.$refs["icon"];
     
       if(this.loginPwdShow){
