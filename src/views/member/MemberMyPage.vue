@@ -125,18 +125,15 @@
                                                     Address</label>
                                             </div>
                                         </div>
-
-
-                                        <!--모달 테스트  -->
-                                        <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button>
-                                        
+                                 
                                         <div id="normal-mode-btns" class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button
+                                            <b-button
+                                                    v-b-modal.modal-prevent-closing
                                                     class="btn btn-primary btn-lg shadow" id="modify-button" 
                                                     ref="modify-button"
-                                                    @click="modify">
+                                                    >
                                                 Modify
-                                            </button>
+                                            </b-button>
                                         </div>
                                         <div id="modify-mode-btns"  class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                             <button
@@ -223,7 +220,6 @@ export default {
             .then((res) => {
                 this.memberInfo = res.data;
                 console.log("member info ")
-                console.log(this.memberInfo.mainAddress)
             })
   },
   methods: {
@@ -233,12 +229,7 @@ export default {
           id:"",
           loginPwd:"",
         }
-        // const loginPwd = window.prompt("비밀번호를 입력해주세요");
-        // if(loginPwd == null){
-        //     return;
-        // }
         modifyInfo.id = this.memberInfo.id;
-        // modifyInfo.loginPwd = loginPwd;
         modifyInfo.loginPwd = this.inputLoginPwd;
 
         const url = "/member/check"
@@ -249,12 +240,11 @@ export default {
                 if(res.status === 200){
                     this.modifyMode = true;
                     this.changeView();   
-                    
                 }
             })
             .catch((error) => {
-                console.log(error);
-                alert("비밀번호가 틀렸습니다.")
+                console.log(error.response);
+                this.$alertDanger("비밀번호가 틀렸습니다.", "비밀번호를 다시 입력해 주세요.");
             })
     },
     changeView() {
@@ -269,9 +259,7 @@ export default {
         const modifySubmitButton = this.$refs["modify-submit-button"];
         const modifyCancelButton = this.$refs["modify-cancel-button"];
         const findBtn = this.$refs["find-btn"];
-        
-        // modifyButton.style.display="none";
-        // modifySubmitButton.style.display="block";
+
         console.log("flag : ", this.modifyMode);
         if(this.modifyMode){
             lastName.readOnly = false;
@@ -307,7 +295,12 @@ export default {
         const subAddress = this.$refs["sub-address"];
         
         if (!(lastName.value && firstName.value && birth.value && email.value && zipcode.value && mainAddress.value && subAddress.value)) {
-            alert("모든 정보를 입력해주세요.");
+            this.$alertDanger("일부 정보가 누락되었습니다.", "수정할 정보를 입력해주세요.");
+            return;
+        }
+
+        if(!email.value.includes('@')){
+            this.$alertDanger("이메일이 유효하지 않습니다.", "이메일을 수정해주세요.");
             return;
         }
 
@@ -328,24 +321,28 @@ export default {
         http
             .put(url, modifyInfo)
             .then((res) =>{
-                console.log(res)
+
                 if(res.status === 200){
-                    alert("회원정보 수정 성공");
+                    this.$alertSuccess("회원정보 수정 성공", "마이페이지로 이동합니다.");
                     this.$router.go(this.$router.currentRoute);
                 }
             })
-            .catch(() => {
-                // this.$alertDanger("비밀번호가 틀렸습니다", "추후 예외 처리 추가 예정");
-                alert("회원정보 수정 실패 !");
+            .catch((error) => {
+                console.log(error.response);
+                if(error.request){
+                    console.log('No response received');
+                    console.log('Error request:', error.request);
+                }else{
+                    console.log('Error message:', error.message);
+                }
+                console.log('Error config:', error.config);
+                this.$alertDanger("비밀번호가 틀렸습니다", "추후 예외 처리 추가 예정");
+
             })
         },
         cancel(){
             if(confirm("취소하시겠습니까 ? ")){
                 this.$router.go(this.$router.currentRoute);
-                // this.$router.push({name: 'MemberMypage', params: {id: this.memberInfo.id}})
-                // this.$router.replace("/member/"+this.memberInfo.id);
-                // this.modifyMode=false;
-                // this.changeView();
             }
             
         },
@@ -363,15 +360,11 @@ export default {
             }
             this.modify();
         },
+        resetModal() {
+        this.inputLoginPwd = ''
+      },
 
 
-
-
-
-
-
-
-        
         findZipCode(){
       new window.daum.Postcode({
         oncomplete: (data) => {
