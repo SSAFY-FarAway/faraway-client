@@ -92,7 +92,7 @@ export default {
           console.log(response);
           if (response.status === 200) {
             alert("글 작성 완료!");
-            this.$router.replace(`/post/${response.data}`);
+            this.$router.replace(`/post/${this.request.categoryId}/${response.data}`);
           }
         })
           .catch((res) => {
@@ -104,7 +104,11 @@ export default {
   computed: {
     ...mapState("memberStore",["loginMember"])
   },
-  created() {},
+  created() {
+      if (this.loginMember.role !== "ADMIN") {
+          this.options = this.options.filter(el => el.value != 1)
+      }
+  },
 };
 </script>
 

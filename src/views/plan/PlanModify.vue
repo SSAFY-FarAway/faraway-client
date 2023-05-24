@@ -120,7 +120,7 @@ export default {
       });
     },
     getPlanData() {
-      const planId = this.$route.params.planId;
+      const planId = this.$route.params.id;
       http
         .get(`/plan/${planId}`)
         .then((res) => {
