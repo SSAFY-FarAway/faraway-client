@@ -8,7 +8,7 @@
 
     <!-- 검색 메뉴 -->
     <div class="p-0 pb-1 m-0 col-12 row justify-content-between">
-      <write-btn path="/post/write" btnName="write post" />
+      <write-btn v-if="isBtnVisible" path="/post/write" btnName="write post" />
       <form class="d-flex">
         <b-form-select class="col-md-4" v-model="selected" :options="options" />
         <input
@@ -55,6 +55,7 @@ import tableRowHeader from "@/components/common/page/tableRowHeader";
 import PageNavigation from "@/components/common/page/pageNavigation";
 import writeBtn from "@/components/common/page/writeBtn";
 import tableRowData from "@/components/common/page/tableRowData";
+import {mapState} from "vuex";
 
 export default {
   name: "PostList",
@@ -87,6 +88,9 @@ export default {
   },
   created() {
     this.getPosts();
+      console.log(`categoryId: ${this.categoryId}`);
+      console.log(`role: ${this.loginMember.role}`);
+      console.log(`isBtnVisible: ${this.isBtnVisible()}`)
   },
   watch: {
     "$route.fullPath"() {
@@ -117,11 +121,10 @@ export default {
   },
   methods: {
     getPosts() {
-      const categoryId = this.$route.params.categoryId;
       const pageNumber = this.isEmpty(this.$route.query.pageNumber);
       const title = this.isEmpty(this.$route.query.title);
       const content = this.isEmpty(this.$route.query.content);
-      let url = `/post?title=${title}&content=${content}&categoryId=${categoryId}&pageNumber=${pageNumber}`
+      let url = `/post?title=${title}&content=${content}&categoryId=${this.categoryId}&pageNumber=${pageNumber}`
       console.log(`getURL : ${url}`);
       http
           .get(url)
@@ -146,8 +149,19 @@ export default {
     },
     isEmpty(value) {
       return value || "";
-    }
+    },
   },
+    computed: {
+        ...mapState("memberStore",["loginMember"]),
+        categoryId() {
+            return this.$route.params.categoryId;
+
+        },
+        isBtnVisible() {
+            const role = this.loginMember.role;
+            return (this.categoryId === "1" && role === "ADMIN") || (this.categoryId !== "1" && role !== "GUEST")
+        }
+    },
 };
 </script>
 
