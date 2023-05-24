@@ -134,6 +134,7 @@
                                                     >
                                                 Modify
                                             </b-button>
+
                                         </div>
                                         <div id="modify-mode-btns"  class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                             <button
