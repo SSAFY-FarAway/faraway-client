@@ -94,9 +94,22 @@
                                               font-scale="1.5"
                                               ></b-icon>
                                             <div class="form-outline flex-fill mb-0">
-                                                <input type="text" id="zipcode" ref="zipcode" name="zipcode" class="form-control"
-                                                v-model="memberInfo.zipcode"
-                                                      readonly/>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input type="text" id="zipcode" ref="zipcode"  name="zipcode" class="form-control"
+                                                        v-model="memberInfo.zipcode"
+                                                            readonly/>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <input type="button"
+                                                            style= display:none
+                                                            class="btn btn-primary"
+                                                            ref="find-btn"
+                                                            @click="findZipCode" 
+                                                            value="찾기"
+                                                            />
+                                                    </div>
+                                                </div>
                                                 <label class="form-label" for="zipcode">Your Zipcode (ex. 90000)</label>
                                                 <input type="text" id="main-address" ref="main-address" name="mainAddress"
                                                 class="form-control" 
@@ -112,13 +125,16 @@
                                                     Address</label>
                                             </div>
                                         </div>
+                                 
                                         <div id="normal-mode-btns" class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button
+                                            <b-button
+                                                    v-b-modal.modal-prevent-closing
                                                     class="btn btn-primary btn-lg shadow" id="modify-button" 
                                                     ref="modify-button"
-                                                    @click="modify">
+                                                    >
                                                 Modify
-                                            </button>
+                                            </b-button>
+
                                         </div>
                                         <div id="modify-mode-btns"  class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                             <button
@@ -143,13 +159,41 @@
                                     <img src="@/assets/img/member/login-section.jpg"
                                         class="img-fluid" alt="Sample image"/></div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
       </div>
         </div>
-  </div>
+        
+        <b-modal
+      id="modal-prevent-closing"
+      ref="modal"
+      title="회원 정보 수정"
+      @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk"
+    >
+      <form ref="form" @submit.stop.prevent="handleSubmit">
+        <b-form-group
+          label="비밀번호를 입력해주세요."
+          label-for="LoginPwd-input"
+          invalid-feedback="LoginPwd is required"
+          :state="LoginPwdState"
+        >
+          <b-form-input
+            id="LoginPwd-input"
+            v-model="inputLoginPwd"
+            type="password"
+            :state="LoginPwdState"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </form>
+    </b-modal>    
+    </div>
+
 </template>
 
 
@@ -166,6 +210,8 @@ export default {
     return {
         memberInfo:{},
         modifyMode:false,
+        inputLoginPwd : "",
+        LoginPwdState : null,
       
     };
   },
@@ -174,7 +220,7 @@ export default {
             .get(`/member/mypage`)
             .then((res) => {
                 this.memberInfo = res.data;
-                console.log(this.memberInfo)
+                console.log("member info ")
             })
   },
   methods: {
@@ -184,12 +230,8 @@ export default {
           id:"",
           loginPwd:"",
         }
-        const loginPwd = window.prompt("비밀번호를 입력해주세요");
-        if(loginPwd == null){
-            return;
-        }
         modifyInfo.id = this.memberInfo.id;
-        modifyInfo.loginPwd = loginPwd;
+        modifyInfo.loginPwd = this.inputLoginPwd;
 
         const url = "/member/check"
         http
@@ -199,12 +241,11 @@ export default {
                 if(res.status === 200){
                     this.modifyMode = true;
                     this.changeView();   
-                    
                 }
             })
             .catch((error) => {
-                console.log(error);
-                alert("비밀번호가 틀렸습니다.")
+                console.log(error.response);
+                this.$alertDanger("비밀번호가 틀렸습니다.", "비밀번호를 다시 입력해 주세요.");
             })
     },
     changeView() {
@@ -213,39 +254,35 @@ export default {
         const firstName = this.$refs["first-name"];
         const birth = this.$refs["birth"];
         const email = this.$refs["email"];
-        const zipcode = this.$refs["zipcode"];
-        const mainAddress = this.$refs["main-address"];
         const subAddress = this.$refs["sub-address"];
         
         const modifyButton =  this.$refs["modify-button"];
         const modifySubmitButton = this.$refs["modify-submit-button"];
         const modifyCancelButton = this.$refs["modify-cancel-button"];
-        // modifyButton.style.display="none";
-        // modifySubmitButton.style.display="block";
+        const findBtn = this.$refs["find-btn"];
+
         console.log("flag : ", this.modifyMode);
         if(this.modifyMode){
             lastName.readOnly = false;
             firstName.readOnly = false;
             birth.readOnly = false;
-            zipcode.readOnly = false;
             email.readOnly = false;
-            mainAddress.readOnly = false;
             subAddress.readOnly = false;
             modifyButton.style.display="none";
             modifySubmitButton.style.display="block";
             modifyCancelButton.style.display="block";
+            findBtn.style.display="block";
 
         }else{
             lastName.readOnly = true;
             firstName.readOnly = true;
             birth.readOnly = true;
-            zipcode.readOnly = true;
             email.readOnly = true;
-            mainAddress.readOnly = true;
             subAddress.readOnly = true;
             modifyButton.style.display="block";
             modifySubmitButton.style.display="none";
             modifyCancelButton.style.display="none";
+            findBtn.style.display="none";
         }
     },
     submit(){
@@ -259,7 +296,12 @@ export default {
         const subAddress = this.$refs["sub-address"];
         
         if (!(lastName.value && firstName.value && birth.value && email.value && zipcode.value && mainAddress.value && subAddress.value)) {
-            alert("모든 정보를 입력해주세요.");
+            this.$alertDanger("일부 정보가 누락되었습니다.", "수정할 정보를 입력해주세요.");
+            return;
+        }
+
+        if(!email.value.includes('@')){
+            this.$alertDanger("이메일이 유효하지 않습니다.", "이메일을 수정해주세요.");
             return;
         }
 
@@ -280,27 +322,84 @@ export default {
         http
             .put(url, modifyInfo)
             .then((res) =>{
-                console.log(res)
+
                 if(res.status === 200){
-                    alert("회원정보 수정 성공");
+                    this.$alertSuccess("회원정보 수정 성공", "마이페이지로 이동합니다.");
                     this.$router.go(this.$router.currentRoute);
                 }
             })
-            .catch(() => {
-                // this.$alertDanger("비밀번호가 틀렸습니다", "추후 예외 처리 추가 예정");
-                alert("회원정보 수정 실패 !");
+            .catch((error) => {
+                console.log(error.response);
+                if(error.request){
+                    console.log('No response received');
+                    console.log('Error request:', error.request);
+                }else{
+                    console.log('Error message:', error.message);
+                }
+                console.log('Error config:', error.config);
+                this.$alertDanger("비밀번호가 틀렸습니다", "추후 예외 처리 추가 예정");
+
             })
         },
         cancel(){
             if(confirm("취소하시겠습니까 ? ")){
                 this.$router.go(this.$router.currentRoute);
-                // this.$router.push({name: 'MemberMypage', params: {id: this.memberInfo.id}})
-                // this.$router.replace("/member/"+this.memberInfo.id);
-                // this.modifyMode=false;
-                // this.changeView();
             }
             
         },
+        checkFormValidity(){
+            if(this.inputLoginPwd == ""){
+                return false;
+            }
+            return true;
+        },
+
+        handleOk(){
+            if (!this.checkFormValidity()) {
+                this.$alertDanger("비밀번호를 입력해주세요.","로그인 비밀번호를 입력해주세요")
+                return
+            }
+            this.modify();
+        },
+        resetModal() {
+        this.inputLoginPwd = ''
+      },
+
+
+        findZipCode(){
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            let fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+            let extraRoadAddr = ''; // 도로명 조합형 주소 변수
+
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                extraRoadAddr += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if(data.buildingName !== '' && data.apartment === 'Y'){
+              extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if(extraRoadAddr !== ''){
+                extraRoadAddr = ' (' + extraRoadAddr + ')';
+            }
+            // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+            if(fullRoadAddr !== ''){
+                fullRoadAddr += extraRoadAddr;
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            this.memberInfo.zipcode = data.zonecode; //5자리 새우편번호 사용
+            this.memberInfo.mainAddress = fullRoadAddr;
+        }
+       }).open()
+    },
     },
 };
 </script>

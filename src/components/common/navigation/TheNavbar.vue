@@ -73,6 +73,13 @@
                   >MY PAGE</router-link
                 >
               </li>
+              <li>
+                <router-link
+                  class="nav-link scrollto nav-link-item"
+                  to="/member/changePassword"
+                  >CHANGE PWD</router-link
+                >
+              </li>
             </ul>
           </li>
           <!-- 로그인 안했을 때 -->

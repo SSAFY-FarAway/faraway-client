@@ -14,6 +14,7 @@ import MemberRegister from "@/views/member/MemberRegister";
 import MemberMypage from "@/views/member/MemberMyPage";
 import MemberFind from "@/views/member/MemberFind";
 import MemberLogin from "@/views/member/MemberLogin";
+import MemberUpdatePwd from "@/views/member/MemberUpdatePwd";
 import AttrationIndex from "@/views/attraction/AttrationIndex";
 import PlanList from "@/views/plan/PlanList";
 import PlanDetail from "@/views/plan/PlanDetail";
@@ -81,6 +82,11 @@ const routes = [
         path: "find",
         name: "MemberFind",
         component: MemberFind,
+      },
+      {
+        path:"changePassword",
+        name : "MemberUpdatePwd",
+        component :MemberUpdatePwd,
         beforeEnter: beforeLogin(true),
       },
       {
@@ -89,6 +95,7 @@ const routes = [
         component: MemberMypage,
         beforeEnter: beforeLogin(true),
       },
+      
     ],
   },
   {

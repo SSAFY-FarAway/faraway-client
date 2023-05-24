@@ -284,6 +284,7 @@ export default {
           pwdMsgBox.className = "form-text text-danger";
           this.pwdMsg = "영문 숫자 특수기호를 조합하여 8자리 이상의 비밀번호를 입력하세요.";
         }
+        this.pwdLengthCheck();
     },
 
     pwdLengthCheck(){
