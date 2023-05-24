@@ -7,7 +7,11 @@
       <b-icon class="mr-1 color-primary" icon="person-fill" font-scale="1" />
       <span id="loginId" class="font-weight-bold">{{ hotPlace.loginId }}</span>
       <span class="m-1 text-gray">•</span>
-      <span id="date" class="text-gray">{{ "2023/05/23" }}</span>
+      <span id="date" class="text-gray">{{
+        $options.filters.timeFilter(hotPlace.createdDate)
+      }}</span>
+      <span class="m-1 text-gray">•</span>
+      <span id="date" class="text-gray">조회 {{ hotPlace.hit }}</span>
       <div id="rating">
         <b-icon class="mr-1 color-primary" icon="star-fill" font-scale="1" />
         <span>{{ hotPlace.rating }}.0 / 5.0</span>
