@@ -81,7 +81,6 @@ const routes = [
         path: "find",
         name: "MemberFind",
         component: MemberFind,
-        beforeEnter: beforeLogin(true),
       },
       {
         path: ":memberId",
