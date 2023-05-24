@@ -21,7 +21,6 @@ export default {
   },
   methods: {
     moveDetail() {
-        console.log(this.domain);
       this.$router.push(`/${this.domain}/${this.data.id}`);
     },
   },

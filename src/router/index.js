@@ -29,7 +29,6 @@ import hotPlaceModify from "@/views/hotplace/HotPlaceModify.vue";
 import store from "@/store";
 
 const beforeLogin = (isAuth) => (from, to, next) => {
-  console.log(store);
   const isLogin = store.getters["memberStore/getIsLogin"];
   if ((isLogin && isAuth) || (!isLogin && !isAuth)) {
     return next();

@@ -122,13 +122,14 @@ export default {
       const title = this.isEmpty(this.$route.query.title);
       const content = this.isEmpty(this.$route.query.content);
       let url = `/post?title=${title}&content=${content}&categoryId=${categoryId}&pageNumber=${pageNumber}`
-      console.log(`getURL: ${url}`);
+      console.log(`getURL : ${url}`);
       http
           .get(url)
           .then((res) => {
             if (res.status === 200) {
               this.pageTotalCnt = res.data.pageTotalCnt;
               this.posts = res.data.data;
+              console.log('[PostList - getPosts]');
               console.log(res);
             }
           })
