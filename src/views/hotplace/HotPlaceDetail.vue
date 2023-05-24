@@ -24,7 +24,7 @@
         <b-dropdown-item @click="deleteHotPlace">게시글 삭제</b-dropdown-item>
       </b-dropdown>
     </div>
-    
+
     <!-- 게시글 정보 -->
     <div class="mt-2">
       <span id="member-id" class="text-secondary fw-light">
@@ -37,28 +37,28 @@
       <br />
       <div>
         <span id="hit" class="text-secondary fw-light">
-          조회수 : {{ hotPlace.hit }} 
+          조회수 : {{ hotPlace.hit }}
         </span>
         <span id="rating" class="text-secondary fw-light">
-          <b-icon     
-              icon="star-fill"
-              font-scale="1"
-              style="color: var(--main-color)"
-            ></b-icon> {{hotPlace.rating}} / 5
+          <b-icon
+            icon="star-fill"
+            font-scale="1"
+            style="color: var(--main-color)"
+          ></b-icon>
+          {{ hotPlace.rating }} / 5
         </span>
       </div>
       <span id="created-date" class="text-secondary fw-light">
-        <b-icon     
-              icon=" geo-alt"
-              font-scale="1"
-              style="color: var(--main-color)"
-            ></b-icon> {{hotPlace.mainAddress}} {{hotPlace.subAddress}}  
-        
+        <b-icon
+          icon=" geo-alt"
+          font-scale="1"
+          style="color: var(--main-color)"
+        ></b-icon>
+        {{ hotPlace.mainAddress }} {{ hotPlace.subAddress }}
+
         <a href="#" role="button" @click="clipBoardCopy">
-           <b-icon     
-              icon="file-text"
-              font-scale="1"
-            ></b-icon>복사</a>
+          <b-icon icon="file-text" font-scale="1"></b-icon>복사</a
+        >
       </span>
       <!-- 파일 첨부 영역 -->
       <!-- TODO: 파일 없는 경우 처리 해야함 -->
@@ -76,8 +76,6 @@
       <div class="mt-3" id="content">
         <pre>{{ hotPlace.content }}</pre>
       </div>
-
-      
 
       <!-- 좋아요 버튼 -->
       <div class="d-flex justify-content-center align-items-center mt-5">
@@ -107,8 +105,11 @@
     <hr />
 
     <!-- 게시글 하단 메뉴 -->
-    <div class="row p-0 m-0 justify-content-end"> 
-      <router-link to="/post/list" class="btn btn-outline-secondary">
+    <div class="row p-0 m-0 justify-content-end">
+      <router-link
+        to="/hot-place/list"
+        class="btn btn-outline-secondary text-secondary"
+      >
         목록으로
       </router-link>
       <button class="btn btn-outline-secondary ml-2" @click="toTop">TOP</button>
@@ -125,7 +126,7 @@ import { BIcon } from "bootstrap-vue";
 
 export default {
   name: "HotPlaceDetail",
-  components: { pageHeader, CommentForm, CommentRow, BIcon},
+  components: { pageHeader, CommentForm, CommentRow, BIcon },
   data() {
     return {
       hotPlace: {},
@@ -134,14 +135,12 @@ export default {
     };
   },
   created() {
-    http
-        .get(`/hot-place/${this.$route.params.id}`)
-        .then((response) => {
-          console.log(response);
-          this.hotPlace = response.data;
-          this.comments = this.hotPlace.commentResponses;
-          this.images = this.hotPlace.imageResponses;
-        })
+    http.get(`/hot-place/${this.$route.params.id}`).then((response) => {
+      console.log(response);
+      this.hotPlace = response.data;
+      this.comments = this.hotPlace.commentResponses;
+      this.images = this.hotPlace.imageResponses;
+    });
   },
   methods: {
     modifyHotPlace() {
@@ -151,20 +150,20 @@ export default {
     },
     deleteHotPlace() {
       if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
-        http
-            .delete(`/hotplace/${this.$route.params.id}`)
-            .then((response) => {
-              if (response.status === 200) {
-                alert("삭제가 완료되었습니다.");
-                this.$router.replace(`/hotplace/list`);
-              }
-            })
+        http.delete(`/hotplace/${this.$route.params.id}`).then((response) => {
+          if (response.status === 200) {
+            alert("삭제가 완료되었습니다.");
+            this.$router.replace(`/hotplace/list`);
+          }
+        });
       }
     },
-    clipBoardCopy(){
-      window.navigator.clipboard.writeText(this.hotPlace.mainAddress + " " + this.hotPlace.subAddress).then(() => {
-        this.$alertSuccess("복사 성공", "주소가 복사되었습니다.");
-      });
+    clipBoardCopy() {
+      window.navigator.clipboard
+        .writeText(this.hotPlace.mainAddress + " " + this.hotPlace.subAddress)
+        .then(() => {
+          this.$alertSuccess("복사 성공", "주소가 복사되었습니다.");
+        });
     },
     toTop() {
       window.scrollTo({
@@ -173,19 +172,19 @@ export default {
       });
     },
   },
-}
+};
 </script>
 
 <style scoped>
-  span{
-    padding: 0px 15px 0px 0px;
-  }
+span {
+  padding: 0px 15px 0px 0px;
+}
 
-  a{
-    color: var(--main-color)
-  }
+a {
+  color: var(--main-color);
+}
 
-  #content {
+#content {
   min-height: 400px;
 }
 </style>

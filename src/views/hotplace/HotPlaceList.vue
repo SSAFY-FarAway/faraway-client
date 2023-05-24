@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="hotplace-container">
     <!-- Header -->
     <page-header
       title="hot place"
@@ -7,8 +7,8 @@
     />
 
     <!-- 검색 메뉴 -->
-    <div class="p-0 pb-1 m-0 col-12 row justify-content-between">
-      <write-btn path="/hot-place/write" btnName="write hotplace" />
+    <div class="p-0 m-0 mt-3 col-12 row justify-content-between">
+      <write-btn path="/hot-place/write" btnName="add feed" />
       <form class="d-flex">
         <b-form-select class="col-md-4" v-model="selected" :options="options" />
         <input
@@ -17,42 +17,38 @@
           v-model="keyword"
           placeholder="검색어 입력"
         />
-        <button type="button" class="btn btn-secondary ml-1 text-uppercase" @click="search">
+        <button
+          type="button"
+          class="btn btn-secondary ml-1 text-uppercase"
+          @click="search"
+        >
           Search
         </button>
       </form>
     </div>
-    <!-- 핫플레이스 List - 테이블 -->
-    <table class="table table-hover shadow rounded" id="plan-table">
-      <thead>
-        <table-row-header :titles="titles" />
-      </thead>
-      <tbody v-for="hotPlace in hotPlaces" :key="hotPlace.id">
-        <img style="max-width: 100%" :src="'http://localhost/image/download/' + hotPlace.thumbnailId"  alt=""/>
-        <table-row-data :data="hotPlace" :titles="titles" domain="hot-place" />
-      </tbody>
-    </table>
-    <!-- 페이지네이션 -->
-    <page-navigation :totalPages="pageTotalCnt" />
+    <feed-item
+      v-for="hotPlace in hotPlaces"
+      :key="hotPlace.id"
+      :hotPlace="hotPlace"
+      @like="like(hotPlace.id)"
+      @unlike="unlike(hotPlace.id)"
+    />
   </div>
 </template>
 
 <script>
 import pageHeader from "@/components/common/page/pageHeader";
-import tableRowHeader from "@/components/common/page/tableRowHeader";
-import tableRowData from "@/components/common/page/tableRowData";
 import writeBtn from "@/components/common/page/writeBtn";
+import FeedItem from "@/components/hotplace/FeedItem";
 import http from "@/utils/api/http";
-import PageNavigation from "@/components/common/page/pageNavigation.vue";
+import jwtDecode from "jwt-decode";
 
 export default {
   name: "HotPlaceList",
   components: {
-    PageNavigation,
     pageHeader,
     writeBtn,
-    tableRowHeader,
-    tableRowData,
+    FeedItem,
   },
   data() {
     return {
@@ -82,35 +78,87 @@ export default {
   watch: {
     "$route.fullPath"() {
       this.getHotPlaces();
-    }
+    },
   },
   methods: {
     getHotPlaces() {
       const pageNumber = this.isEmpty(this.$route.query.pageNumber);
       const title = this.isEmpty(this.$route.query.title);
       const content = this.isEmpty(this.$route.query.content);
+      const memberId = this.getMemberId();
+
       let url = `/hot-place?title=${title}&content=${content}&pageNumber=${pageNumber}`;
-      http.get(url)
-          .then((res) => {
-            if (res.status === 200) {
-              console.log(res);
-              this.hotPlaces = res.data.data;
-              this.pageTotalCnt = res.data.pageTotalCnt;
-            }
-          })
-          .catch(() => {
-            this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
-          });
+      if (memberId) {
+        url += `&memberId=${memberId}`;
+      }
+      http
+        .get(url)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res);
+            this.hotPlaces = res.data.data;
+            this.pageTotalCnt = res.data.pageTotalCnt;
+          }
+        })
+        .catch(() => {
+          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+        });
     },
     search() {
       let url = `/hot-place?${this.selected}=${this.keyword}`;
       this.$router.push(url).catch(() => {
         this.getHotPlaces();
-      })
+      });
     },
     isEmpty(value) {
       return value || "";
-    }
+    },
+    like(hotPlaceId) {
+      http
+        .post(`/hot-place/${hotPlaceId}/like`)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.$alertSuccess("좋아요❤", "피드에 좋아요를 눌렀습니다.");
+
+            const hotPlace = this.findHotPlaceById(hotPlaceId);
+            hotPlace.likeCnt++;
+            hotPlace.likeId = res.data;
+          }
+        })
+        .catch(() => {
+          this.$alertDanger("좋아요 실패", "잠시 후 다시 시도하세요.");
+        });
+    },
+    unlike(hotPlaceId) {
+      const hotPlace = this.findHotPlaceById(hotPlaceId);
+      let url = `/hot-place/like/${hotPlace.likeId}`;
+
+      http
+        .delete(url)
+        .then((res) => {
+          if (res.status === 200) {
+            this.$alertSuccess("좋아요 취소", "피드에 좋아요를 취소했습니다.");
+            hotPlace.likeCnt--;
+            hotPlace.likeId = null;
+          }
+        })
+        .catch(() => {
+          this.$alertDanger("좋아요 취소 실패", "잠시 후 다시 시도하세요.");
+        });
+    },
+    getMemberId() {
+      const accessToken = sessionStorage.getItem("access-token");
+      const decodedAccessToken = jwtDecode(accessToken);
+      return decodedAccessToken.memberId;
+    },
+    findHotPlaceById(hotPlaceId) {
+      for (let i = 0; i < this.hotPlaces.length; i++) {
+        if (this.hotPlaces[i].id === hotPlaceId) {
+          return this.hotPlaces[i];
+        }
+      }
+    },
   },
 };
 </script>
