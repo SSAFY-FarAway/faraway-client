@@ -178,22 +178,30 @@ export default {
         "request",
         new Blob([JSON.stringify(this.request)], { type: "application/json" })
       );
-      http
-        .post("/hot-place", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            this.$alertSuccess("작성 성공", "글 작성이 완료되었습니다.");
-            this.$router.replace(`/hot-place/${response.data}`);
-          }
-        })
-        .catch(() => {
-          this.$alertDanger("작성 실패", "추후 예외 처리 추가 예정");
-        });
+
+      if (!this.files.length) {
+        this.$alertDanger(
+          "작성 실패",
+          "1개 이상의 이미지를 반드시 업로드 해야합니다."
+        );
+      } else {
+        http
+          .post("/hot-place", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              this.$alertSuccess("작성 성공", "글 작성이 완료되었습니다.");
+              this.$router.replace(`/hot-place/${response.data}`);
+            }
+          })
+          .catch(() => {
+            this.$alertDanger("작성 실패", "추후 예외 처리 추가 예정");
+          });
+      }
     },
     findZipCode() {
       new window.daum.Postcode({
