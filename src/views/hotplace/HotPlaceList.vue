@@ -222,7 +222,7 @@ export default {
         this.isLoading = true;
         setTimeout(() => {
           this.handleLoadMore();
-        }, 1500);
+        }, 1000);
       }
     },
 
@@ -232,7 +232,7 @@ export default {
         setTimeout(() => {
           this.getHotPlaces(this.lastLoadPage++);
           this.isLoading = false;
-        }, 1000);
+        }, 100);
       }
     },
   },
