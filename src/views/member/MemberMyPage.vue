@@ -94,9 +94,22 @@
                                               font-scale="1.5"
                                               ></b-icon>
                                             <div class="form-outline flex-fill mb-0">
-                                                <input type="text" id="zipcode" ref="zipcode" name="zipcode" class="form-control"
-                                                v-model="memberInfo.zipcode"
-                                                      readonly/>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input type="text" id="zipcode" ref="zipcode"  name="zipcode" class="form-control"
+                                                        v-model="memberInfo.zipcode"
+                                                            readonly/>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <input type="button"
+                                                            style= display:none
+                                                            class="btn btn-primary"
+                                                            ref="find-btn"
+                                                            @click="findZipCode" 
+                                                            value="찾기"
+                                                            />
+                                                    </div>
+                                                </div>
                                                 <label class="form-label" for="zipcode">Your Zipcode (ex. 90000)</label>
                                                 <input type="text" id="main-address" ref="main-address" name="mainAddress"
                                                 class="form-control" 
@@ -174,7 +187,8 @@ export default {
             .get(`/member/mypage`)
             .then((res) => {
                 this.memberInfo = res.data;
-                console.log(this.memberInfo)
+                console.log("member info ")
+                console.log(this.memberInfo.mainAddress)
             })
   },
   methods: {
@@ -213,13 +227,13 @@ export default {
         const firstName = this.$refs["first-name"];
         const birth = this.$refs["birth"];
         const email = this.$refs["email"];
-        const zipcode = this.$refs["zipcode"];
-        const mainAddress = this.$refs["main-address"];
         const subAddress = this.$refs["sub-address"];
         
         const modifyButton =  this.$refs["modify-button"];
         const modifySubmitButton = this.$refs["modify-submit-button"];
         const modifyCancelButton = this.$refs["modify-cancel-button"];
+        const findBtn = this.$refs["find-btn"];
+        
         // modifyButton.style.display="none";
         // modifySubmitButton.style.display="block";
         console.log("flag : ", this.modifyMode);
@@ -227,25 +241,23 @@ export default {
             lastName.readOnly = false;
             firstName.readOnly = false;
             birth.readOnly = false;
-            zipcode.readOnly = false;
             email.readOnly = false;
-            mainAddress.readOnly = false;
             subAddress.readOnly = false;
             modifyButton.style.display="none";
             modifySubmitButton.style.display="block";
             modifyCancelButton.style.display="block";
+            findBtn.style.display="block";
 
         }else{
             lastName.readOnly = true;
             firstName.readOnly = true;
             birth.readOnly = true;
-            zipcode.readOnly = true;
             email.readOnly = true;
-            mainAddress.readOnly = true;
             subAddress.readOnly = true;
             modifyButton.style.display="block";
             modifySubmitButton.style.display="none";
             modifyCancelButton.style.display="none";
+            findBtn.style.display="none";
         }
     },
     submit(){
@@ -301,6 +313,40 @@ export default {
             }
             
         },
+        findZipCode(){
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            let fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+            let extraRoadAddr = ''; // 도로명 조합형 주소 변수
+
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                extraRoadAddr += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if(data.buildingName !== '' && data.apartment === 'Y'){
+              extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if(extraRoadAddr !== ''){
+                extraRoadAddr = ' (' + extraRoadAddr + ')';
+            }
+            // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+            if(fullRoadAddr !== ''){
+                fullRoadAddr += extraRoadAddr;
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            this.memberInfo.zipcode = data.zonecode; //5자리 새우편번호 사용
+            this.memberInfo.mainAddress = fullRoadAddr;
+        }
+       }).open()
+    },
     },
 };
 </script>
