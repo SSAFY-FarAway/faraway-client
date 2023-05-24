@@ -111,14 +111,7 @@
               v-model="registerMember.birth"
             />
           </div>
-          <!-- <div class="col-md-12 mb-3">
-            <label for="example-datepicker">생년월일</label>
-            <b-form-datepicker
-              id="example-datepicker"
-              v-model="registerMember.birth"
-              class="mb-2"
-            />
-          </div> -->
+
 
           <div class="col-md-12 mb-3">
             <label for="email">이메일</label>
@@ -288,7 +281,7 @@ export default {
           pwdMsgBox.className = "form-text text-primary";
           this.pwdMsg = "비밀번호가 유효합니다.";
         }else{
-          pwdMsgBox.className = "form-text text-muted";
+          pwdMsgBox.className = "form-text text-danger";
           this.pwdMsg = "영문 숫자 특수기호를 조합하여 8자리 이상의 비밀번호를 입력하세요.";
         }
     },
