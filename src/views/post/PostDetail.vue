@@ -84,7 +84,7 @@
                     <comment-row :comment="comment"/>
                 </div>
                 <!-- 댓글 작성 -->
-                <comment-form/>
+                <comment-form @reloadData='getPost'/>
             </div>
         </div>
 
@@ -120,25 +120,14 @@ export default {
         };
     },
     created() {
-        http.get(`/post/${this.$route.params.postId}`)
-            .then((res) => {
-                console.log(res);
-                this.post = res.data;
-                this.comments = this.post.postCommentResponses;
-                this.attachments = this.post.attachmentResponses;
-                this.likeId = this.post.likeId;
-            })
-            .catch((res) => {
-                this.$alertDanger("오류 확인", res);
-                if (res.status === 401) {
-                    this.$alertDanger("로그인 만료", "로그인이 만료 되었습니다. 다시 로그인해주세요.");
-                }
-            });
+        this.getPost();
     },
     methods: {
+        test() {
+            console.log("emit 테스트")
+        },
         moveModify() {
             const url = `${this.$route.fullPath}/edit`;
-            console.log(url);
             this.$router.push(url);
         },
         deletePost() {
@@ -155,6 +144,23 @@ export default {
                         this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
                     });
             }
+        },
+        getPost() {
+            http.get(`/post/${this.$route.params.postId}`)
+            .then((res) => {
+                console.log("[Post 데이터 로드]")
+                console.log(res);
+                this.post = res.data;
+                this.comments = this.post.postCommentResponses;
+                this.attachments = this.post.attachmentResponses;
+                this.likeId = this.post.likeId;
+            })
+            .catch((res) => {
+                this.$alertDanger("오류 확인", res);
+                if (res.status === 401) {
+                    this.$alertDanger("로그인 만료", "로그인이 만료 되었습니다. 다시 로그인해주세요.");
+                }
+            });
         },
         toTop() {
             window.scrollTo({
@@ -174,7 +180,8 @@ export default {
             http
                 .post(`/post/${this.post.id}/like`, data)
                 .then((res) => {
-                    console.log(`like res: ${res}`);
+                    console.log("[PostDetail - like]")
+                    console.log(res);
                     if (res.status === 200) {
                         this.likeId = res.data;
                         this.post.likeCnt++;
@@ -187,7 +194,6 @@ export default {
                 });
         },
         unlike() {
-            console.log(`likeId: ${this.likeId}`)
             http
                 .delete(`/post/like/${this.likeId}`)
                 .then((res) => {
@@ -202,12 +208,6 @@ export default {
                     this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
                 })
         }
-    },
-    watch: {
-        likeId(after, before) {
-            console.log(before)
-            console.log(after)
-        },
     },
     computed: {
         ...mapState("memberStore", ["isLogin", "loginMember"]),
