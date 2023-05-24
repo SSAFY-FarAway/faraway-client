@@ -125,6 +125,11 @@
                                                     Address</label>
                                             </div>
                                         </div>
+
+
+                                        <!--모달 테스트  -->
+                                        <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button>
+                                        
                                         <div id="normal-mode-btns" class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                             <button
                                                     class="btn btn-primary btn-lg shadow" id="modify-button" 
@@ -156,13 +161,41 @@
                                     <img src="@/assets/img/member/login-section.jpg"
                                         class="img-fluid" alt="Sample image"/></div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
       </div>
         </div>
-  </div>
+        
+        <b-modal
+      id="modal-prevent-closing"
+      ref="modal"
+      title="회원 정보 수정"
+      @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk"
+    >
+      <form ref="form" @submit.stop.prevent="handleSubmit">
+        <b-form-group
+          label="비밀번호를 입력해주세요."
+          label-for="LoginPwd-input"
+          invalid-feedback="LoginPwd is required"
+          :state="LoginPwdState"
+        >
+          <b-form-input
+            id="LoginPwd-input"
+            v-model="inputLoginPwd"
+            type="password"
+            :state="LoginPwdState"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </form>
+    </b-modal>    
+    </div>
+
 </template>
 
 
@@ -179,6 +212,8 @@ export default {
     return {
         memberInfo:{},
         modifyMode:false,
+        inputLoginPwd : "",
+        LoginPwdState : null,
       
     };
   },
@@ -198,12 +233,13 @@ export default {
           id:"",
           loginPwd:"",
         }
-        const loginPwd = window.prompt("비밀번호를 입력해주세요");
-        if(loginPwd == null){
-            return;
-        }
+        // const loginPwd = window.prompt("비밀번호를 입력해주세요");
+        // if(loginPwd == null){
+        //     return;
+        // }
         modifyInfo.id = this.memberInfo.id;
-        modifyInfo.loginPwd = loginPwd;
+        // modifyInfo.loginPwd = loginPwd;
+        modifyInfo.loginPwd = this.inputLoginPwd;
 
         const url = "/member/check"
         http
@@ -313,6 +349,29 @@ export default {
             }
             
         },
+        checkFormValidity(){
+            if(this.inputLoginPwd == ""){
+                return false;
+            }
+            return true;
+        },
+
+        handleOk(){
+            if (!this.checkFormValidity()) {
+                this.$alertDanger("비밀번호를 입력해주세요.","로그인 비밀번호를 입력해주세요")
+                return
+            }
+            this.modify();
+        },
+
+
+
+
+
+
+
+
+        
         findZipCode(){
       new window.daum.Postcode({
         oncomplete: (data) => {
