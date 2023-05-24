@@ -7,7 +7,7 @@
       no-body
       style="height: 265.25px; width: 220px; border-color: var(--main-color)"
     >
-      <h4 class="m-0" @click="toTop">
+      <h4 class="m-0" @click="$toTop()">
         <b-icon
           class="my-3"
           style="width: 100%; color: var(--main-color)"
@@ -24,6 +24,7 @@
     <b-sidebar
       class="col-12"
       id="attraction-search-sidebar"
+      ref='sideBar'
       title="관광지 검색"
       shadow
     >
@@ -78,7 +79,7 @@
           :domain="domain"
         />
       </div>
-      <attraction-search-result-totop-item v-if="attractions.length" />
+      <attraction-search-result-totop-item @toTop='sideBarToTop' v-if="attractions.length" />
       <page-navigation v-if="attractions.length" :total-pages="totalPages" @search='search'></page-navigation>
     </b-sidebar>
   </div>
@@ -180,17 +181,14 @@ export default {
           this.totalPages = res.data.pageTotalCnt;
         });
     },
-    toTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    },
     setParam(value) {
       if (value === 0) {
         return null;
       }
       return value;
+    },
+    sideBarToTop() {
+      this.$toTop(this.$refs.sideBar.$el.querySelector(".b-sidebar-body"))
     }
   },
 };
