@@ -42,6 +42,7 @@ import writeBtn from "@/components/common/page/writeBtn";
 import FeedItem from "@/components/hotplace/FeedItem";
 import http from "@/utils/api/http";
 import jwtDecode from "jwt-decode";
+import { mapState } from "vuex";
 
 export default {
   name: "HotPlaceList",
@@ -80,6 +81,9 @@ export default {
       this.getHotPlaces();
     },
   },
+  computed: {
+    ...mapState("memberStore", ["loginMember"]),
+  },
   methods: {
     getHotPlaces() {
       const pageNumber = this.isEmpty(this.$route.query.pageNumber);
@@ -114,6 +118,10 @@ export default {
       return value || "";
     },
     like(hotPlaceId) {
+      if (!this.loginMember) {
+        alert("로그인이 필요한 서비스입니다! 로그인 화면으로 이동합니다.");
+        return this.$router.push("/member/login");
+      }
       http
         .post(`/hot-place/${hotPlaceId}/like`)
         .then((res) => {
@@ -149,8 +157,10 @@ export default {
     },
     getMemberId() {
       const accessToken = sessionStorage.getItem("access-token");
-      const decodedAccessToken = jwtDecode(accessToken);
-      return decodedAccessToken.memberId;
+      if (accessToken) {
+        const decodedAccessToken = jwtDecode(accessToken);
+        return decodedAccessToken.memberId;
+      }
     },
     findHotPlaceById(hotPlaceId) {
       for (let i = 0; i < this.hotPlaces.length; i++) {
