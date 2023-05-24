@@ -104,7 +104,7 @@ export default {
     modifyPlan() {
       this.plan.travelPlan = `${this.getContentIds.toString()}`;
 
-      http.put(`/plan/${this.$route.params.planId}`, this.plan).then((res) => {
+      http.put(`/plan/${this.$route.params.id}`, this.plan).then((res) => {
         if (res.status === 200) {
           this.$alertSuccess(
             "여행 계획 수정 성공",
@@ -115,7 +115,7 @@ export default {
       });
     },
     getPlanData() {
-      const planId = this.$route.params.planId;
+      const planId = this.$route.params.id;
       http
         .get(`/plan/${planId}`)
         .then((res) => {

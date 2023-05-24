@@ -131,7 +131,7 @@ export default {
         },
         deletePost() {
             if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
-                http.delete(`/post/${this.$route.params.postId}`)
+                http.delete(`/post/${this.$route.params.id}`)
                     .then((res) => {
                         if (res.status === 200) {
                             this.$alertDanger("삭제 완료", "삭제가 완료되었습니다.");
@@ -145,7 +145,7 @@ export default {
             }
         },
         getPost() {
-            http.get(`/post/${this.$route.params.postId}`)
+            http.get(`/post/${this.$route.params.id}`)
             .then((res) => {
                 console.log("[Post 데이터 로드]")
                 console.log(res);
