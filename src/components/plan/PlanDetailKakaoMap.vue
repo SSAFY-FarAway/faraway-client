@@ -1,5 +1,5 @@
 <template>
-  <div id="map-container" :ref="mapId" class="shadow" />
+  <div id="map-container" :ref="mapId"/>
 </template>
 
 <script>

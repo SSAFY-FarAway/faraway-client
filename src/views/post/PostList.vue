@@ -2,8 +2,8 @@
   <div class="container">
     <!-- Header -->
     <page-header
-      :title="this.$route.query.categoryId | setTitle"
-      :subTitle="this.$route.query.categoryId | setSubtitle"
+      :title="this.$route.params.categoryId | setTitle"
+      :subTitle="this.$route.params.categoryId | setSubtitle"
     />
 
     <!-- 검색 메뉴 -->
