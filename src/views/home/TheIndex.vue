@@ -98,6 +98,9 @@ export default {
   created() {
     if (this.isLogin && sessionStorage.getItem("access-token")) {
         this.getMemberInfo();
+    } else {
+      this.setIsLogin(false)
+      this.setLoginMember(null)
     }
     
   },
@@ -105,7 +108,7 @@ export default {
     ...mapState("memberStore",["isLogin"])
   },
   methods: {
-    ...mapActions("memberStore",["setLoginMember"]),
+    ...mapActions("memberStore",["setIsLogin","setLoginMember"]),
     getMemberInfo() {
       const accessToken = sessionStorage.getItem("access-token");
       const decodedAccessToken = jwtDecode(accessToken);
