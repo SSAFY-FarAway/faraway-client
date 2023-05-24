@@ -14,8 +14,8 @@
                         variant="link"
                         toggle-class="text-decoration-none"
                 >
-                    <b-dropdown-item @click="moveModify">댓글 수정</b-dropdown-item>
-                    <b-dropdown-item @click="deletePost">댓글 삭제</b-dropdown-item>
+                    <b-dropdown-item @click="modifyComment">댓글 수정</b-dropdown-item>
+                    <b-dropdown-item @click="deleteComment">댓글 삭제</b-dropdown-item>
                 </b-dropdown>
             </div>
         </div>
