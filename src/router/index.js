@@ -20,12 +20,12 @@ import PlanDetail from "@/views/plan/PlanDetail";
 import PlanWrite from "@/views/plan/PlanWrite";
 import PlanModify from "@/views/plan/PlanModify";
 import PostList from "@/views/post/PostList";
-import PostWrite from "@/views/post/PostWrite.vue";
-import PostModify from "@/views/post/PostModify.vue";
-import HotPlaceDetail from "@/views/hotplace/HotPlaceDetail.vue";
-import HotPlaceList from "@/views/hotplace/HotPlaceList.vue";
-import HotPlaceWrite from "@/views/hotplace/HotPlaceWrite.vue";
-import hotPlaceModify from "@/views/hotplace/HotPlaceModify.vue";
+import PostWrite from "@/views/post/PostWrite";
+import PostModify from "@/views/post/PostModify";
+import HotPlaceDetail from "@/views/hotplace/HotPlaceDetail";
+import HotPlaceList from "@/views/hotplace/HotPlaceList";
+import HotPlaceWrite from "@/views/hotplace/HotPlaceWrite";
+import HotPlaceModify from "@/views/hotplace/HotPlaceModify";
 import store from "@/store";
 
 const beforeLogin = (isAuth) => (from, to, next) => {
@@ -206,7 +206,7 @@ const routes = [
       {
         path: ":id/edit",
         name: "HotPlaceModify",
-        component: hotPlaceModify,
+        component: HotPlaceModify,
         beforeEnter: beforeLogin(true),
         children: [],
       },
