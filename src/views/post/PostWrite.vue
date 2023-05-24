@@ -104,7 +104,11 @@ export default {
   computed: {
     ...mapState("memberStore",["loginMember"])
   },
-  created() {},
+  created() {
+      if (this.loginMember.role !== "ADMIN") {
+          this.options = this.options.filter(el => el.value != 1)
+      }
+  },
 };
 </script>
 
