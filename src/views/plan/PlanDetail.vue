@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       plan: {},
-      likeId: Number,
+      likeId: null,
     };
   },
   watch: {
