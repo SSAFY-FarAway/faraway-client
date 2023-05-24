@@ -5,7 +5,7 @@
       <div class="row m-0 p-0">
         <!-- 사용자 추천 경로 -->
         <div class="col-12 m-0 p-0 text-center">
-          <plan-write-kakao-map mapId="write-map" />
+          <plan-write-kakao-map mapId="modify-map" />
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@
         <div class="col-md-12">
           <div class="mb-3">
             <h5 class="d-flex justify-content-start">제목</h5>
-            <input class="form-control" type="text" v-model="plan.title" />
+            <input class="form-control" type="text" v-model="planPost.title" />
           </div>
           <div>
             <h5 class="d-flex justify-content-start">내용</h5>
@@ -46,7 +46,7 @@
               class="form-control"
               id=""
               rows="3"
-              v-model="plan.content"
+              v-model="planPost.content"
             ></textarea>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default {
   },
   data() {
     return {
-      plan: {
+      planPost: {
         title: "",
         content: "",
         travelPlan: "",
@@ -102,9 +102,12 @@ export default {
     ]),
     ...mapActions("planStore", ["addPlan", "clearPlan"]),
     modifyPlan() {
-      this.plan.travelPlan = `${this.getContentIds.toString()}`;
-
-      http.put(`/plan/${this.$route.params.id}`, this.plan).then((res) => {
+      this.planPost.travelPlan = `${this.getContentIds.toString()}`;
+      const url = `/plan/${this.$route.params.planId}`
+      console.log(url)
+      console.log(this.planPost)
+      http.put(url, this.planPost).then((res) => {
+        console.log(res)
         if (res.status === 200) {
           this.$alertSuccess(
             "여행 계획 수정 성공",
@@ -112,6 +115,8 @@ export default {
           );
           this.$router.replace(`/plan/${res.data}`);
         }
+      }).catch(error => {
+        console.log(error)
       });
     },
     getPlanData() {
@@ -120,7 +125,10 @@ export default {
         .get(`/plan/${planId}`)
         .then((res) => {
           if (res.status === 200) {
+            console.log(res.data)
             this.plan = res.data;
+            this.planPost.title = res.data.title
+            this.planPost.content = res.data.content
             this.clearPlan();
             res.data.attractionResponses.forEach((el) => {
               this.addPlan(el);

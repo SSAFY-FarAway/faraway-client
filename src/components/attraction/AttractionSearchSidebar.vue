@@ -139,7 +139,6 @@ export default {
         });
       }
     });
-    console.log(this.domain);
   },
   watch: {
     sidoSelected() {

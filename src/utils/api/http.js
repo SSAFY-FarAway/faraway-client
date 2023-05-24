@@ -30,9 +30,9 @@ instance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-
+    console.log(error);
     // refresh token이 존재하는 경우
-    if (error.response.status == 401 && originalRequest && !originalRequest._retry) {
+    if (error.response.status === 401 && originalRequest && !originalRequest._retry) {
       originalRequest._retry = true;
 
       const refreshToken = sessionStorage.getItem("refresh-token");

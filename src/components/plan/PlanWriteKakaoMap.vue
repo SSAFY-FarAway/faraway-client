@@ -16,49 +16,60 @@ export default {
       map: null,
       selectMarker: null,
       markers: [],
+      polyline : null,
     };
   },
   mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.loadMap();
-    } else {
+    if (!(window.kakao && window.kakao.maps)) {
       this.loadScript();
+    } else {
+      this.loadMap();
     }
   },
 
-  created() {},
+  created() { },
   watch: {
     // 현재 선택(클릭)된 관광지가 변할 때
     selectedAttraction(after, before) {
-      // 시점 이동
-      this.map.setCenter(
-        new window.kakao.maps.LatLng(after.latitude, after.longitude)
-      );
-
+      
       // 이전에 띄워져있던 인포윈도우 close
       if (before?.clickedInfoWindow) {
-        before.clickedInfoWindow.close();
+        before?.clickedInfoWindow?.close();
       }
 
-      // 현재 선택된 관광지의 인포윈도우 open
-      after.clickedInfoWindow.open(this.map, after.marker);
+      if (after) {
+         // 시점 이동
+      this.map.setCenter(
+        new window.kakao.maps.LatLng(after.latitude, after.longitude)
+        );
+
+       after.clickedInfoWindow??open(this.map, after.marker);
+      }
     },
     attractions(atts) {
       if (window.kakao != undefined) {
         this.displayMarkers();
-
+        
         this.map.setCenter(
           new window.kakao.maps.LatLng(atts[0].latitude, atts[0].longitude)
         );
       }
     },
     myPlan(after) {
-      console.log(after);
-      // 시점 이동
-      this.map.setCenter(
-        new window.kakao.maps.LatLng(after.latitude, after.longitude)
-      );
-      // this.displayMyPlanMarkers();
+      const maxIdx = after.length - 1
+
+      if (this.map) {
+        if (maxIdx >= 0) {
+         // 시점 이동
+         this.map.setCenter(
+          new window.kakao.maps.LatLng(after[maxIdx].latitude, after[maxIdx].longitude)
+          );
+          this.displayMyPlanMarkers();
+          this.displayLines();
+        }
+      }
+     
+     
     },
   },
   computed: {
@@ -89,6 +100,27 @@ export default {
 
         // 지도 생성
         this.map = new window.kakao.maps.Map(container, options);
+
+        // 최초에 마커 정보를 myPlan에 넣어준다.
+        if (this.myPlan.length) {
+          this.myPlan.forEach(el => {
+            const marker = {
+              map: this.map,
+              position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
+              title: el.title,
+              };
+            el.marker = marker;
+
+            const kakaoMarker = new window.kakao.maps.Marker(marker);
+            el.kakaoMarker = kakaoMarker;
+
+
+            this.map.setCenter(new window.kakao.maps.LatLng(el.latitude, el.longitude));
+           
+          })
+          this.displayMyPlanMarkers();
+          this.displayLines();
+        }
       }
     },
     displayMarkers() {
@@ -96,6 +128,15 @@ export default {
       this.markers.forEach((mk) => mk.setMap(null));
 
       this.attractions.forEach((el) => {
+        const marker = {
+          map: this.map,
+          position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
+          title: el.title,
+        };
+
+        const kakaoMarker = new window.kakao.maps.Marker(marker);
+        el.marker = marker;
+
         const infoWindow = new window.kakao.maps.InfoWindow({
           content: this.makeContent(el),
         });
@@ -104,93 +145,112 @@ export default {
           content: this.makeContent(el),
         });
 
-        const marker = new window.kakao.maps.Marker({
-          map: this.map,
-          position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
-          title: el.title,
-        });
-
-        // 각 관광지 객체에 인포윈도우, 마커정보 저장
         el.clickedInfoWindow = clickedInfoWindow;
-        el.marker = marker;
-
+       
         // 마커에 클릭 이벤트를 등록
         window.kakao.maps.event.addListener(
-          marker,
+          kakaoMarker,
           "click",
           () => {
-            clickedInfoWindow.open(this.map, marker);
+            clickedInfoWindow.open(this.map, kakaoMarker);
             this.setAttraction(el);
-          },
-          { passive: false }
+          }
         );
 
         // 마커에 마우스오버 이벤트를 등록
         window.kakao.maps.event.addListener(
-          marker,
+          kakaoMarker,
           "mouseover",
           () => {
-            infoWindow.open(this.map, marker);
-          },
-          { passive: false }
+            infoWindow.open(this.map, kakaoMarker);
+          }
         );
 
         // 마커에 마우스아웃 이벤트를 등록
         window.kakao.maps.event.addListener(
-          marker,
+          kakaoMarker,
           "mouseout",
           () => {
             infoWindow.close();
-          },
-          { passive: false }
+          }, {
+            passive:false
+          }
         );
 
         // markers에 marker push
-        this.markers.push(marker);
+        this.markers.push(kakaoMarker);
       });
     },
 
-    // 마커 표시
+    // displayLines() : 라인 표시
+    displayLines() {
+      if (this.polyline) {
+        this.polyline.setMap(null);
+      }
+  
+      let linePath = [];
+
+      for (let i = 0; i < this.getMarkers.length; i++) {
+        linePath.push(this.getMarkers[i].position);
+      }
+
+      this.polyline = new window.kakao.maps.Polyline({
+        path: linePath, // 선을 구성하는 좌표배열
+        strokeWeight: 3,
+        strokeColor: "red",
+        strokeOpacity: 0.7,
+        strokeStyle: "solid",
+      });
+
+      this.polyline.setMap(this.map);
+    },
+
+    // myPlan 마커 표시
     displayMyPlanMarkers() {
-      this.getMarkers.forEach((mk) => mk.setMap(null));
+      this.myPlan.forEach((el) => el.kakaoMarker?.setMap(null));
+
       this.myPlan.forEach((el) => {
         const infoWindow = new window.kakao.maps.InfoWindow({
           content: this.makeContent(el),
           removable: true,
         });
 
-        const marker = new window.kakao.maps.Marker({
+        const marker ={
           map: this.map,
           position: new window.kakao.maps.LatLng(el.latitude, el.longitude),
           title: el.title,
-        });
+        };
+
+        el.marker = marker;
+
+        const kakaoMarker = new window.kakao.maps.Marker(marker);
         const clickedInfoWindow = new window.kakao.maps.InfoWindow({
           content: this.makeContent(el),
         });
 
         // 각 관광지 객체에 인포윈도우, 마커정보 기록
         el.clickedInfoWindow = clickedInfoWindow;
-        el.marker = marker;
+        
 
         // 마커에 마우스오버 이벤트를 등록
-        window.kakao.maps.event.addListener(marker, "mouseover", () => {
-          infoWindow.open(this.map, marker, { passive: false });
-        });
+        window.kakao.maps.event.addListener(kakaoMarker, "mouseover", () => {
+          infoWindow??open(this.map, el.marker, { passive: false });
+        },
+          { passive: false });
 
         // 마커에 마우스아웃 이벤트를 등록
         window.kakao.maps.event.addListener(
-          marker,
+          kakaoMarker,
           "mouseout",
           () => {
             infoWindow.close();
           },
           { passive: false }
         );
-
-        // markers에 marker push
-        this.markers.push(marker);
       });
     },
+
+    
 
     // 마커 인포윈도우의 content 만들기
     makeContent(el) {
@@ -215,25 +275,6 @@ export default {
             </div>
         </div>
     `;
-    },
-
-    // 마커 간 거리 표시 (라인)
-    displayLines() {
-      let linePath = [];
-
-      for (let i = 0; i < this.markers.length; i++) {
-        linePath.push(this.markers[i].position);
-      }
-
-      let polyline = new window.kakao.maps.Polyline({
-        path: linePath, // 선을 구성하는 좌표배열
-        strokeWeight: 3,
-        strokeColor: "orange",
-        strokeOpacity: 0.7,
-        strokeStyle: "solid",
-      });
-
-      polyline.setMap(this.map);
     },
   },
 };
