@@ -92,10 +92,10 @@
 
         <!-- 게시글 하단 메뉴 -->
         <div class="row p-0 m-0 justify-content-end">
-            <router-link to="/post/list" class="btn btn-outline-secondary">
+            <button @click="moveList" class="btn btn-outline-secondary">
                 목록으로
-            </router-link>
-            <button class="btn btn-outline-secondary ml-2" @click="toTop">TOP</button>
+            </button>
+            <button class="btn btn-outline-secondary ml-2" @click="$toTop()">TOP</button>
         </div>
     </div>
 </template>
@@ -162,11 +162,10 @@ export default {
                 }
             });
         },
-        toTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-            });
+        moveList() {
+            const url = `/post/${this.$route.params.categoryId}/list`;
+            console.log(url)
+            this.$router.push(url)
         },
         like() {
             const accessToken = sessionStorage.getItem("access-token");
