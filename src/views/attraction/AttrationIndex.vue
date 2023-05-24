@@ -10,7 +10,6 @@
       <div class="d-flex justify-content-center">
         <attraction-search-sidebar/>
       </div>
-      <h2 class="section-heading text-uppercase"></h2>
     </section>
     <!-- 지도 영역 -->
     <div class="flex " id="article-list-section">

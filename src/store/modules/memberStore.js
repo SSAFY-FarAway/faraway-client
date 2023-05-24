@@ -1,10 +1,16 @@
+
+
 const memberStore = {
   namespaced: true,
   state: {
     isLogin: false,
     loginMember: null,
   },
-  gatters: {},
+  getters: {
+    getIsLogin(state){
+      return state.isLogin;
+    }
+  },
   mutations: {
     SET_IS_LOGIN(state, isLogin) {
       state.isLogin = isLogin;

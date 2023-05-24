@@ -1,11 +1,30 @@
 <template>
   <div class="d-flex justify-content-center">
-    <b-button class="btn-primary" v-b-toggle.attraction-search-sidebar
+    <b-card
+      v-if="domain === 'plan'"
+      class="font-small justify-content-center"
+      v-b-toggle.attraction-search-sidebar
+      no-body
+      style="height: 265.25px; width: 220px; border-color: var(--main-color)"
+    >
+      <h4 class="m-0" @click="$toTop()">
+        <b-icon
+          class="my-3"
+          style="width: 100%; color: var(--main-color)"
+          icon="plus-circle"
+          animation="fade"
+          font-scale="3"
+        ></b-icon
+        >나만의 경로<br />추가하기
+      </h4>
+    </b-card>
+    <b-button v-else class="btn-primary" v-b-toggle.attraction-search-sidebar
       >찾아보기</b-button
     >
     <b-sidebar
       class="col-12"
       id="attraction-search-sidebar"
+      ref='sideBar'
       title="관광지 검색"
       shadow
     >
@@ -34,19 +53,34 @@
         />
       </div>
       <div class="col-12 mt-2">
-        <b-button class="col-12" variant="primary" @click="search"
+        <b-form-input
+            class="col-12"
+            id="input-title"
+            v-model="title"
+            placeholder="관광지명을 입력해주세요."
+        />
+      </div>
+      <div class="col-12 mt-2">
+        <b-button class="col-12" variant="primary" @click="search(1)"
           >검색</b-button
         >
       </div>
       <!-- 검색 결과 -->
+      <div class="mt-3 font-weight-bold text-center" v-if="attractions.length === 0">
+        검색결과가 없습니다.
+      </div>
       <div
         class="my-2"
         v-for="attraction in attractions"
         :key="attraction.contentId"
       >
-        <attraction-search-result-item :attraction="attraction" />
+        <attraction-search-result-item
+          :attraction="attraction"
+          :domain="domain"
+        />
       </div>
-      <attraction-search-result-totop-item v-if="attractions.length" />
+      <attraction-search-result-totop-item @toTop='sideBarToTop' v-if="attractions.length" />
+      <page-navigation v-if="attractions.length" :total-pages="totalPages" @search='search'></page-navigation>
     </b-sidebar>
   </div>
 </template>
@@ -55,13 +89,21 @@
 import http from "@/utils/api/http";
 import AttractionSearchResultItem from "./AttractionSearchResultItem";
 import AttractionSearchResultTotopItem from "./AttractionSearchResultTotopItem";
+import { BIcon } from "bootstrap-vue";
+
 import { mapActions } from "vuex";
+import PageNavigation from "@/components/attraction/pageNavigation.vue";
 
 export default {
   name: "AttractionSearchSidebar",
   components: {
+    PageNavigation,
+    BIcon,
     AttractionSearchResultItem,
     AttractionSearchResultTotopItem,
+  },
+  props: {
+    domain: String,
   },
   data() {
     return {
@@ -82,8 +124,9 @@ export default {
         { value: "38", text: "쇼핑" },
         { value: "39", text: "음식점" },
       ],
-
+      title: "",
       attractions: [],
+      totalPages: Number,
     };
   },
   created() {
@@ -96,6 +139,7 @@ export default {
         });
       }
     });
+    console.log(this.domain);
   },
   watch: {
     sidoSelected() {
@@ -116,23 +160,36 @@ export default {
   },
   methods: {
     ...mapActions("attractionStore", ["setAttractions"]),
-    search() {
+    search(currentPage) {
       http
         .get("/attraction", {
           params: {
-            sidoCode: this.sidoSelected,
-            gugunCode: this.gugunSelected,
-            contentTypeId: this.contentSelected,
+            sidoCode: this.setParam(this.sidoSelected),
+            gugunCode: this.setParam(this.gugunSelected),
+            contentTypeId: this.setParam(this.contentSelected),
+            pageNumber: currentPage,
+            title: this.title,
           },
           headers: {
             "Content-Type": "application/json",
           },
         })
         .then((res) => {
+          console.log(res);
           this.attractions = res.data.data;
           this.setAttractions(res.data.data);
+          this.totalPages = res.data.pageTotalCnt;
         });
     },
+    setParam(value) {
+      if (value === 0) {
+        return null;
+      }
+      return value;
+    },
+    sideBarToTop() {
+      this.$toTop(this.$refs.sideBar.$el.querySelector(".b-sidebar-body"))
+    }
   },
 };
 </script>

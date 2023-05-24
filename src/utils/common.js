@@ -6,6 +6,7 @@ export const methods = {
       variant: "default",
       toaster: "b-toaster-top-right",
       solid: true,
+      autoHideDelay: 1500,
     });
   },
   // 성공 토스트
@@ -15,6 +16,7 @@ export const methods = {
       variant: "success",
       toaster: "b-toaster-top-right",
       solid: true,
+      autoHideDelay: 1500,
     });
   },
   // 실패 토스트
@@ -24,7 +26,21 @@ export const methods = {
       variant: "danger",
       toaster: "b-toaster-top-right",
       solid: true,
+      autoHideDelay: 1500,
     });
+  },
+  toTop(ref) {
+    if (ref) {
+      ref.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   },
 };
 
@@ -33,5 +49,6 @@ export default {
     Vue.prototype.$alertDefault = methods.alertDefault;
     Vue.prototype.$alertSuccess = methods.alertSuccess;
     Vue.prototype.$alertDanger = methods.alertDanger;
+    Vue.prototype.$toTop = methods.toTop;
   },
 };

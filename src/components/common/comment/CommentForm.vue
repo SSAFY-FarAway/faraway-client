@@ -26,18 +26,19 @@ export default {
       },
     };
   },
+  
   methods: {
     writeComment() {
       let url = this.$route.path;
       let domain = url.split("/")[1];
-      let id = this.$route.params.id;
-      console.log(this.request);
+      let id = this.$route.params.postId;
+
       http
         .post(`/${domain}/${id}/comment`, this.request)
         .then((response) => {
           if (response.status === 200) {
-            this.$alertDanger("댓글 작성 성공", "댓글 작성이 완료되었습니다.");
-            this.$router.go(0);
+            this.$alertSuccess("댓글 작성 성공", "댓글 작성이 완료되었습니다.");
+            this.$emit("reloadData")
           }
         })
         .catch(() => {

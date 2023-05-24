@@ -104,8 +104,8 @@ header.masthead {
   padding-top: 10.5rem;
   padding-bottom: 6rem;
   text-align: center;
-  color: black;
-  background-image: url("@/assets/img/home/travel.jpg");
+  color: var(--main-color);
+  background-image: url("@/assets/img/home/bg-img2.jpg");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;

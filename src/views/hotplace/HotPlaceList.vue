@@ -14,9 +14,10 @@
         <input
           type="text"
           class="form-control ml-1"
+          v-model="keyword"
           placeholder="검색어 입력"
         />
-        <button type="button" class="btn btn-secondary ml-1 text-uppercase">
+        <button type="button" class="btn btn-secondary ml-1 text-uppercase" @click="search">
           Search
         </button>
       </form>
@@ -31,7 +32,7 @@
       </tbody>
     </table>
     <!-- 페이지네이션 -->
-    <hot-place-pagination :totalCnt="hotPlaces.totalCnt" />
+    <page-navigation :totalPages="pageTotalCnt" />
   </div>
 </template>
 
@@ -39,17 +40,17 @@
 import pageHeader from "@/components/common/page/pageHeader";
 import tableRowHeader from "@/components/common/page/tableRowHeader";
 import tableRowData from "@/components/common/page/tableRowData";
-import HotPlacePagination from "@/components/hotplace/HotPlacePagination.vue";
 import writeBtn from "@/components/common/page/writeBtn";
 import http from "@/utils/api/http";
+import PageNavigation from "@/components/common/page/pageNavigation.vue";
 
 export default {
   name: "HotPlaceList",
   components: {
+    PageNavigation,
     pageHeader,
     writeBtn,
     tableRowHeader,
-    HotPlacePagination,
     tableRowData,
   },
   data() {
@@ -71,32 +72,44 @@ export default {
         { title: "작성일", colSize: 2, colName: "createdDate" },
       ],
       hotPlaces: [],
+      pageTotalCnt: 0,
     };
   },
   created() {
-    http.get("/hot-place").then((response) => {
-      if (response.status === 200) {
-        console.log(response);
-        this.hotPlaces = response.data.data;
-      }
-    });
+    this.getHotPlaces();
+  },
+  watch: {
+    "$route.fullPath"() {
+      this.getHotPlaces();
+    }
   },
   methods: {
+    getHotPlaces() {
+      const pageNumber = this.isEmpty(this.$route.query.pageNumber);
+      const title = this.isEmpty(this.$route.query.title);
+      const content = this.isEmpty(this.$route.query.content);
+      let url = `/hot-place?title=${title}&content=${content}&pageNumber=${pageNumber}`;
+      http.get(url)
+          .then((res) => {
+            if (res.status === 200) {
+              console.log(res);
+              this.hotPlaces = res.data.data;
+              this.pageTotalCnt = res.data.pageTotalCnt;
+            }
+          })
+          .catch(() => {
+            this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+          });
+    },
     search() {
       let url = `/hot-place?${this.selected}=${this.keyword}`;
-      http
-        .get(url)
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            console.log(res);
-            this.hotPlaces = res.data.data;
-          }
-        })
-        .catch(() => {
-          this.$alertDanger("검색 실패", "예외 처리 추가 예정");
-        });
+      this.$router.push(url).catch(() => {
+        this.getHotPlaces();
+      })
     },
+    isEmpty(value) {
+      return value || "";
+    }
   },
 };
 </script>
