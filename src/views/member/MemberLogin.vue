@@ -96,14 +96,11 @@ export default {
         .catch(() => {
           this.$alertDanger(
             "로그인 실패",
-            "로그인에 실패했습니다. 추후 예외 처리 로직 추가"
+            `로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.`
           );
           this.setIsLogin(false);
         });
-
-      
     },
-    
   },
 };
 </script>
