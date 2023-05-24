@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <page-header title="HOT-PLACE" subTitle="게시글 상세보기" />
+    <page-header title="HOT-PLACE" subTitle="피드 상세보기" />
     <hr />
 
     <!-- 제목 -->
@@ -20,12 +20,12 @@
             style="color: var(--main-color)"
           ></b-icon>
         </template>
-        <b-dropdown-item @click="modifyHotPlace">게시글 수정</b-dropdown-item>
-        <b-dropdown-item @click="deleteHotPlace">게시글 삭제</b-dropdown-item>
+        <b-dropdown-item @click="modifyHotPlace">피드 수정</b-dropdown-item>
+        <b-dropdown-item @click="deleteHotPlace">피드 삭제</b-dropdown-item>
       </b-dropdown>
     </div>
 
-    <!-- 게시글 정보 -->
+    <!-- 피드 정보 -->
     <div class="mt-2">
       <span id="member-id" class="text-secondary fw-light">
         작성자 : {{ hotPlace.loginId }}
@@ -80,12 +80,14 @@
       <!-- 좋아요 버튼 -->
       <div class="d-flex justify-content-center align-items-center mt-5">
         <!-- 좋아요 눌렀을 때 -->
-        <button v-if="this.testLike" class="btn btn-primary">
+        <button v-if="this.likeId" class="btn btn-primary" @click="unlike">
           <b-icon icon="heart-fill" font-scale="1"></b-icon>
+          <span class="font-weight-bold ml-3">{{ hotPlace.likeCnt }}</span>
         </button>
         <!-- 좋아요 안 눌렀을 때 -->
-        <button v-else class="btn btn-outline-secondary">
+        <button v-else class="btn btn-outline-secondary" @click="like">
           <b-icon icon="heart-fill" font-scale="1"></b-icon>
+          <span class="font-weight-bold ml-3">{{ hotPlace.likeCnt }}</span>
         </button>
       </div>
       <hr />
@@ -98,7 +100,7 @@
           <comment-row :comment="comment" />
         </div>
         <!-- 댓글 작성 -->
-        <comment-form />
+        <comment-form @reloadData="getHotPlace" />
       </div>
     </div>
 
@@ -112,7 +114,9 @@
       >
         목록으로
       </router-link>
-      <button class="btn btn-outline-secondary ml-2" @click="toTop">TOP</button>
+      <button class="btn btn-outline-secondary ml-2" @click="$toTop()">
+        TOP
+      </button>
     </div>
   </div>
 </template>
@@ -132,28 +136,32 @@ export default {
       hotPlace: {},
       comments: [],
       images: [],
+      likeId: null,
     };
   },
   created() {
-    http.get(`/hot-place/${this.$route.params.id}`).then((response) => {
-      console.log(response);
-      this.hotPlace = response.data;
-      this.comments = this.hotPlace.commentResponses;
-      this.images = this.hotPlace.imageResponses;
-    });
+    this.getHotPlace();
   },
   methods: {
+    getHotPlace() {
+      http.get(`/hot-place/${this.$route.params.id}`).then((response) => {
+        console.log(response);
+        this.hotPlace = response.data;
+        this.comments = this.hotPlace.commentResponses;
+        this.images = this.hotPlace.imageResponses;
+      });
+    },
     modifyHotPlace() {
       if (confirm("수정 페이지로 이동하시겠습니까?")) {
-        location.href = `/hotplace/modify/${this.$route.params.id}`;
+        this.$router.push(`/hot-place/${this.$route.params.id}/edit`);
       }
     },
     deleteHotPlace() {
       if (confirm("삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.")) {
-        http.delete(`/hotplace/${this.$route.params.id}`).then((response) => {
+        http.delete(`/hot-place/${this.$route.params.id}`).then((response) => {
           if (response.status === 200) {
             alert("삭제가 완료되었습니다.");
-            this.$router.replace(`/hotplace/list`);
+            this.$router.replace(`/hot-place/list`);
           }
         });
       }
@@ -165,11 +173,39 @@ export default {
           this.$alertSuccess("복사 성공", "주소가 복사되었습니다.");
         });
     },
-    toTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+    like() {
+      http
+        .post(`/hot-place/${this.hotPlace.id}/like`)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.likeId = res.data;
+            this.hotPlace.likeCnt++;
+            this.$alertSuccess("좋아요❤", "해당 피드에 좋아요를 눌렀습니다.");
+          }
+        })
+        .catch((res) => {
+          this.$alertDanger("오류 확인", res);
+          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+        });
+    },
+    unlike() {
+      http
+        .delete(`/hot-place/like/${this.likeId}`)
+        .then((res) => {
+          if (res.status === 200) {
+            this.likeId = null;
+            this.hotPlace.likeCnt--;
+            this.$alertSuccess(
+              "좋아요❤ 취소",
+              "해당 피드에 좋아요를 취소했습니다."
+            );
+          }
+        })
+        .catch((res) => {
+          this.$alertDanger("오류 확인", res);
+          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+        });
     },
   },
 };
