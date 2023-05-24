@@ -122,9 +122,9 @@
     <!-- 기존 파일 영역 -->
     <div class="mt-3">
       <p class="font-weight-bold">기존파일</p>
-      <div v-for="file in this.hotPlace" :key="file.id">
-        <span class="" :id="file.id" v-if="check(file.id)">
-          {{ file.fileName }}
+      <div v-for="file in hotPlace.imageResponses" :key="file.id">
+        <span :id="file.id" v-if="check(file.id)">
+          {{ file.uploadFileName }}
           <b-icon
             style="color: red; cursor: pointer"
             icon="x-square-fill"
@@ -165,10 +165,11 @@
 import http from "@/utils/api/http";
 import pageHeader from "@/components/common/page/pageHeader";
 import { mapState } from "vuex";
+import { BIcon } from "bootstrap-vue";
 
 export default {
   name: "HotPlaceWrite",
-  components: { pageHeader },
+  components: { BIcon, pageHeader },
   data() {
     return {
       hotPlace: {
@@ -178,6 +179,7 @@ export default {
         mainAddress: "",
         subAddress: "",
         rating: 0,
+        imageResponses: [],
         deleteImageIds: [],
       },
       files: [],
@@ -191,8 +193,7 @@ export default {
       http.get(`/hot-place/${this.$route.params.id}`).then((res) => {
         console.log(res);
         this.hotPlace = res.data;
-        this.comments = this.hotPlace.commentResponses;
-        this.files = this.hotPlace.imageResponses;
+        this.comments = res.data.commentResponses;
         this.hotPlace.deleteImageIds = [];
       });
     },
@@ -266,9 +267,15 @@ export default {
     },
     addDeleteId(id) {
       this.hotPlace.deleteImageIds.push(id);
+      console.log("삭제 : " + id);
     },
     check(id) {
-      return !this.hotPlace.deleteImageIds.includes(id);
+      this.hotPlace.deleteImageIds.forEach((el) => {
+        if (el == id) {
+          return false;
+        }
+      });
+      return true;
     },
     reset() {
       this.getHotPlace();
