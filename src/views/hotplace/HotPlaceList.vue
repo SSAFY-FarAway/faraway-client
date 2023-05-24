@@ -1,5 +1,5 @@
 <template>
-  <div @scroll="handleHotPlaceListScroll" id="hotplace-wrap">
+  <div @scroll="handleHotPlaceListScroll" id="hotplace-wrap" ref="feedList">
     <div class="hotplace-container">
       <!-- Header -->
       <page-header
@@ -25,7 +25,12 @@
         </form>
       </div>
       <hr style="border-top: 1px solid rgb(219, 219, 219)" />
-
+      <b-icon
+        id="totop-btn"
+        class="text-center"
+        icon="arrow-up-circle-fill"
+        @click="$toTop($refs['feedList'])"
+      />
       <div class="row p-0 m-0 justify-content-end">
         <span class="font-weight-bold mr-3">피드 정렬</span>
         <b-form-group class="m-0" v-slot="{ ariaDescribedby }">
@@ -39,7 +44,7 @@
       </div>
       <hr style="border-top: 1px solid rgb(219, 219, 219)" />
 
-      <div id="feed-list" ref="feed-list">
+      <div id="feed-list">
         <feed-item
           v-for="hotPlace in hotPlaces"
           :key="hotPlace.id"
@@ -231,6 +236,7 @@ export default {
       if (this.lastLoadPage < this.pageTotalCnt) {
         setTimeout(() => {
           this.getHotPlaces(this.lastLoadPage++);
+          this.$refs["feedList"].scrollBy(0, 30);
           this.isLoading = false;
         }, 100);
       }
@@ -245,11 +251,29 @@ export default {
 }
 
 #hotplace-wrap {
-  height: 90vh;
+  height: calc(100vh - 64px);
   overflow-y: scroll;
 }
 
 #search-select-box {
   width: 200px;
+}
+
+#feed-list {
+  position: relative;
+}
+
+#totop-btn {
+  font-size: 3rem;
+  transition: all 0.2s;
+  color: var(--main-color);
+  position: absolute;
+  bottom: 0;
+  left: 70%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+#totop-btn:hover {
+  font-size: 3.5rem;
 }
 </style>
