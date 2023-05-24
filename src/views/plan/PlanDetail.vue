@@ -74,19 +74,19 @@
             {{ plan.content ?? "내용" }}
           </div>
         </div>
-            <!-- 좋아요 버튼 -->
-            <div class="d-flex justify-content-center align-items-center mt-5">
-              <!-- 좋아요 눌렀을 때 -->
-              <button v-if="this.likeId" class="btn btn-primary" @click="unlike">
-                  <b-icon icon="heart-fill" font-scale="1"></b-icon>
-                  <span class="font-weight-bold ml-3">{{ plan.likeCnt }}</span>
-              </button>
-              <!-- 좋아요 안 눌렀을 때 -->
-              <button v-else class="btn btn-outline-secondary" @click="like">
-                  <b-icon icon="heart-fill" font-scale="1"></b-icon>
-                  <span class="font-weight-bold ml-3">{{ plan.likeCnt }}</span>
-              </button>
-          </div>
+        <!-- 좋아요 버튼 -->
+        <div class="d-flex justify-content-center align-items-center mt-5">
+          <!-- 좋아요 눌렀을 때 -->
+          <button v-if="this.likeId" class="btn btn-primary" @click="unlike">
+            <b-icon icon="heart-fill" font-scale="1"></b-icon>
+            <span class="font-weight-bold ml-3">{{ plan.likeCnt }}</span>
+          </button>
+          <!-- 좋아요 안 눌렀을 때 -->
+          <button v-else class="btn btn-outline-secondary" @click="like">
+            <b-icon icon="heart-fill" font-scale="1"></b-icon>
+            <span class="font-weight-bold ml-3">{{ plan.likeCnt }}</span>
+          </button>
+        </div>
         <hr />
       </div>
 
@@ -108,7 +108,7 @@ import pageHeader from "@/components/common/page/pageHeader";
 import PlanCard from "@/components/plan/PlanCard.vue";
 import PlanDetailKakaoMap from "@/components/plan/PlanDetailKakaoMap";
 import { mapState } from "vuex";
-import jwtDecode from 'jwt-decode';
+// import jwtDecode from "jwt-decode";
 
 export default {
   name: "PlanList",
@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       plan: {},
-      likeId : Number,
+      likeId: null,
     };
   },
   watch: {
@@ -175,45 +175,46 @@ export default {
       }
     },
     like() {
-            const accessToken = sessionStorage.getItem("access-token");
-            const decodedAccessToken = jwtDecode(accessToken);
-            const memberId = decodedAccessToken.memberId;
-
-            const data = {
-                planId: this.plan.id,
-                memberId: memberId
-            }
-            http
-                .post(`/plan/${this.plan.id}/like`, data)
-                .then((res) => {
-                    console.log("[planDetail - like]")
-                    console.log(res);
-                    if (res.status === 200) {
-                        this.likeId = res.data;
-                        this.plan.likeCnt++;
-                        this.$alertSuccess("좋아요❤", "해당 여행계획에 좋아요를 눌렀습니다.");
-                    }
-                })
-                .catch((res) => {
-                    this.$alertDanger("오류 확인", res);
-                    this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
-                });
-        },
-        unlike() {
-            http
-                .delete(`/plan/like/${this.likeId}`)
-                .then((res) => {
-                    if (res.status === 200) {
-                        this.likeId = null;
-                        this.plan.likeCnt--;
-                        this.$alertSuccess("좋아요❤ 취소", "해당 여행계획에 좋아요를 취소했습니다.");
-                    }
-                })
-                .catch((res) => {
-                    this.$alertDanger("오류 확인", res);
-                    this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
-                })
-        }
+      const data = {
+        planId: this.plan.id,
+      };
+      http
+        .post(`/plan/${this.plan.id}/like`, data)
+        .then((res) => {
+          console.log("[planDetail - like]");
+          console.log(res);
+          if (res.status === 200) {
+            this.likeId = res.data;
+            this.plan.likeCnt++;
+            this.$alertSuccess(
+              "좋아요❤",
+              "해당 여행계획에 좋아요를 눌렀습니다."
+            );
+          }
+        })
+        .catch((res) => {
+          this.$alertDanger("오류 확인", res);
+          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+        });
+    },
+    unlike() {
+      http
+        .delete(`/plan/like/${this.likeId}`)
+        .then((res) => {
+          if (res.status === 200) {
+            this.likeId = null;
+            this.plan.likeCnt--;
+            this.$alertSuccess(
+              "좋아요❤ 취소",
+              "해당 여행계획에 좋아요를 취소했습니다."
+            );
+          }
+        })
+        .catch((res) => {
+          this.$alertDanger("오류 확인", res);
+          this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
+        });
+    },
   },
   computed: {
     ...mapState("memberStore", ["isLogin", "loginMember"]),
