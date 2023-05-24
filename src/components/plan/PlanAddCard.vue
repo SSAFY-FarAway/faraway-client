@@ -1,6 +1,6 @@
 <template>
   <div id="card-container" class="d-flex align-items-center">
-    <b-card class="font-small" style="width: 220px" no-body>
+    <b-card class="font-small" style="width: 220px" no-body  @click="selectAttraction">
       <p class="m-1 font-weight-bold">{{ idx }}번째 경로</p>
       <b-card-img
         class="p-2"
@@ -43,12 +43,17 @@ export default {
   data() {
     return {};
   },
-  created() {},
+  created() {
+  },
   methods: {
+    ...mapActions("attractionStore", ["setAttraction"]),
     ...mapActions("planStore", ["removePlan"]),
     removeMyPath() {
       this.$alertSuccess("경로 삭제", "경로가 성공적으로 삭제되었습니다.");
       this.removePlan(this.plan);
+    },
+    selectAttraction() {
+      this.setAttraction(this.plan);
     },
   },
 };

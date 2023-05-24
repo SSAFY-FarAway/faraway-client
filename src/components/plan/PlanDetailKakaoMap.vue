@@ -4,6 +4,7 @@
 
 <script>
 import KAKAO_API_KEY from "@/utils/api/kakao_config";
+import { mapState } from 'vuex';
 
 export default {
   name: "PlanKakaoMap",
@@ -24,13 +25,26 @@ export default {
       this.loadScript();
     } 
   },
+  computed: {
+    ...mapState("attractionStore", ["selectedAttraction"]),
+  },
   watch: {
     attractions(to) {
       if (to.length) {
         this.loadMap();
       }
     },
+     // 현재 선택(클릭)된 관광지가 변할 때
+    selectedAttraction(after) {
+      if (after) {
+         // 시점 이동
+      this.map.setCenter(
+        new window.kakao.maps.LatLng(after.latitude, after.longitude)
+        );
+      }
+    },
   },
+  
   methods: {
     // kakaoMap Script 로드
     loadScript() {

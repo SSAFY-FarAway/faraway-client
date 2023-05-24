@@ -1,6 +1,6 @@
 <template>
   <div id="card-container" class="d-flex align-items-center">
-    <b-card class="font-small text-center" style="width: 220px" no-body>
+    <b-card class="font-small text-center" style="width: 220px" no-body  @click='selectAttraction'>
       <p class="m-1 font-weight-bold">{{ idx }}번째 경로</p>
       <b-card-img
         class="p-2"
@@ -51,12 +51,16 @@ export default {
   },
   created() {},
   methods: {
+    ...mapActions("attractionStore", ["setAttraction"]),
     ...mapActions("planStore", ["removePlan"]),
     openNaverSearch(title) {
       window.open(
         `https://search.naver.com/search.naver?query=${title}`,
         "_blank"
       );
+    },
+    selectAttraction() {
+      this.setAttraction(this.plan);
     },
   },
 };

@@ -92,11 +92,16 @@ export default {
     ...mapState("planStore", ["myPlan"]),
     ...mapGetters("planStore", ["getContentIds"]),
   },
-  created() {},
+  created() {
+    this.clearPlan();
+  },
   methods: {
     ...mapActions("attractionStore", [
       "addPickedAttraction",
       "removePickedAttraction",
+    ]),
+    ...mapActions("planStore", [
+      "clearPlan",
     ]),
     writePlan() {
       this.plan.travelPlan = `${this.getContentIds.toString()}`;
