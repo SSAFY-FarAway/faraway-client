@@ -28,6 +28,7 @@
         <table-row-header :titles="titles" />
       </thead>
       <tbody v-for="hotPlace in hotPlaces" :key="hotPlace.id">
+        <img style="max-width: 100%" :src="'http://localhost/image/download/' + hotPlace.thumbnailId"  alt=""/>
         <table-row-data :data="hotPlace" :titles="titles" domain="hot-place" />
       </tbody>
     </table>

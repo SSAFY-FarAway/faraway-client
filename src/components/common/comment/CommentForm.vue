@@ -31,7 +31,7 @@ export default {
     writeComment() {
       let url = this.$route.path;
       let domain = url.split("/")[1];
-      let id = this.$route.params.postId;
+      let id = this.$route.params.id;
 
       http
         .post(`/${domain}/${id}/comment`, this.request)

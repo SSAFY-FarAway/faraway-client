@@ -135,7 +135,7 @@ export default {
   },
   methods: {
     getPlanData() {
-      const planId = this.$route.params.planId;
+      const planId = this.$route.params.id;
       http
         .get(`/plan/${planId}`)
         .then((res) => {
@@ -162,7 +162,7 @@ export default {
         )
       ) {
         http
-          .delete(`/plan/${this.$route.params.planId}`)
+          .delete(`/plan/${this.$route.params.id}`)
           .then((res) => {
             if (res.status === 200) {
               this.$alertDanger("삭제 완료", "삭제가 완료되었습니다.");
