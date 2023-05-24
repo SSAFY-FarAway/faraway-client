@@ -72,7 +72,6 @@
                     <b-icon icon="heart-fill" font-scale="1"></b-icon>
                     <span class="font-weight-bold ml-3">{{ post.likeCnt }}</span>
                 </button>
-
             </div>
             <hr/>
 

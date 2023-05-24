@@ -6,6 +6,7 @@ export const methods = {
       variant: "default",
       toaster: "b-toaster-top-right",
       solid: true,
+      autoHideDelay: 1500,
     });
   },
   // 성공 토스트
@@ -15,6 +16,7 @@ export const methods = {
       variant: "success",
       toaster: "b-toaster-top-right",
       solid: true,
+      autoHideDelay: 1500,
     });
   },
   // 실패 토스트
@@ -24,6 +26,7 @@ export const methods = {
       variant: "danger",
       toaster: "b-toaster-top-right",
       solid: true,
+      autoHideDelay: 1500,
     });
   },
   toTop(ref) {
