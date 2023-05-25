@@ -25,64 +25,85 @@
     <!-- 메인 섹션 -->
     <section class="container">
       <div class="text-center" style="margin: 80px 0">
-        <h1 class="section-heading text-uppercase animate__animated animate__fadeInDown">Customize Your Travel</h1>
         <h2 class="section-subheading text-muted animate__animated animate__fadeInDown">
-          <p>
-            You can make your own Plan By our Website And Share your Gorgeous
-            Plan!
-          </p>
+          <p style="color:var(--main-color); " class="font-weight-bold">
+            이번 여름, 어디로 떠나실건가요?</p>
         </h2>
+        <h1  class="section-heading text-uppercase animate__animated animate__fadeInDown" >대한민국의 다양한 관광지와 컨텐츠를 찾아보세요 !</h1>
       </div>
 
       <!-- 카드 영역 -->
       <div class="d-flex justify-content-center " style="margin-bottom: 100px">
+        <!-- 카드 1 -->
         <b-card
-            title="Travel With Your Friends"
-            style="max-width: 20rem; position: relative; border: none"
-            class="mb-2 mx-5 text-center animate__animated animate__fadeInRight"
-        >
-          <b-icon
-              class="my-5 "
-              style="width: 100%; height: 200px; color: var(--main-color)"
-              icon="people"
-              animation="fade"
-              font-scale="4"
-          ></b-icon>
-          <b-card-text>
-            친구와 떠나는 신나는 이번 여행,<br/>어떤 경로로 가면 좋을까요?
-          </b-card-text>
-        </b-card>
-        <b-card
-            title="Where To Go?"
+            title="SEARCH-PLACE"
             style="max-width: 20rem; position: relative; border: none"
             class="mb-2 mx-5 text-center animate__animated animate__fadeInRight"
         >
           <b-icon
               class="my-5"
-              style="width: 100%; height: 200px; color: var(--main-color)"
-              icon="compass"
+              style="width: 100%; height: 200px;"
+              icon="zoom-in"
               animation="fade"
               font-scale="4"
           ></b-icon>
-          <b-card-text>
-            어디로 여행을 가면 좋을까요?<br/>추천해주세요 !
+          <b-card-text class="font-weight-bold font-italic">
+            여행을 떠나려는 지역의<br/> 관광지와 명소를 찾아보세요.
           </b-card-text>
+          <router-link
+            style="width: 180px; line-height: 30px"
+            class="mt-5 btn btn-primary btn-xl text-uppercase animate__animated animate__fadeInDown"
+            to="/attraction/index"
+        >Go Search-Place
+        </router-link>
         </b-card>
+
+        <!-- 카드 2 -->
         <b-card
-            title="You get Tired ?"
+            title="PLAN"
+            style="max-width: 20rem; position: relative; border: none"
+            class="mb-2 mx-5 text-center animate__animated animate__fadeInRight"
+        >
+          <b-icon
+              class="my-5"
+              style="width: 100%; height: 200px;"
+              icon="calendar2-check"
+              animation="fade"
+              font-scale="4"
+          ></b-icon>
+          <b-card-text class="font-weight-bold font-italic">
+            나만의 완벽한 여행계획! <br/>함께 공유해요.
+          </b-card-text>
+          <router-link
+            style="width: 180px; line-height: 30px"
+            class="mt-5 btn btn-primary btn-xl text-uppercase animate__animated animate__fadeInDown"
+            to="/plan/list"
+        >Go PLAN
+        </router-link>
+        </b-card>
+
+        <!-- 카드 -->
+        <b-card
+            title="HOT-PLACE"
             style="max-width: 20rem; position: relative; border: none"
             class="mb-2 mx-5 text-center animate__animated animate__fadeInRight"
         >
           <b-icon
               class="my-5 "
-              style="width: 100%; height: 200px; color: var(--main-color)"
-              icon="emoji-dizzy"
+              style="width: 100%; height: 200px;"
+              icon="geo-alt"
               animation="fade"
               font-scale="4"
           ></b-icon>
-          <b-card-text>
-            피곤에 찌든 자여,<br/>지금 당장 여행을 떠나라 ~
+          <b-card-text class="font-weight-bold font-italic">
+            요즘 뜨고 있는 <br/>핫플은 어디일까요?
           </b-card-text>
+          <router-link
+            style="width: 180px; line-height: 30px"
+            class="mt-5 btn btn-primary btn-xl text-uppercase animate__animated animate__fadeInDown"
+            to="/hot-place/list"
+        >go hot-place
+        </router-link>
         </b-card>
       </div>
     </section>
@@ -149,4 +170,8 @@ export default {
 </script>
 
 <style scoped>
+.card-title {
+  color : var(--main-color);
+  text-decoration : underline
+}
 </style>
