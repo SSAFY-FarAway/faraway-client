@@ -43,7 +43,7 @@
       <!-- 게시글 내용 -->
       <div class="mt-3" id="content">
         <!--                <pre class="h5">{{ post.content }}</pre>-->
-        <div class="h5" style="word-wrap: break-word">{{ post.content }}</div>
+        <div class="h5" v-html="post.content"></div>
       </div>
 
       <!-- 파일 첨부 영역 -->
@@ -156,6 +156,7 @@ export default {
           console.log("[Post 데이터 로드]");
           console.log(res);
           this.post = res.data;
+          this.post.content = this.formattedText(res.data.content);
           this.comments = this.post.postCommentResponses;
           this.attachments = this.post.attachmentResponses;
           this.likeId = this.post.likeId;
@@ -214,6 +215,10 @@ export default {
           this.$alertDanger("오류 확인", res);
           this.$alertDanger("오류 발생", "추후 예외처리 추가 예정");
         });
+    },
+    formattedText(text) {
+      // 개행 문자를 <br> 태그로 대체하여 문자열을 변환
+      return text.replace(/\n/g, "<br>");
     },
   },
   computed: {
