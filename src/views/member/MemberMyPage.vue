@@ -5,7 +5,7 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-lg-12 col-xl-11">
                     <div class="card text-black shadow" style="border-radius: 25px">
-                        <div class="card-body p-md-5 sh">
+                        <div class="card-body sh" style="position:relative">
                             <div class="row justify-content-center">
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
@@ -134,8 +134,10 @@
                                                     >
                                                 Modify
                                             </b-button>
-
                                         </div>
+                                        <div class="row justify-content-center">
+                                        <span @click='deleteMember' class="text-center text-muted" style="margin-top : 80px; font-size:0.875em; text-decoration:underline;  cursor:pointer">회원탈퇴</span>
+                                    </div>
                                         <div id="modify-mode-btns"  class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                             <button
                                                     class="btn btn-primary btn-lg shadow me-3" id="modify-submit-button" 
@@ -145,7 +147,7 @@
                                                 Submit
                                             </button>
                                             <button
-                                                    class="btn btn-secondary btn-lg shadow" id="modify-cancel-button"
+                                                    class="btn btn-secondary btn-lg shadow ml-3" id="modify-cancel-button"
                                                     ref="modify-cancel-button"
                                                     @click="cancel"
                                                     style= display:none;>
@@ -174,19 +176,19 @@
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
+      
     >
-      <form ref="form" @submit.stop.prevent="handleSubmit">
+      <form ref="form" @submit.prevent='handleOk'>
         <b-form-group
           label="비밀번호를 입력해주세요."
           label-for="LoginPwd-input"
           invalid-feedback="LoginPwd is required"
-          :state="LoginPwdState"
         >
           <b-form-input
             id="LoginPwd-input"
             v-model="inputLoginPwd"
             type="password"
-            :state="LoginPwdState"
+            v-focus
             required
           ></b-form-input>
         </b-form-group>
@@ -211,7 +213,7 @@ export default {
         memberInfo:{},
         modifyMode:false,
         inputLoginPwd : "",
-        LoginPwdState : null,
+        LoginPwdState: null,
       
     };
   },
@@ -223,7 +225,8 @@ export default {
                 console.log("member info ")
             })
   },
-  methods: {
+    methods: {
+ 
     modify(){
         // TODO : 나중에 쿼리스트링 방식에서 body에서 받도록 해야함. (controller 단에서)
         const modifyInfo = {
@@ -233,20 +236,23 @@ export default {
         modifyInfo.id = this.memberInfo.id;
         modifyInfo.loginPwd = this.inputLoginPwd;
 
-        const url = "/member/check"
+        const url = "/member/check/password"
         http
             .post(url, modifyInfo)
             .then((res) =>{
                 console.log(res)
                 if(res.status === 200){
                     this.modifyMode = true;
-                    this.changeView();   
+                    this.changeView();
+                    this.$bvModal.hide('modal-prevent-closing')
                 }
             })
             .catch((error) => {
                 console.log(error.response);
                 this.$alertDanger("비밀번호가 틀렸습니다.", "비밀번호를 다시 입력해 주세요.");
+                return false;
             })
+            return false;
     },
     changeView() {
         
@@ -359,7 +365,9 @@ export default {
                 this.$alertDanger("비밀번호를 입력해주세요.","로그인 비밀번호를 입력해주세요")
                 return
             }
-            this.modify();
+            this.modify()
+            
+            
         },
         resetModal() {
         this.inputLoginPwd = ''
@@ -399,7 +407,10 @@ export default {
             this.memberInfo.mainAddress = fullRoadAddr;
         }
        }).open()
-    },
+        },
+        deleteMember() {
+            console.log("deleteMember")
+        }
     },
 };
 </script>
