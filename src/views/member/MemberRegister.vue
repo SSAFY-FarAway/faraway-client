@@ -107,7 +107,7 @@
               id="birth"
               ref="birth"
               maxlength="6"
-              placeholder="ex)990215"
+              placeholder="ex) 990215"
               v-model="registerMember.birth"
             />
           </div>
@@ -121,7 +121,11 @@
               id="email"
               ref="email"
               v-model="registerMember.email"
+              @keyup='emailCheck'
             />
+            <small id="email-help" ref="email-help" class="form-text text-muted"
+              >{{emailCheckMsg}}</small
+            >
           </div>
           <!-- 주소 -->
           <!-- TODO : 추후에 주소 조회 api 연동 -->
@@ -190,6 +194,7 @@ export default {
   data() {
     return {
       idCheckMsg :"6자리 이상의 아이디를 입력하세요.",
+      emailCheckMsg :"",
       pwdCheckMsg : "비밀번호를 한번 더 입력하세요.",
       pwdMsg : "영문 숫자 특수기호를 조합하여 8자리 이상의 비밀번호를 입력하세요.",
       loginPwdShow : false, //true : 보여주기 , false : 숨기기
@@ -259,7 +264,7 @@ export default {
         return;
       }
       http
-        .get(`/member/check/${this.registerMember.loginId}`)
+        .get(`/member/check/login-id/${this.registerMember.loginId}`)
         .then((res) => {
           console.log("아이디 중복 체크 " + res);
           if(res.status === 200){
@@ -271,7 +276,40 @@ export default {
           idMsgBox.className = "form-text text-danger";
           this.idCheckMsg = "사용 불가능한 아이디 입니다.";
         })
+    },
+    emailCheck() {
+      let canUse = false;
+      let regex =/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+      const emailMsgBox = this.$refs["email-help"];
+
+      if (this.registerMember.email.match(regex)) {
+        canUse = true;
+      } else if (!this.registerMember.email.length) {
+        canUse = false;
+        this.emailCheckMsg = "";
+      } else {
+        canUse = false;
+        emailMsgBox.className = "form-text text-danger";
+        this.emailCheckMsg = "사용 불가능한 이메일 입니다.";
+      }
+
       
+        if (canUse) {
+          http
+        .get(`/member/check/email/${this.registerMember.email}`)
+        .then((res) => {
+          console.log("이메일 중복 체크 ");
+          console.log(res)
+          if(res.status === 200){
+            emailMsgBox.className = "form-text text-primary";
+            this.emailCheckMsg = "사용 가능한 이메일입니다.";
+          }
+        })
+        .catch(() => {
+          emailMsgBox.className = "form-text text-danger";
+          this.emailCheckMsg = "사용 불가능한 이메일 입니다.";
+        })
+        }
     },
     validationPwd(){
         var pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
@@ -303,6 +341,7 @@ export default {
       }
 
     },
+
     preventCopyPaste(event) {
       event.preventDefault();
     },
