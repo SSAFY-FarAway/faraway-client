@@ -71,7 +71,7 @@
         <!-- 게시글 내용 -->
         <div class="mt-3" id="content">
           <div class="h5" style="word-wrap: break-word">
-            {{ plan.content ?? "내용" }}
+            <div class="h5" v-html="plan.content"></div>
           </div>
         </div>
         <!-- 좋아요 버튼 -->
@@ -141,6 +141,7 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             this.plan = res.data;
+            this.plan.content = this.$formattedText(res.data.content);
             this.likeId = this.plan.likeId;
           }
         })

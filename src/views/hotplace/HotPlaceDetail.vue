@@ -74,7 +74,7 @@
 
       <!-- 게시글 내용 -->
       <div class="mt-3" id="content">
-        <pre>{{ hotPlace.content }}</pre>
+        <div class="h5" v-html="hotPlace.content"></div>
       </div>
 
       <!-- 좋아요 버튼 -->
@@ -144,12 +144,13 @@ export default {
   },
   methods: {
     getHotPlace() {
-      http.get(`/hot-place/${this.$route.params.id}`).then((response) => {
-        console.log(response);
-        this.hotPlace = response.data;
+      http.get(`/hot-place/${this.$route.params.id}`).then((res) => {
+        console.log(res);
+        this.hotPlace = res.data;
+        this.hotPlace.content = this.$formattedText(res.data.content);
         this.comments = this.hotPlace.commentResponses;
         this.images = this.hotPlace.imageResponses;
-        this.likeId = response.data.likeId;
+        this.likeId = res.data.likeId;
       });
     },
     modifyHotPlace() {
