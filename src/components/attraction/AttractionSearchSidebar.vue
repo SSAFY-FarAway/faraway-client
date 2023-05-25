@@ -175,9 +175,13 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          this.attractions = res.data.data;
+          if (res.status === 200) {
+            this.attractions = res.data.data;
           this.setAttractions(res.data.data);
           this.totalPages = res.data.pageTotalCnt;
+          }
+        }).catch(() => {
+          this.$alertDanger("관광지 정보 불러오기 실패!","잠시 후 다시 시도하세요.")
         });
     },
     setParam(value) {

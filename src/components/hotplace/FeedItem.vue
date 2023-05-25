@@ -42,6 +42,7 @@
       <img
         id="feed-item-img"
         :src="'http://localhost/image/download/' + hotPlace.thumbnailId"
+        @error='setAltImg'
       />
     </div>
 
@@ -119,6 +120,11 @@ export default {
       const url = `https://map.kakao.com/?q=${this.hotPlace.mainAddress}`;
       window.open(url, "_blank");
     },
+    setAltImg(e) {
+      const createRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+     
+      e.target.src = require(`@/assets/img/hotplace/default${createRandomNumber(1,7)}.png`)
+    }
   },
 };
 </script>
