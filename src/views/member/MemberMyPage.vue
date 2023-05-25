@@ -136,7 +136,21 @@
                                             </b-button>
                                         </div>
                                         <div class="row justify-content-center">
-                                        <span @click='deleteMember' class="text-center text-muted" style="margin-top : 80px; font-size:0.875em; text-decoration:underline;  cursor:pointer">회원탈퇴</span>
+                                        <span 
+                                            @click='showDeleteModal' 
+                                            ref="delete-member"
+                                            class="text-center text-muted mr-3" 
+                                            style="margin-top : 80px; font-size:0.875em; text-decoration:underline; cursor:pointer">
+                                            회원탈퇴
+                                        </span>
+
+                                        <router-link
+                                            ref="change-login-pwd"
+                                            to="/member/changePassword"
+                                            class="text-center text-muted" 
+                                            style="margin-top : 80px; font-size:0.875em; text-decoration:underline; cursor:pointer">
+                                            비밀번호 변경
+                                        </router-link>
                                     </div>
                                         <div id="modify-mode-btns"  class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                             <button
@@ -168,12 +182,19 @@
             </div>
       </div>
         </div>
-        
-        <b-modal
+    <b-modal 
+        id="confirm-delete-modal" 
+        ref="confirm-delete-modal" 
+        title="회원탈퇴"
+        @ok="deleteMember">
+        <p class="my-4">정말로 회원탈퇴를 진행하시겠습니까?</p>
+    </b-modal>
+
+    <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      title="회원 정보 수정"
-      @show="resetModal"
+      :title="modalTitle"
+      @show="resetShowModal"
       @hidden="resetModal"
       @ok="handleOk"
       
@@ -188,7 +209,7 @@
             id="LoginPwd-input"
             v-model="inputLoginPwd"
             type="password"
-            v-focus
+            autofocus
             required
           ></b-form-input>
         </b-form-group>
@@ -201,32 +222,39 @@
 
 <script>
 import http from "@/utils/api/http";
+import { mapActions, mapState} from "vuex";
+import router from '@/router/index';
 import { BIcon } from "bootstrap-vue";
 
 
 
 export default {
-  name: 'MemberMypage',
-  components: {BIcon},
-  data() {
-    return {
-        memberInfo:{},
-        modifyMode:false,
-        inputLoginPwd : "",
-        LoginPwdState: null,
-      
-    };
-  },
-  created(){
-     http
-            .get(`/member/mypage`)
-            .then((res) => {
-                this.memberInfo = res.data;
-                console.log("member info ")
-            })
-  },
+    name: 'MemberMypage',
+    components: {BIcon},
+    data() {
+        return {
+            memberInfo:{},
+            modifyMode:false,
+            inputLoginPwd : "",
+            LoginPwdState: null,
+            modalTitle:"회원 정보 수정",
+            isModifyModalflag: true, // true : modify modal  , false : delte modal
+        
+        };
+    },
+    created(){
+        http
+                .get(`/member/mypage`)
+                .then((res) => {
+                    this.memberInfo = res.data;
+                    console.log("member info ")
+                })
+    },
+    computed: {
+        ...mapState("memberStore", ["isLogin", "loginMember"]),
+    },
     methods: {
- 
+        ...mapActions("memberStore", ["setIsLogin"]),
     modify(){
         // TODO : 나중에 쿼리스트링 방식에서 body에서 받도록 해야함. (controller 단에서)
         const modifyInfo = {
@@ -245,6 +273,7 @@ export default {
                     this.modifyMode = true;
                     this.changeView();
                     this.$bvModal.hide('modal-prevent-closing')
+                    this.$alertSuccess("비밀번호가 맞습니다.", "회원정보를 수정해주세요.");
                 }
             })
             .catch((error) => {
@@ -265,6 +294,7 @@ export default {
         const modifyButton =  this.$refs["modify-button"];
         const modifySubmitButton = this.$refs["modify-submit-button"];
         const modifyCancelButton = this.$refs["modify-cancel-button"];
+        const delteButton = this.$refs["delete-member"];
         const findBtn = this.$refs["find-btn"];
 
         console.log("flag : ", this.modifyMode);
@@ -275,6 +305,7 @@ export default {
             email.readOnly = false;
             subAddress.readOnly = false;
             modifyButton.style.display="none";
+            delteButton.style.display="none";
             modifySubmitButton.style.display="block";
             modifyCancelButton.style.display="block";
             findBtn.style.display="block";
@@ -286,13 +317,13 @@ export default {
             email.readOnly = true;
             subAddress.readOnly = true;
             modifyButton.style.display="block";
+            delteButton.style.display="block";
             modifySubmitButton.style.display="none";
             modifyCancelButton.style.display="none";
             findBtn.style.display="none";
         }
     },
     submit(){
-        
         const lastName = this.$refs["last-name"];
         const firstName = this.$refs["first-name"];
         const birth = this.$refs["birth"];
@@ -311,8 +342,6 @@ export default {
             return;
         }
 
-
-
         const modifyInfo = {
           id : this.memberInfo.id,
           lastName : lastName.value,
@@ -324,7 +353,7 @@ export default {
           subAddress : subAddress.value,
       }
 
-        const url = "/member/"
+        const url = "/member"
         http
             .put(url, modifyInfo)
             .then((res) =>{
@@ -365,17 +394,78 @@ export default {
                 this.$alertDanger("비밀번호를 입력해주세요.","로그인 비밀번호를 입력해주세요")
                 return
             }
-            this.modify()
+            if(this.isModifyModalflag){
+                this.modify()
+            }else{
+                this.delte();
+            }
             
             
         },
+        resetShowModal(){
+            this.inputLoginPwd = ''
+        },
+
         resetModal() {
-        this.inputLoginPwd = ''
-      },
+            this.inputLoginPwd = ''
+            this.modalTitle = "회원 정보 수정"
+            this.isModifyModalflag = true;
+        },
+        showDeleteModal(){
+            this.$refs["confirm-delete-modal"].show();    
+        },
+        deleteMember() {
+            this.modalTitle = "회원 탈퇴"
+            this.isModifyModalflag = false;
+            this.$refs["modal"].show();
+            console.log("deleteMember")
+        },
+        delte(){
+            const deleteInfo = {
+                id:"",
+                loginPwd:"",
+            }
 
-
+            deleteInfo.id = this.memberInfo.id;
+            deleteInfo.loginPwd = this.inputLoginPwd;
+            console.log("delete info : ", deleteInfo);
+            // 로그아웃 먼저 진행
+                http
+                .post("/member", deleteInfo)
+                .then((res) => {
+                    if(res.status === 200){
+                        this.$alertSuccess("회원 탈퇴 성공", "메인페이지로 이동합니다.");
+                        this.setIsLogin(false);  
+                         if (router.currentRoute.path !== "/index") {
+                            router.push("/"); // 로그아웃 후 메인 페이지로 이동
+                        }
+                    }
+                })
+                .catch(() => {
+                    this.$alertDanger("회원 탈퇴 실패", "비밀번호가 틀렸습니다.");
+                })
+            },
+            
+         logout(){
+            http
+                .get(`/member/logout/${this.memberInfo.id}`)
+                .then((res) => {
+                        if (res.status === 200) {
+                        // this.$alertSuccess("로그아웃 성공", "메인페이지로 이동합니다.");
+                        // console.log("[로그아웃 성공]")
+                            console.log("로그아웃 세션이 안지워집니다.")
+                            console.log(res);
+                            this.setIsLogin(false);
+                            return true;
+                        }
+                })
+                .catch(() => {
+                    return false;
+                })
+            return false;
+        },
         findZipCode(){
-      new window.daum.Postcode({
+        new window.daum.Postcode({
         oncomplete: (data) => {
             // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
@@ -408,9 +498,7 @@ export default {
         }
        }).open()
         },
-        deleteMember() {
-            console.log("deleteMember")
-        }
+        
     },
 };
 </script>
