@@ -158,6 +158,7 @@ export default {
 
         },
         isBtnVisible() {
+          if (this.loginMember === null) return false;
             const role = this.loginMember.role;
             return (this.categoryId === "1" && role === "ADMIN") || (this.categoryId !== "1" && role !== "GUEST")
         }

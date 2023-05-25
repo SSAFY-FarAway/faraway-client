@@ -9,7 +9,7 @@
 
       <!-- 검색 메뉴 -->
       <div class="p-0 m-0 mt-3 col-12 row justify-content-between">
-        <write-btn path="/hot-place/write" btnName="add feed" />
+        <write-btn v-if="isBtnVisible" path="/hot-place/write" btnName="add feed" />
         <form class="d-flex">
           <b-form-select
             class="col-md-4"
@@ -134,6 +134,11 @@ export default {
   },
   computed: {
     ...mapState("memberStore", ["loginMember"]),
+    isBtnVisible() {
+      if (this.loginMember === null) return false;
+      const role = this.loginMember.role;
+      return role !== "GUEST";
+    }
   },
   methods: {
     getHotPlaces(pageNumber) {
