@@ -24,6 +24,9 @@ import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
 Vue.config.productionTip = false;
 
+import VueCarousel from "vue-carousel"
+Vue.use(VueCarousel);
+
 new Vue({
   router,
   store,
