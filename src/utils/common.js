@@ -42,6 +42,9 @@ export const methods = {
       });
     }
   },
+  formattedText(text) {
+    return text.replace(/\n/g, "<br>");
+  },
 };
 
 export default {
@@ -50,5 +53,6 @@ export default {
     Vue.prototype.$alertSuccess = methods.alertSuccess;
     Vue.prototype.$alertDanger = methods.alertDanger;
     Vue.prototype.$toTop = methods.toTop;
+    Vue.prototype.$formattedText = methods.formattedText;
   },
 };
