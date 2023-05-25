@@ -13,16 +13,19 @@
       {{ attraction.addr1 }}
     </b-card-text>
 
+    <div class="text-center" v-if="isLogin">
     <!-- 좋아요 눌렀을 때 -->
     <button v-if="this.likeId" class="btn btn-primary" @click="unlike">
       <b-icon icon="heart-fill" font-scale="1"></b-icon>
       <span class="font-weight-bold ml-3">{{ this.likeCnt }}</span>
     </button>
+    
     <!-- 좋아요 안 눌렀을 때 -->
     <button v-else class="btn btn-outline-secondary" @click="like">
       <b-icon icon="heart-fill" font-scale="1"></b-icon>
       <span class="font-weight-bold ml-3">{{ this.likeCnt }}</span>
     </button>
+  </div>
 
     <!-- 여행 계획의 아이템으로 사용되는 경우 -->
     <button
