@@ -105,56 +105,76 @@ body {
 }
 
 /* Header */
-header.masthead {
-  padding-top: 10.5rem;
-  padding-bottom: 6rem;
+
+#slide1-bg {
+  background-image: url("@/assets/img/home/banner-img1.jpg");
+}
+#slide2-bg {
+  background-image: url("@/assets/img/home/banner-img2.jpg");
+}
+#slide3-bg {
+  background-image: url("@/assets/img/home/banner-img3.jpg");
+}
+#slide4-bg {
+  background-image: url("@/assets/img/home/banner-img4.jpg");
+}
+#slide5-bg {
+  background-image: url("@/assets/img/home/banner-img5.jpg");
+}
+
+.VueCarousel-dot-container{
+  margin-top: 0!important;
+}
+.masthead-img {
   text-align: center;
   color: var(--main-color);
-  background-image: url("@/assets/img/home/bg-img2.jpg");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
   background-size: cover;
+  height: 500px;
 }
 
-header.masthead .masthead-subheading {
+.masthead .masthead-subheading {
+  margin-bottom: 10px!important;
+  color: var(--main-color);
   font-size: 1.5rem;
   font-style: italic;
   line-height: 1.5rem;
-  margin-bottom: 25px;
   font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-header.masthead .masthead-heading {
+.masthead .masthead-heading {
+  text-shadow: -0.5px 0 var(--sub-color), 0 0.5px var(--sub-color), 0.5px 0 var(--sub-color), 0 -0.5px var(--sub-color);
+  color: var(--main-color);
   font-size: 3.25rem;
   font-weight: 700;
   line-height: 3.25rem;
-  margin-bottom: 2rem;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 @media (min-width: 768px) {
-  header.masthead {
-    padding-top: 17rem;
-    padding-bottom: 12.5rem;
+  .masthead {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 
-  header.masthead .masthead-subheading {
+  .masthead .masthead-subheading {
     font-size: 2.25rem;
     font-style: italic;
     line-height: 2.25rem;
     margin-bottom: 2rem;
   }
 
-  header.masthead .masthead-heading {
+  .masthead .masthead-heading {
     font-size: 4.5rem;
     font-weight: 700;
     line-height: 4.5rem;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
   }
 }
 
