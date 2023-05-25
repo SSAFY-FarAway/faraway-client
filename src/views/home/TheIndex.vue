@@ -1,50 +1,29 @@
 <template>
-  <div>
+  <div >
+    <div style="position : relative" >
+      <!-- 배너 고정 문구 -->
+      <div style="top : 10%; left: 20%; position:absolute; z-index: 99;" class="masthead">
+        <div class="masthead-subheading animate__animated animate__fadeInDown">wherever you go,</div>
+        <div class="masthead-heading text-uppercase animate__animated animate__fadeInDown">FAR AWAY</div>
+        <router-link
+            style="width: 180px; line-height: 40px"
+            class="btn btn-primary btn-xl text-uppercase animate__animated animate__fadeInDown"
+            to="/attraction/index"
+        >Search Place
+        </router-link>
+    </div>
     <!-- 타이틀(masthead) 영역 -->
-<!--        <header class="masthead">
-          <div>
-            <div  class="masthead-subheading animate__animated animate__fadeInDown">wherever you go,</div>
-            <div class="masthead-heading text-uppercase animate__animated animate__fadeInDown">FAR AWAY</div>
-            <router-link
-              style="width: 180px; line-height: 40px"
-              class="btn btn-primary btn-xl text-uppercase animate__animated animate__fadeInDown"
-              to="/attraction/index"
-              >Search Place</router-link
-            >
-          </div>
-        </header>-->
     <carousel ref="carousel" :autoplay="true" :loop="true" :navigation-enabled="true" :per-page="1" :autoplay-timeout="4000" :speed="800"
               navigationNextLabel="▶" navigationPrevLabel="◀"
     >
-      <button slot="prev" @click="previousSlide">Previous</button>
-      <button slot="next" @click="nextSlide">Next</button>
-      <slide >
-        <header class="masthead">
-          <div class="masthead-subheading animate__animated animate__fadeInDown">wherever you go,</div>
-          <div class="masthead-heading text-uppercase animate__animated animate__fadeInDown">FAR AWAY</div>
-          <router-link
-              style="width: 180px; line-height: 40px"
-              class="btn btn-primary btn-xl text-uppercase animate__animated animate__fadeInDown"
-              to="/attraction/index"
-          >Search Place
-          </router-link>
-        </header>
-      </slide>
-      <slide>
-        <header class="masthead">
-          <div class="masthead-subheading animate__animated animate__fadeInDown">wherever you go,</div>
-          <div class="masthead-heading text-uppercase animate__animated animate__fadeInDown">FAR AWAY</div>
-          <router-link
-              style="width: 180px; line-height: 40px"
-              class="btn btn-primary btn-xl text-uppercase animate__animated animate__fadeInDown"
-              to="/attraction/index"
-          >Search Place
-          </router-link>
-        </header>
+      <!-- 슬라이드 1 -->
+      <slide v-for="slideId in slideIds" :key="slideId">
+        <div :id='slideId' class="masthead-img"/>
       </slide>
     </carousel>
+  </div>
     <!-- 메인 섹션 -->
-    <section class="container py-5">
+    <section class="container">
       <div class="text-center" style="margin: 80px 0">
         <h1 class="section-heading text-uppercase animate__animated animate__fadeInDown">Customize Your Travel</h1>
         <h2 class="section-subheading text-muted animate__animated animate__fadeInDown">
@@ -121,7 +100,9 @@ export default {
   name: "TheIndex",
   components: {BIcon},
   data() {
-    return {};
+    return {
+      slideIds : ["slide1-bg","slide2-bg","slide3-bg","slide4-bg","slide5-bg"]
+    };
   },
   created() {
     if (this.isLogin && sessionStorage.getItem("access-token")) {

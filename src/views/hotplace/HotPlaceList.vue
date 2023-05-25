@@ -59,7 +59,7 @@
             variant="warning"
             style="width: 3rem; height: 3rem"
           />
-          <span class="font-small font-weight-bold mt-3"
+          <span v-if='hotPlaces.length' class="font-small font-weight-bold mt-3"
             >10개의 피드 더 보기...</span
           >
         </div>
