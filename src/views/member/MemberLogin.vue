@@ -16,6 +16,7 @@
               type="text"
               class="form-control"
               id="login-id"
+              v-focus
               v-model="loginMember.loginId"
             />
             <!-- <small id="login-id-help" class="form-text text-muted"

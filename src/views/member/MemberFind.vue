@@ -16,7 +16,7 @@
                                     <div class="d-flex flex-row mb-4">
                                         <i class="mt-3 fas fa-user fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
-                                            <input type="text" placeholder="example@example.com" v-model="findIdInfo.email" id="find-id-email" ref="find-id-email" name="findIdEmail" class="form-control"/>
+                                            <input type="text" placeholder="example@example.com" v-model="findIdInfo.email" id="find-id-email" ref="find-id-email" name="findIdEmail" class="form-control" v-focus/>
                                             <label class="form-label" for="find-id-email">Email</label>
                                         </div>
                                     </div>
