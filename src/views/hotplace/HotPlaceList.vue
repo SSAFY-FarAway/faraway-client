@@ -236,7 +236,6 @@ export default {
       if (this.lastLoadPage < this.pageTotalCnt) {
         setTimeout(() => {
           this.getHotPlaces(this.lastLoadPage++);
-          this.$refs["feedList"].scrollBy(0, 30);
           this.isLoading = false;
         }, 100);
       }
