@@ -90,6 +90,18 @@
         <hr />
       </div>
 
+      <!-- 댓글 영역 -->
+      <div>
+        <h5>{{ comments.length }}개의 댓글</h5>
+        <!-- 댓글 목록 -->
+        <div v-for="comment in comments" :key="comment.id">
+          <comment-row :comment="comment" />
+        </div>
+        <!-- 댓글 작성 -->
+        <comment-form @reloadData="getPlanData" />
+      </div>
+    <hr />
+
       <!-- 게시글 하단 메뉴 -->
       <div class="row p-0 m-0 justify-content-end">
         <router-link to="/plan/list" class="btn btn-outline-secondary">
@@ -108,11 +120,15 @@ import pageHeader from "@/components/common/page/pageHeader";
 import PlanCard from "@/components/plan/PlanCard.vue";
 import PlanDetailKakaoMap from "@/components/plan/PlanDetailKakaoMap";
 import { mapState } from "vuex";
+import CommentForm from "@/components/common/comment/CommentForm.vue";
+import CommentRow from "@/components/common/comment/CommentRow.vue";
 // import jwtDecode from "jwt-decode";
 
 export default {
   name: "PlanList",
   components: {
+    CommentRow,
+    CommentForm,
     pageHeader,
     PlanCard,
     PlanDetailKakaoMap,
@@ -120,6 +136,7 @@ export default {
   data() {
     return {
       plan: {},
+      comments: [],
       likeId: null,
     };
   },
@@ -140,7 +157,9 @@ export default {
         .get(`/plan/${planId}`)
         .then((res) => {
           if (res.status === 200) {
+            console.log(res);
             this.plan = res.data;
+            this.comments = res.data.commentResponses;
             this.likeId = this.plan.likeId;
           }
         })

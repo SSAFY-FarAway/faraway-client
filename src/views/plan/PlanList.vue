@@ -113,6 +113,11 @@ export default {
       return role !== "GUEST";
     }
   },
+  watch: {
+    "$route.fullPath"() {
+      this.getPlans();
+    },
+  },
 };
 </script>
 <style scoped>
