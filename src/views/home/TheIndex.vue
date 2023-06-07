@@ -14,13 +14,19 @@
     </div>
     <!-- 타이틀(masthead) 영역 -->
     <carousel ref="carousel" :autoplay="true" :loop="true" :navigation-enabled="true" :per-page="1" :autoplay-timeout="4000" :speed="800"
-              navigationNextLabel="▶" navigationPrevLabel="◀"
-    >
+              navigationNextLabel="▶" navigationPrevLabel="◀">
       <!-- 슬라이드 1 -->
       <slide v-for="slideId in slideIds" :key="slideId">
         <div :id='slideId' class="masthead-img"/>
       </slide>
     </carousel>
+  </div>
+  <div class="container mt-5 text-center">
+    <h2 class="section-subheading text-muted animate__animated animate__fadeInDown">
+      <p style="color:var(--main-color); " class="font-weight-bold">
+        <span style="color:#00A67E">CHAT GPT</span> 에게 물어보세요 !</p>
+    </h2>
+    <tag-search-bar/>
   </div>
     <!-- 메인 섹션 -->
     <section class="container">
@@ -116,10 +122,11 @@ import jwtDecode from 'jwt-decode';
 import http from '@/utils/api/http';
 import {mapActions, mapState} from 'vuex';
 import 'animate.css';
+import TagSearchBar from "@/components/home/TagSearchBar.vue";
 
 export default {
   name: "TheIndex",
-  components: {BIcon},
+  components: { BIcon, TagSearchBar },
   data() {
     return {
       slideIds : ["slide1-bg","slide2-bg","slide3-bg","slide4-bg","slide5-bg"]
