@@ -258,7 +258,7 @@ export default {
       this.tagSearchResults = [];
 
       // api-key (TODOS :: 보안 필요)
-      const api_key = "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"
+      const api_key = process.env.VUE_APP_OPEN_AI_API_KEY
       const url = "https://api.openai.com/v1/chat/completions"
       // message
       const messages = [
