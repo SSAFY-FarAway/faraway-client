@@ -41,7 +41,7 @@
     </div>
     <div class="container mt-5 text-center">
       <h2
-        class="section-subheading text-muted animate__animated animate__fadeInDown"
+        class="mt-5 section-subheading text-muted animate__animated animate__fadeInDown"
       >
         <p style="color:var(--main-color); " class="font-weight-bold">
           <span style="color:#00A67E; font-weight: bold;">CHAT GPT</span>
