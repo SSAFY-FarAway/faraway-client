@@ -3,7 +3,7 @@ import router from "@/router/index";
 import store from "@/store/modules/memberStore"; // Vuex store를 import합니다.
 
 const instance = axios.create({
-  baseURL: "http://localhost",
+  baseURL: "http://43.201.209.229",
   headers: {
     "Content-Type": "application/json;charset=utf-8",
   },
