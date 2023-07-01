@@ -1,21 +1,26 @@
 <template>
-    <div>
-        HotplaceView
-        <router-view/>
-    </div>
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'HotplaceView',
-    components: {},
-    data() {
-        return {
-            message: '',
-        };
-    },
-    created() {},
-    methods: {},
+  name: "HotPlaceView",
+  components: {},
+  data() {
+    return {
+      message: "",
+    };
+  },
+  created() { },
+  mounted() {
+    this.$toTop();
+  },
+  updated() {
+    this.$toTop();
+  },
+  methods: {},
 };
 </script>
 

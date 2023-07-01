@@ -1,5 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,vuejs
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,node,vuejs
+#API KEY
+.env 
 
 ### Node ###
 # Logs
@@ -148,6 +150,12 @@ dist
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
 
 # Local History for Visual Studio Code
 .history/

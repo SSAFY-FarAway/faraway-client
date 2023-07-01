@@ -1,21 +1,28 @@
 <template>
-    <div>
-        MemberView
-        <router-view/>
-    </div>
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <script>
+import { RouterView } from "vue-router";
+
 export default {
-    name: 'MemberView',
-    components: {},
-    data() {
-        return {
-            message: '',
-        };
-    },
-    created() {},
-    methods: {},
+  name: "MemberView",
+  components: {RouterView},
+  data() {
+    return {
+      message: "",
+    };
+  },
+  created() { },
+  mounted() {
+    this.$toTop();
+  },
+  updated() {
+    this.$toTop();
+  },
+  methods: {},
 };
 </script>
 
