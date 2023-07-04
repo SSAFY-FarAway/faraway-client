@@ -110,7 +110,9 @@ export default {
     isBtnVisible() {
       if (this.loginMember === null) return false;
       const role = this.loginMember.role;
-      return role !== "GUEST";
+      if (role === "GUEST") return false;
+      console.log('role = ' + role)
+      return true;
     }
   },
   watch: {

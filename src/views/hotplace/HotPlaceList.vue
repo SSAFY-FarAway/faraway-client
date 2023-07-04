@@ -9,7 +9,11 @@
 
       <!-- 검색 메뉴 -->
       <div class="p-0 m-0 mt-3 col-12 row justify-content-between">
-        <write-btn v-if="isBtnVisible" path="/hot-place/write" btnName="add feed" />
+        <write-btn
+          v-if="isBtnVisible"
+          path="/hot-place/write"
+          btnName="add feed"
+        />
         <form class="d-flex">
           <b-form-select
             class="col-md-4"
@@ -59,7 +63,7 @@
             variant="warning"
             style="width: 3rem; height: 3rem"
           />
-          <span v-if='hotPlaces.length' class="font-small font-weight-bold mt-3"
+          <span v-if="hotPlaces.length" class="font-small font-weight-bold mt-3"
             >10개의 피드 더 보기...</span
           >
         </div>
@@ -137,7 +141,9 @@ export default {
     isBtnVisible() {
       if (this.loginMember === null) return false;
       const role = this.loginMember.role;
-      return role !== "GUEST";
+      if (role === "GUEST") return false;
+      console.log('role = ' + role)
+      return true;
     }
   },
   methods: {

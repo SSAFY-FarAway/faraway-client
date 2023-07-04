@@ -17,7 +17,11 @@
           v-model="keyword"
           placeholder="검색어 입력"
         />
-        <button type="button" class="btn btn-secondary ml-1 text-uppercase" @click="search">
+        <button
+          type="button"
+          class="btn btn-secondary ml-1 text-uppercase"
+          @click="search"
+        >
           Search
         </button>
       </form>
@@ -159,9 +163,20 @@ export default {
         },
         isBtnVisible() {
           if (this.loginMember === null) return false;
-            const role = this.loginMember.role;
-            return (this.categoryId === "1" && role === "ADMIN") || (this.categoryId !== "1" && role !== "GUEST")
-        }
+          const role = this.loginMember.role;
+          if ((this.categoryId === "1" && role !== "ADMIN") || (this.categoryId !== "1" && role === "GUEST")) return false;
+          console.log('role = ' + role)
+          return true;
+      }
+        /*
+        isBtnVisible() {
+      if (this.loginMember === null) return false;
+      if (this.loginMember.role === "GUEST") return false;
+      const role = this.loginMember.role;
+      console.log('role = ' + role)
+      return true;
+    }
+        */
     },
 };
 </script>
