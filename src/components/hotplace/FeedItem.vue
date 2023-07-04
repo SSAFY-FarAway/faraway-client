@@ -41,8 +41,8 @@
     <div id="img-wrap" class="mt-2">
       <img
         id="feed-item-img"
-        :src="'http://localhost/image/download/' + hotPlace.thumbnailId"
-        @error='setAltImg'
+        :src="'http://43.201.209.229/image/download/' + hotPlace.thumbnailId"
+        @error="setAltImg"
       />
     </div>
 
@@ -122,7 +122,7 @@ export default {
     },
     setAltImg(e) {
       const createRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-     
+
       e.target.src = require(`@/assets/img/hotplace/default${createRandomNumber(1,7)}.png`)
     }
   },

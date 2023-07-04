@@ -1,9 +1,11 @@
 <template>
-  <div id="map-container" :ref="mapId"/>
+  <div id="map-container" :ref="mapId" />
 </template>
 
 <script>
-import KAKAO_API_KEY from "@/utils/api/kakao_config";
+// import KAKAO_API_KEY from "@/utils/api/kakao_config";
+const api_key = process.env.VUE_APP_OPEN_AI_API_KEY
+
 import { mapState } from 'vuex';
 
 export default {
@@ -23,7 +25,7 @@ export default {
   mounted() {
     if (!(window.kakao && window.kakao.maps)) {
       this.loadScript();
-    } 
+    }
   },
   computed: {
     ...mapState("attractionStore", ["selectedAttraction"]),
@@ -44,12 +46,12 @@ export default {
       }
     },
   },
-  
+
   methods: {
     // kakaoMap Script 로드
     loadScript() {
       const script = document.createElement("script");
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${KAKAO_API_KEY}`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${api_key}`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
       script.onload = () => window.kakao.maps.load(this.loadMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
 
       document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
