@@ -32,7 +32,11 @@ instance.interceptors.response.use(
     const originalRequest = error.config;
     console.log(error);
     // refresh token이 존재하는 경우
-    if (error.response.status === 401 && originalRequest && !originalRequest._retry) {
+    if (
+      error.response.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       const refreshToken = sessionStorage.getItem("refresh-token");
@@ -44,7 +48,7 @@ instance.interceptors.response.use(
       if (refreshToken) {
         try {
           // console.log(loginMember);
-          const response = await axios.post("http://localhost/member/refresh", null, {
+          const response = await instance.post("/member/refresh", null, {
             params: {
               memberId: memberId,
             },
@@ -62,8 +66,8 @@ instance.interceptors.response.use(
         } catch (refreshError) {
           console.log("[RefreshToken 만료]");
           console.log(refreshError);
-          await axios
-            .get("http://localhost/member/logout/" + memberId)
+          await instance
+            .get("/member/logout/" + memberId)
             .then((res) => {
               if (res.status === 200) {
                 console.log("[로그아웃 성공]");
