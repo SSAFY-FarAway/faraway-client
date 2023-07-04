@@ -163,9 +163,7 @@ export default {
         },
         isBtnVisible() {
           if (this.loginMember === null) return false;
-          const role = this.loginMember.role;
-          if ((this.categoryId === "1" && role !== "ADMIN") || (this.categoryId !== "1" && role === "GUEST")) return false;
-          console.log('role = ' + role)
+          if (this.categoryId === "1" && this.loginMember.role !== "ADMIN") return false;
           return true;
       }
         /*

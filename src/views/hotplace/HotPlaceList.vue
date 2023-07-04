@@ -140,9 +140,6 @@ export default {
     ...mapState("memberStore", ["loginMember"]),
     isBtnVisible() {
       if (this.loginMember === null) return false;
-      const role = this.loginMember.role;
-      if (role === "GUEST") return false;
-      console.log('role = ' + role)
       return true;
     }
   },
