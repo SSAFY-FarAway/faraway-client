@@ -4,9 +4,9 @@
 
 <script>
 // import KAKAO_API_KEY from "@/utils/api/kakao_config";
-const api_key = process.env.VUE_APP_OPEN_AI_API_KEY
-
 import { mapState } from 'vuex';
+
+const api_key = process.env.VUE_APP_KAKAO_API_KEY
 
 export default {
   name: "PlanKakaoMap",

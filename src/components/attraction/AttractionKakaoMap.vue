@@ -3,8 +3,9 @@
 </template>
 
 <script>
-import KAKAO_API_KEY from "@/utils/api/kakao_config";
+// import KAKAO_API_KEY from "@/utils/api/kakao_config";
 import { mapActions, mapState } from "vuex";
+const api_key = process.env.VUE_APP_KAKAO_API_KEY
 
 export default {
   name: "AttractionKakaoMap",
@@ -62,7 +63,7 @@ export default {
     // kakaoMap Script 로드
     loadScript() {
       const script = document.createElement("script");
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${KAKAO_API_KEY}`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${api_key}`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
       script.onload = () => window.kakao.maps.load(this.loadMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
 
       document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
