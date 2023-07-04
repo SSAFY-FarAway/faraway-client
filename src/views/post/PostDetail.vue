@@ -52,7 +52,9 @@
         <ul class="pl-3">
           <li v-for="attachment in attachments" :key="attachment.id">
             {{ attachment.fileName }}
-            <a :href="'http://localhost/attachment/download/' + attachment.id">
+            <a
+              :href="'http://43.201.209.229/attachment/download/' + attachment.id"
+            >
               [다운로드]
             </a>
           </li>

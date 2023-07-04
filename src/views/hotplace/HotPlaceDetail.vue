@@ -67,7 +67,7 @@
           style="max-width: 100%"
           v-for="image in images"
           :key="image.id"
-          :src="'http://localhost/image/download/' + image.id"
+          :src="'http://43.201.209.229/image/download/' + image.id"
         />
         <br />
       </div>
