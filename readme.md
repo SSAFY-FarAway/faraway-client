@@ -10,26 +10,41 @@
 
 ### 📌 프로젝트 기간 및 참여인원
 
-- 프로젝트 기간 : 2023.05. ~ 2023.06. (4주)
+- 프로젝트 기간 : 2023.04. ~ 2023.05. (4주)
 - 참여 인원 : 3명
-- (다른사람이 어떤업무를 담당했는지도 적으면, )
+  - 🐼 홍진식 (팀장, FE/BE)
+    - GitHub: [jinsikhong](https://github.com/jinsikhong)
+  - 🙈 전인혁 (팀원, FE)
+    - GitHub: [wjs5025](https://github.com/wjs5025)
+  - 🐷 최영환 (팀원, BE)
+    - GitHub: [longBright](https://github.com/longBright)
 
 ### 📌 사용 기술 및 개발 환경
 
-| 주요 환경                                 | Windows 10, Visual Studio Code, IntelliJ |
-| ----------------------------------------- | ---------------------------------------- |
-| 사용 기술                                 | Vue2, Vuex, vue-bootstrap                |
-| Spring Boot, Lombok, JPA, queryDSL, MySQL |
-| 언어                                      | HTML5, CSS, JavaScript                   |
-| Java                                      |
-| 기타 협업 도구                            | Jira, GitHub, Notion, ERDcloud           |
+| 주요 환경    | Windows 10, Visual Studio Code, IntelliJ |
+|----------| ---------------------------------------- |
+| 사용 기술    | Vue2, Vuex, vue-bootstrap                |
+|          | Spring Boot, Lombok, JPA, QueryDSL, MySQL |
+| 언어       | HTML5, CSS, JavaScript                   |
+|          | Java |
+| 기타 협업 도구 | Jira, GitHub, Notion, ERDcloud           |
 
 ### 📌 담당했던 업무
-
+#### 전인혁
 - UI 설계 및 디자인 전체
 - 웹 프론트엔드 주요 기능 개발 (관광지 - 지도 / SNS 피드 / 회원 관리)
 - 웹 프론트엔드 배포 (AWS EC2 / nginx 활용) ([바로가기](http://faraway.kro.kr))
 - 웹 백엔드 ‘회원 관리’ 일부 개발 (CRUD, JWT 토큰 인증)
+
+#### 최영환
+- 웹 백엔드 설계
+- 웹 백엔드 배포 (AWS EC2 / Nginx 활용) ([바로가기](http://faraway.kro.kr))
+- 웹 백엔드 주요 기능 개발 (여행지 검색 / 나만의 여행 계획 공유 / 핫플레이스 / 게시판 / 좋아요 및 댓글)
+
+#### 홍진식
+- 웹 백엔드 설계
+- 웹 프론트엔드 주요 기능 개발 (게시판 / 좋아요 및 댓글)
+- 웹 백엔드 회원 관리 기능 개발 (CRUD, JWT 토큰 인증)
 
 ### 📌 **주요 기능 및 구현 과정**
 
@@ -95,7 +110,7 @@
 
 ### 📌 성과 및 배운 점
 
-- SSAFY 1학기 최종 프로젝트
+- 삼성 청년 SW 아카데미 1학기 최종 프로젝트. 프로젝트 경진대회 최우수상 수상
 - **프론트엔드**
   - Vuex를 활용한 전역 상태 관리, Vue-Router의 route 설정 등 vue와 연계되는 라이브러리 활용 방법 습득.
   - 유지보수를 고려하여, 특정한 기준에 맞게 컴포넌트를 설계하는 방법 습득.
